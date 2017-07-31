@@ -1,0 +1,104 @@
+//
+//  ViewController.swift
+//  Spots
+//
+//  Created by Casey Corvino on 6/9/17.
+//  Copyright © 2017 Spots. All rights reserved.
+//
+
+import UIKit
+
+//universal color declarations for the rest of the app
+var orange: UIColor = UIColor.init(red: 1.0, green: 0.5, blue: 0.0, alpha: 1.0)
+var silver: UIColor = UIColor.init(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
+
+
+
+
+class OpeningViewController: UIViewController {
+    
+    //left-side instance vars
+    @IBOutlet var loginView: UIView!
+    @IBOutlet var loginButton: UIButton!
+    
+    //right-side instance vars
+    @IBOutlet var registerView: UIView!
+    @IBOutlet var registerButton: UIButton!
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        
+        //make .backgroundColors precise
+        //make .backgroundColors return to default when opened again in same run
+        loginView.backgroundColor = orange;
+        registerView.backgroundColor = silver;
+        
+        //make gestures
+        //declare gestures
+        let swipeRight = UISwipeGestureRecognizer()
+        let swipeLeft = UISwipeGestureRecognizer()
+        
+        //choose method to run when swiped
+        swipeRight.addTarget(self, action: #selector(OpeningViewController.swipeRight))
+        swipeLeft.addTarget(self, action: #selector(OpeningViewController.swipeLeft))
+        
+        //set directions of swipes
+        swipeRight.direction = .right
+        swipeLeft.direction = .left
+        
+        //add gestures to view
+        self.view!.addGestureRecognizer(swipeRight)
+        self.view!.addGestureRecognizer(swipeLeft)
+        
+        
+    }
+    
+    //actions
+    //login clicked action
+    @IBAction func loginClicked(_ sender: Any) {
+        
+        performSegue(withIdentifier: "login", sender: nil)
+        
+    }
+    
+    //register clicked action
+    @IBAction func registerClicked(_ sender: Any) {
+        
+        performSegue(withIdentifier: "register", sender: nil)
+        
+    }
+    
+    //Swipe Right
+    @IBAction func swipeRight(_ sender: Any){
+        
+        performSegue(withIdentifier: "login", sender: nil)
+    }
+    
+    //Swipe Left
+    @IBAction func swipeLeft(_ sender: Any){
+        
+        performSegue(withIdentifier: "openingToRegister", sender: nil);
+    }
+    
+    
+    
+    
+    
+    //override variables
+    //status bar
+    override var prefersStatusBarHidden : Bool {
+        return true;
+    }
+    
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+}
+
