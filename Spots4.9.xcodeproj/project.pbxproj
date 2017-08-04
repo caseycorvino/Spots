@@ -45,6 +45,8 @@
 		C9D884B71F077F860026EB20 /* aboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D884B61F077F860026EB20 /* aboutViewController.swift */; };
 		C9D884BE1F087E420026EB20 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = C9D884BD1F087E420026EB20 /* splash.png */; };
 		C9D884C01F088C950026EB20 /* searchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D884BF1F088C950026EB20 /* searchViewController.swift */; };
+		C9E1DC411F33F14A008972F5 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E1DC401F33F14A008972F5 /* UserNotifications.framework */; };
+		C9E1DC431F3417ED008972F5 /* Helping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E1DC421F3417ED008972F5 /* Helping.swift */; };
 		C9E3769E1F113DF000B4DDCF /* upbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = C9E3769D1F113DF000B4DDCF /* upbutton.png */; };
 		C9E376E31F12F36A00B4DDCF /* downbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = C9E376E21F12F36A00B4DDCF /* downbutton.png */; };
 		C9E376E51F12FFA000B4DDCF /* MapTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E376E41F12FFA000B4DDCF /* MapTableViewCell.swift */; };
@@ -98,6 +100,9 @@
 		C9D884B61F077F860026EB20 /* aboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = aboutViewController.swift; path = ../aboutViewController.swift; sourceTree = "<group>"; };
 		C9D884BD1F087E420026EB20 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
 		C9D884BF1F088C950026EB20 /* searchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = searchViewController.swift; sourceTree = "<group>"; };
+		C9E1DC3F1F33E352008972F5 /* Spots4.9.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Spots4.9.entitlements; sourceTree = "<group>"; };
+		C9E1DC401F33F14A008972F5 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		C9E1DC421F3417ED008972F5 /* Helping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helping.swift; sourceTree = "<group>"; };
 		C9E3769D1F113DF000B4DDCF /* upbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upbutton.png; sourceTree = "<group>"; };
 		C9E376E21F12F36A00B4DDCF /* downbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downbutton.png; sourceTree = "<group>"; };
 		C9E376E41F12FFA000B4DDCF /* MapTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTableViewCell.swift; sourceTree = "<group>"; };
@@ -111,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9E1DC411F33F14A008972F5 /* UserNotifications.framework in Frameworks */,
 				E9884ECE1069C694F1DA6B41 /* Pods_Spots4_9.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -130,6 +136,7 @@
 		85359B6AC6DEB2F07D2DA7A1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C9E1DC401F33F14A008972F5 /* UserNotifications.framework */,
 				1534714B587311BAD24D6464 /* Pods_Spots4_9.framework */,
 			);
 			name = Frameworks;
@@ -138,6 +145,7 @@
 		C94929CB1EEF64C700A30760 = {
 			isa = PBXGroup;
 			children = (
+				C9E1DC421F3417ED008972F5 /* Helping.swift */,
 				C9E376E41F12FFA000B4DDCF /* MapTableViewCell.swift */,
 				C94929D61EEF64C700A30760 /* Spots4.9 */,
 				C94929D51EEF64C700A30760 /* Products */,
@@ -157,6 +165,7 @@
 		C94929D61EEF64C700A30760 /* Spots4.9 */ = {
 			isa = PBXGroup;
 			children = (
+				C9E1DC3F1F33E352008972F5 /* Spots4.9.entitlements */,
 				C94929D71EEF64C700A30760 /* AppDelegate.swift */,
 				C97FB1331EF1C19D0013DFB9 /* View Controllers */,
 				C97FB13B1EF1FE0E0013DFB9 /* Spot.swift */,
@@ -306,6 +315,11 @@
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = G2KEVR8U6R;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -410,6 +424,7 @@
 				C92E177D1F076839001FA94F /* clickedUserFollowersViewController.swift in Sources */,
 				C9C749211F047443000FEBB1 /* SegueFromTop.swift in Sources */,
 				C9E376E51F12FFA000B4DDCF /* MapTableViewCell.swift in Sources */,
+				C9E1DC431F3417ED008972F5 /* Helping.swift in Sources */,
 				C95B4B721EF39B4000E7D329 /* Followers.swift in Sources */,
 				C94929ED1EEF661600A30760 /* OpeningViewController.swift in Sources */,
 				C94929FD1EF0994900A30760 /* PasswordViewController.swift in Sources */,
@@ -501,7 +516,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -546,7 +561,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -560,12 +575,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Spots4.9/Spots4.9.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Casey Corvino (65H5HV5CH7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = G2KEVR8U6R;
 				INFOPLIST_FILE = Spots4.9/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.SpotsApp.Spots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Pods/Backendless/SDK/ios/backendless/include/Backendless-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
@@ -577,12 +597,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Spots4.9/Spots4.9.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Casey Corvino (65H5HV5CH7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = G2KEVR8U6R;
 				INFOPLIST_FILE = Spots4.9/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.SpotsApp.Spots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Pods/Backendless/SDK/ios/backendless/include/Backendless-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

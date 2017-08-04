@@ -96,8 +96,14 @@ class LoginViewController: UIViewController {
                                         activeUserId = activeUser.objectId as String
                                         self.performSegue(withIdentifier: "loginToActiveMap", sender: nil)
                                         
-                                       
-                                        //set udid
+                                        let deviceId = self.backendless?.messaging.currentDevice().deviceId
+                                        
+                                        activeUser.setProperty("deviceId", object: deviceId)
+                                        self.backendless?.userService.update(activeUser, response: { (user: BackendlessUser?) in
+                                            print("Update DeviceId: succesful")
+                                        }, error: { (fault: Fault?) in
+                                            print("Fault=\(fault?.description ?? "")")
+                                        })
                                        
                                         print("User logged in")
         },

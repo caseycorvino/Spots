@@ -45,7 +45,7 @@ class FollowersViewController: UIViewController, UITableViewDataSource, UITableV
             cell.followButtonBackground.layer.borderWidth = 1
             cell.followImageView.backgroundColor = silver
             cell.followImageView.backgroundColor = silver
-            cell.followImageView.layer.cornerRadius = 20;
+            cell.followImageView.layer.cornerRadius = 17;
             cell.followImageView.layer.masksToBounds = true;
             if(userInList(user: followUser, list: activeUserFollowing)){
                 cell.followButton.setTitle("Following", for: UIControlState.normal)
@@ -158,6 +158,9 @@ class FollowersViewController: UIViewController, UITableViewDataSource, UITableV
 //
 //                })//do same thing
                 activeUserFollowing.append(cell.cellUser)
+                let deviceId = cell.cellUser.getProperty("deviceId")!
+                let helping = Helping()
+                helping.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
                 UIApplication.shared.endIgnoringInteractionEvents()
              
             }, error: { (fault: Fault?) in

@@ -68,6 +68,8 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        self.navigationController?.isNavigationBarHidden = true
+        
         resetLocationButton.isHidden = true;
         
         //update view backgrounds
@@ -187,6 +189,7 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
        
         
         let query = DataQueryBuilder().setWhereClause("ownerId = '\(activeUserId)'")
+        _ = query?.setPageSize(100).setOffset(0)
         _ = self.backendless?.data.of(Spot.ofClass()).find(query,
                                                            
             response: { ( userObjects: [Any]?) in
@@ -452,6 +455,8 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     @IBAction func addSpotButton(_ sender: Any) {
         
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        
         if (addSpotTitleField.text?.characters.count)! > 5{
             let newSpot = Spot()
             newSpot.Title = addSpotTitleField.text!
@@ -467,19 +472,26 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                                 print("Spot saved and succesfully uploaded to backend")
                                 self.view.endEditing(true)
                                 self.addSpotView.isHidden = true
-                                
+                                UIApplication.shared.endIgnoringInteractionEvents()
+
                                 self.addSpotTitleField.text = ""
                                 activeUserSpots.append(newSpot as! Spot)
                                 //replace with addSpot to activeUserSpots and re annotate map
                                 self.putSpotsOnMap( completionHandler: {
                                      self.view.sendSubview(toBack: self.blurEffectView)
+                                    self.tableView.reloadData()
+                                    self.SortSpotsArray()
+                                    
                                 })
                                
             },
                             error: {
                                 (fault : Fault?) -> () in
                                 print("Server reported an error: \(fault?.message ?? "Fault"))")
+                                UIApplication.shared.endIgnoringInteractionEvents()
+
                                 self.displayAlert("Server Error", message: fault?.message ?? "Fault")
+                                
             })
             
             
@@ -487,6 +499,7 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
             
         } else {
             displayAlert("Invalid Title", message: "Title needs to be longer than 5 characters.")
+            UIApplication.shared.endIgnoringInteractionEvents()
         }
         
         
@@ -572,6 +585,7 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         let btn = UIButton(type: .detailDisclosure)
         let image: UIImage = UIImage.init(named: "directions.png")!
         btn.setImage(image, for: .normal)
+        btn.tintColor = UIColor.black
         btn.addTarget(self, action: #selector(getDirections), for: .touchUpInside)
         annotationView?.rightCalloutAccessoryView = btn
         
@@ -583,17 +597,31 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         UIGraphicsEndImageContext()
         annotationView?.image = newImage
         
+        let calloutgesture = UITapGestureRecognizer(target: self, action:  #selector (self.calloutClicked (_:)))
+        annotationView?.addGestureRecognizer(calloutgesture)
+        
         return annotationView
         
     }
     
+    func calloutClicked(_ sender:UITapGestureRecognizer){
+        
+            //todo. callout clicked
+        
+        
+    }
+    
     func  mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
+        
         for spot in activeUserSpots{
             let annotationTitle: String! = (view.annotation?.title)!
-            if spot.Title ==  annotationTitle{
+            let annotationLat = Double((view.annotation?.coordinate.latitude)!)
+            if spot.Title ==  annotationTitle && spot.Latitude == annotationLat {
                 clickedSpot = spot
             }
         }
+        
         
     }
     

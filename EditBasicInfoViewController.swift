@@ -61,6 +61,7 @@ class EditBasicInfoViewController: UIViewController {
     
     @IBAction func backbutton(_ sender: Any) {
         performSegue(withIdentifier: "editBasicInfoToSettings", sender: nil)
+        //_ = self.navigationController?.popViewController(animated: true)
     }
 
     

@@ -73,6 +73,7 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         followingButtonView.backgroundColor = silver
         followersButtonView.backgroundColor = silver
         
+        
         //update name
         clickedUserNameLabel.text = "\(clickedUser.name ?? "")"
         
@@ -143,23 +144,35 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         UIApplication.shared.beginIgnoringInteractionEvents()
         activityIndicator.startAnimating()
         
+        
+        clickedUserSpots.removeAll()
+        
         loadClickedUserSpots(completionHandler: {
+            self.SortSpotsArray()
             self.calculateClickedFollowers(completionHandler: {
+                
                 self.SortFollowersArray()
+                
                 self.calculateClickedFollowing(completionHandler:{
+                    
                     self.sortFollowingArray()
+                   
                     UIApplication.shared.endIgnoringInteractionEvents()
+                    
                     self.activityIndicator.stopAnimating()
                     self.view.sendSubview(toBack: self.blurEffectView)
                     self.tableView.reloadData()
+                    
                 })
             })
         })
+        
         setOriginForTableSubView()
         setOriginForTableButtonView()
         setOriginForTableButton()
         setOriginForTableView()
         tableButtonView.backgroundColor = silver
+        
     }
     
     
@@ -255,6 +268,9 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
                 clickedUserFollowers.append(activeUser)
                 activeUserFollowing.append(clickedUser)
                 self.followersButton.setTitle("\(clickedUserFollowers.count)", for: UIControlState.normal)
+                let deviceId = clickedUser.getProperty("deviceId")!
+                let helping = Helping()
+                helping.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
                 UIApplication.shared.endIgnoringInteractionEvents()
             }, error: { (fault: Fault?) in
                 print(fault?.message ?? "fault")
@@ -280,18 +296,24 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
     
     func loadClickedUserSpots(completionHandler: @escaping () -> ()) -> Void{
         
+        
+        
         let clickedUserId: String! = clickedUser.objectId! as String
+        
         let query = DataQueryBuilder().setWhereClause("ownerId = '\(clickedUserId ?? "")'")
         _ = query?.setPageSize(100).setOffset(0)
+        //_ = query?.setPageSize(100).setOffset(0)
         _ = self.backendless?.data.of(Spot.ofClass()).find(query,
                                                            
                                                            response: { ( userObjects: [Any]?) in
-                                                            
+                                                           
                                                             //fill activeUserSpots Array.
                                                             clickedUserSpots = userObjects as! [Spot]
-                                                            self.SortSpotsArray()
+//                                                                                                                      print(clickedUserSpots)
+                                                            
                                                             self.putSpotsOnMap(completionHandler: {
                                                                 completionHandler()
+                                                                
                                                             })
                                                             
                                                             
@@ -304,6 +326,8 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
                 
                 
         })
+        //completionHandler();
+    
     }
     
     func putSpotsOnMap(completionHandler: @escaping () -> ()) -> Void{
@@ -605,6 +629,7 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         
         let btn = UIButton(type: .detailDisclosure)
         let image: UIImage = UIImage.init(named: "directions.png")!
+        btn.tintColor = UIColor.black
         btn.setImage(image, for: .normal)
         btn.addTarget(self, action: #selector(getDirections), for: .touchUpInside)
         annotationView?.rightCalloutAccessoryView = btn
@@ -618,14 +643,26 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         UIGraphicsEndImageContext()
         annotationView?.image = newImage
         
+        let calloutgesture = UITapGestureRecognizer(target: self, action:  #selector (self.calloutClicked (_:)))
+        annotationView?.addGestureRecognizer(calloutgesture)
+        
         return annotationView
         
     }
     
+    func calloutClicked(_ sender:UITapGestureRecognizer){
+        
+        //todo. callout clicked
+        
+        
+    }
+    
     func  mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
         for spot in clickedUserSpots{
             let annotationTitle: String! = (view.annotation?.title)!
-            if spot.Title ==  annotationTitle{
+            let annotationLat = Double((view.annotation?.coordinate.latitude)!)
+            if spot.Title ==  annotationTitle && spot.Latitude == annotationLat {
                 clickedSpot = spot
             }
         }
@@ -829,7 +866,7 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
-        cell.spotDateCreated.text = formatter.string(from: activeUserSpots[indexPath.row].created! as Date)
+        cell.spotDateCreated.text = formatter.string(from: clickedUserSpots[indexPath.row].created! as Date)
         
         return cell;
     }

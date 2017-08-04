@@ -476,7 +476,6 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="335" id="Bin-2m-5Sh"/>
-                                            <constraint firstAttribute="height" constant="411" id="UIN-n2-Slt"/>
                                         </constraints>
                                         <string key="text">Spots Terms of Service and Privacy Policy
 
@@ -566,6 +565,7 @@ We are committed to conducting our business in accordance with these principles 
                                     <constraint firstItem="kj0-p1-ilG" firstAttribute="leading" secondItem="k54-Y6-l4f" secondAttribute="leading" constant="20" id="2J6-yB-afj"/>
                                     <constraint firstItem="298-Fm-I3m" firstAttribute="leading" secondItem="k54-Y6-l4f" secondAttribute="leading" constant="20" id="5X3-Hb-f9U"/>
                                     <constraint firstItem="kj0-p1-ilG" firstAttribute="top" secondItem="298-Fm-I3m" secondAttribute="bottom" id="G2a-8t-mSD"/>
+                                    <constraint firstItem="ufY-W3-8iI" firstAttribute="top" secondItem="c1H-4U-4UK" secondAttribute="bottom" constant="16" id="TQ8-Kk-euZ"/>
                                     <constraint firstItem="c1H-4U-4UK" firstAttribute="leading" secondItem="k54-Y6-l4f" secondAttribute="leading" constant="20" id="XPU-YB-TDB"/>
                                     <constraint firstAttribute="trailing" secondItem="c1H-4U-4UK" secondAttribute="trailing" constant="20" id="a0M-P4-kX7"/>
                                     <constraint firstItem="ufY-W3-8iI" firstAttribute="centerX" secondItem="k54-Y6-l4f" secondAttribute="centerX" id="lE5-sy-ejT"/>
@@ -620,7 +620,7 @@ We are committed to conducting our business in accordance with these principles 
                     </view>
                     <connections>
                         <segue destination="Zil-q2-AC3" kind="show" identifier="toOpening" animates="NO" id="qep-w4-cPm"/>
-                        <segue destination="qYf-tp-bdO" kind="show" identifier="toActiveMap" animates="NO" id="pNl-so-2QV"/>
+                        <segue destination="bwF-TL-9Nu" kind="show" identifier="toActiveMap" animates="NO" id="pNl-so-2QV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6dZ-B5-wdx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -699,7 +699,7 @@ We are committed to conducting our business in accordance with these principles 
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9KC-fi-hlZ">
-                                <rect key="frame" x="265" y="70" width="90" height="40"/>
+                                <rect key="frame" x="265" y="90" width="90" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Zkd-o7-tVS"/>
                                     <constraint firstAttribute="width" constant="90" id="hXN-g0-0fS"/>
@@ -809,7 +809,7 @@ We are committed to conducting our business in accordance with these principles 
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sc1-ml-fq0">
-                                <rect key="frame" x="30" y="160" width="315" height="50"/>
+                                <rect key="frame" x="30" y="180" width="315" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="| email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4BG-oO-596">
                                         <rect key="frame" x="0.0" y="0.0" width="315" height="50"/>
@@ -828,7 +828,7 @@ We are committed to conducting our business in accordance with these principles 
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYE-DO-324">
-                                <rect key="frame" x="30" y="234" width="315" height="50"/>
+                                <rect key="frame" x="30" y="254" width="315" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="| password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QX5-nu-oJv">
                                         <rect key="frame" x="0.0" y="0.0" width="315" height="50"/>
@@ -870,7 +870,7 @@ We are committed to conducting our business in accordance with these principles 
                         <outlet property="passwordField" destination="QX5-nu-oJv" id="3sN-8g-4dN"/>
                         <segue destination="Zil-q2-AC3" kind="custom" identifier="openingFromLogin" customClass="SegueFromLeftUnnwind" customModule="Spots4_9" id="f43-gv-szX"/>
                         <segue destination="Vmj-e3-NKV" kind="custom" identifier="loginToForgotPass" customClass="SegueFromLeft" customModule="Spots4_9" customModuleProvider="target" id="9LI-me-3t8"/>
-                        <segue destination="qYf-tp-bdO" kind="show" identifier="loginToActiveMap" animates="NO" id="MPr-tJ-a9W"/>
+                        <segue destination="bwF-TL-9Nu" kind="show" identifier="loginToActiveMap" animates="NO" id="MPr-tJ-a9W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VJa-sx-KaB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -971,7 +971,7 @@ We are committed to conducting our business in accordance with these principles 
                     <connections>
                         <outlet property="backButtonView" destination="S4C-wU-gGx" id="Dpp-zD-WCU"/>
                         <segue destination="Zil-q2-AC3" kind="show" identifier="settingsToOpening" animates="NO" id="bO0-Sd-gHI"/>
-                        <segue destination="qYf-tp-bdO" kind="show" identifier="settingsToActiveMap" customClass="SegueFromRight2" customModule="Spots4_9" customModuleProvider="target" id="L4d-dr-YwH"/>
+                        <segue destination="bwF-TL-9Nu" kind="show" identifier="settingsToActiveMap" customClass="SegueFromRight2" customModule="Spots4_9" customModuleProvider="target" id="L4d-dr-YwH"/>
                         <segue destination="omK-JM-xKw" kind="custom" identifier="settingsToEditBasicInfo" customClass="SegueFromLeft" customModule="Spots4_9" customModuleProvider="target" id="kTM-Rw-F6Q"/>
                         <segue destination="KLi-wL-qri" kind="custom" identifier="settingsToTermsOfServices" customClass="SegueFromLeft" customModule="Spots4_9" customModuleProvider="target" id="Orq-PT-Mb0"/>
                         <segue destination="VDG-IW-kda" kind="custom" identifier="settingsToAboutSpots" customClass="SegueFromLeft" customModule="Spots4_9" customModuleProvider="target" id="KxQ-Jc-DpK"/>
@@ -1006,6 +1006,7 @@ We are committed to conducting our business in accordance with these principles 
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72C-hf-Pnc">
                                         <rect key="frame" x="0.0" y="0.0" width="120" height="50"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <state key="normal" title="&gt;">
                                             <color key="titleColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
@@ -1130,7 +1131,7 @@ We are committed to conducting our business in accordance with these principles 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sxo-0N-XY2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1455" y="1051"/>
+            <point key="canvasLocation" x="-1386" y="934"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="h1J-H6-jkb">
@@ -1254,7 +1255,7 @@ We are committed to conducting our business in accordance with these principles 
         <!--Active Map View Controller-->
         <scene sceneID="onX-7N-MZC">
             <objects>
-                <viewController id="qYf-tp-bdO" customClass="ActiveMapViewController" customModule="Spots4_9" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="activeMapController" id="qYf-tp-bdO" customClass="ActiveMapViewController" customModule="Spots4_9" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0EM-Gw-JpU"/>
                         <viewControllerLayoutGuide type="bottom" id="tjS-nc-urj"/>
@@ -1538,6 +1539,7 @@ We are committed to conducting our business in accordance with these principles 
                             <constraint firstItem="FSg-uw-yOv" firstAttribute="top" secondItem="ojl-su-bd5" secondAttribute="top" id="z0B-mk-n81"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="qFM-KC-Pen"/>
                     <connections>
                         <outlet property="addSpotTitleField" destination="DwW-jL-h3u" id="zev-Jn-rza"/>
                         <outlet property="addSpotView" destination="bcP-iV-Qii" id="57K-Kb-TnZ"/>
@@ -1562,7 +1564,7 @@ We are committed to conducting our business in accordance with these principles 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vb4-HO-t49" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="294" y="1701"/>
+            <point key="canvasLocation" x="1233" y="1769"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="kIP-0N-4v4">
@@ -1619,17 +1621,17 @@ We are committed to conducting our business in accordance with these principles 
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jxm-nG-b36">
-                                                    <rect key="frame" x="15" y="0.0" width="43.5" height="43.5"/>
+                                                    <rect key="frame" x="15" y="5" width="33.5" height="33.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="pUF-ai-6w5">
-                                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstItem="pUF-ai-6w5" firstAttribute="leading" secondItem="Jxm-nG-b36" secondAttribute="leading" id="3e2-9z-n4g"/>
                                                         <constraint firstItem="pUF-ai-6w5" firstAttribute="top" secondItem="Jxm-nG-b36" secondAttribute="top" id="9fj-9E-3Kn"/>
-                                                        <constraint firstAttribute="width" constant="43.5" id="Bl5-56-XHJ"/>
+                                                        <constraint firstAttribute="width" constant="33.5" id="Bl5-56-XHJ"/>
                                                         <constraint firstAttribute="trailing" secondItem="pUF-ai-6w5" secondAttribute="trailing" id="TaJ-K9-g4C"/>
                                                         <constraint firstAttribute="bottom" secondItem="pUF-ai-6w5" secondAttribute="bottom" id="wng-vj-kB5"/>
                                                     </constraints>
@@ -1653,7 +1655,7 @@ We are committed to conducting our business in accordance with these principles 
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6eF-Re-gLL">
-                                                    <rect key="frame" x="88.5" y="6" width="156.5" height="32"/>
+                                                    <rect key="frame" x="78.5" y="6" width="166.5" height="32"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1662,11 +1664,11 @@ We are committed to conducting our business in accordance with these principles 
                                             <constraints>
                                                 <constraint firstItem="6eF-Re-gLL" firstAttribute="leading" secondItem="Jxm-nG-b36" secondAttribute="trailing" constant="30" id="3DI-Cu-RkH"/>
                                                 <constraint firstAttribute="bottom" secondItem="6eF-Re-gLL" secondAttribute="bottom" constant="6" id="6i6-XP-6zS"/>
-                                                <constraint firstAttribute="bottom" secondItem="Jxm-nG-b36" secondAttribute="bottom" id="GfF-Ju-eJ4"/>
+                                                <constraint firstAttribute="bottom" secondItem="Jxm-nG-b36" secondAttribute="bottom" constant="5" id="GfF-Ju-eJ4"/>
                                                 <constraint firstAttribute="bottom" secondItem="bYU-ad-cDI" secondAttribute="bottom" constant="6" id="LNe-zM-odg"/>
                                                 <constraint firstItem="bYU-ad-cDI" firstAttribute="leading" secondItem="6eF-Re-gLL" secondAttribute="trailing" constant="8" id="UwE-Di-YSj"/>
                                                 <constraint firstItem="6eF-Re-gLL" firstAttribute="top" secondItem="NqK-UN-qoI" secondAttribute="top" constant="6" id="fkW-vL-OHK"/>
-                                                <constraint firstItem="Jxm-nG-b36" firstAttribute="top" secondItem="NqK-UN-qoI" secondAttribute="top" id="g4o-N2-WG0"/>
+                                                <constraint firstItem="Jxm-nG-b36" firstAttribute="top" secondItem="NqK-UN-qoI" secondAttribute="top" constant="5" id="g4o-N2-WG0"/>
                                                 <constraint firstItem="bYU-ad-cDI" firstAttribute="top" secondItem="NqK-UN-qoI" secondAttribute="top" constant="6" id="g5t-cd-5CU"/>
                                                 <constraint firstAttribute="trailing" secondItem="bYU-ad-cDI" secondAttribute="trailing" constant="10" id="gmV-uT-jE6"/>
                                                 <constraint firstItem="Jxm-nG-b36" firstAttribute="leading" secondItem="NqK-UN-qoI" secondAttribute="leading" constant="15" id="k39-Qp-fpk"/>
@@ -1713,13 +1715,13 @@ We are committed to conducting our business in accordance with these principles 
                     <connections>
                         <outlet property="searchBar" destination="Zbh-d9-Cux" id="D01-IO-wu8"/>
                         <outlet property="searchTable" destination="9No-T5-MPS" id="Edv-Dk-VwS"/>
-                        <segue destination="qYf-tp-bdO" kind="custom" identifier="searchToActiveMap" customClass="SegueFromRightUnwind" customModule="Spots4_9" customModuleProvider="target" id="7wd-uR-x1q"/>
+                        <segue destination="bwF-TL-9Nu" kind="custom" identifier="searchToActiveMap" customClass="SegueFromRightUnwind" customModule="Spots4_9" customModuleProvider="target" id="7wd-uR-x1q"/>
                         <segue destination="4BV-Eu-6nd" kind="custom" identifier="searchToClickedUser" customClass="SegueFromRight2" customModule="Spots4_9" customModuleProvider="target" id="Fd9-DO-sMw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y2E-Oz-ZxJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1128.8" y="1768.9655172413795"/>
+            <point key="canvasLocation" x="2068" y="1768.9655172413795"/>
         </scene>
         <!--Following View Controller-->
         <scene sceneID="pGQ-5k-CKC">
@@ -1765,7 +1767,7 @@ We are committed to conducting our business in accordance with these principles 
                                         </state>
                                         <connections>
                                             <action selector="back:" destination="u8C-Nn-BDE" eventType="touchUpInside" id="Gzc-nU-98x"/>
-                                            <segue destination="qYf-tp-bdO" kind="custom" customClass="SegueFromTopUnwind" customModule="Spots4_9" customModuleProvider="target" id="7Xp-3c-D0T"/>
+                                            <segue destination="bwF-TL-9Nu" kind="custom" customClass="SegueFromTopUnwind" customModule="Spots4_9" customModuleProvider="target" id="7Xp-3c-D0T"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1793,17 +1795,17 @@ We are committed to conducting our business in accordance with these principles 
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TtB-Ob-CJK">
-                                                    <rect key="frame" x="15" y="0.0" width="43.5" height="43.5"/>
+                                                    <rect key="frame" x="15" y="5" width="33.5" height="33.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="dQL-mr-Kbd">
-                                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="dQL-mr-Kbd" secondAttribute="bottom" id="3nV-i1-rp8"/>
                                                         <constraint firstItem="dQL-mr-Kbd" firstAttribute="leading" secondItem="TtB-Ob-CJK" secondAttribute="leading" id="MHQ-nE-5kV"/>
-                                                        <constraint firstAttribute="width" constant="43.5" id="WNI-3U-ANp"/>
+                                                        <constraint firstAttribute="width" constant="33.5" id="WNI-3U-ANp"/>
                                                         <constraint firstItem="dQL-mr-Kbd" firstAttribute="top" secondItem="TtB-Ob-CJK" secondAttribute="top" id="oox-e3-CcC"/>
                                                         <constraint firstAttribute="trailing" secondItem="dQL-mr-Kbd" secondAttribute="trailing" id="vV1-nA-pfq"/>
                                                     </constraints>
@@ -1830,7 +1832,7 @@ We are committed to conducting our business in accordance with these principles 
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wy6-Yt-kbw">
-                                                    <rect key="frame" x="88.5" y="6" width="156.5" height="32"/>
+                                                    <rect key="frame" x="78.5" y="6" width="166.5" height="32"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1844,8 +1846,8 @@ We are committed to conducting our business in accordance with these principles 
                                                 <constraint firstAttribute="bottom" secondItem="Wy6-Yt-kbw" secondAttribute="bottom" constant="6" id="Uet-Zv-cMM"/>
                                                 <constraint firstItem="Wy6-Yt-kbw" firstAttribute="top" secondItem="2IW-0Z-HjE" secondAttribute="top" constant="6" id="Wkz-6Q-kXF"/>
                                                 <constraint firstItem="CBD-iT-Teq" firstAttribute="leading" secondItem="Wy6-Yt-kbw" secondAttribute="trailing" constant="8" id="h42-R6-Gig"/>
-                                                <constraint firstAttribute="bottom" secondItem="TtB-Ob-CJK" secondAttribute="bottom" id="m37-eF-DHX"/>
-                                                <constraint firstItem="TtB-Ob-CJK" firstAttribute="top" secondItem="2IW-0Z-HjE" secondAttribute="top" id="mYw-ig-Y6Y"/>
+                                                <constraint firstAttribute="bottom" secondItem="TtB-Ob-CJK" secondAttribute="bottom" constant="5" id="m37-eF-DHX"/>
+                                                <constraint firstItem="TtB-Ob-CJK" firstAttribute="top" secondItem="2IW-0Z-HjE" secondAttribute="top" constant="5" id="mYw-ig-Y6Y"/>
                                                 <constraint firstItem="CBD-iT-Teq" firstAttribute="top" secondItem="2IW-0Z-HjE" secondAttribute="top" constant="6" id="qL8-c4-tSa"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -2078,7 +2080,7 @@ Developed in New York</string>
         <!--Followers View Controller-->
         <scene sceneID="xBv-Da-kwl">
             <objects>
-                <viewController id="jEg-CK-TOJ" customClass="FollowersViewController" customModule="Spots4_9" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="followersController" id="jEg-CK-TOJ" customClass="FollowersViewController" customModule="Spots4_9" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Vbq-TQ-tmW"/>
                         <viewControllerLayoutGuide type="bottom" id="CjM-ba-AM5"/>
@@ -2115,7 +2117,7 @@ Developed in New York</string>
                                         </state>
                                         <connections>
                                             <action selector="back:" destination="u8C-Nn-BDE" eventType="touchUpInside" id="0T0-nM-sCI"/>
-                                            <segue destination="qYf-tp-bdO" kind="show" customClass="SegueFromTopUnwind" customModule="Spots4_9" customModuleProvider="target" id="L1R-xD-xZR"/>
+                                            <segue destination="bwF-TL-9Nu" kind="show" customClass="SegueFromTopUnwind" customModule="Spots4_9" customModuleProvider="target" id="L1R-xD-xZR"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2137,10 +2139,10 @@ Developed in New York</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J87-D2-KpU">
-                                                    <rect key="frame" x="15" y="0.0" width="43.5" height="43.5"/>
+                                                    <rect key="frame" x="15" y="5" width="33.5" height="33.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="eTI-Aw-85d">
-                                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -2149,7 +2151,7 @@ Developed in New York</string>
                                                         <constraint firstItem="eTI-Aw-85d" firstAttribute="leading" secondItem="J87-D2-KpU" secondAttribute="leading" id="aX1-R0-LTZ"/>
                                                         <constraint firstItem="eTI-Aw-85d" firstAttribute="top" secondItem="J87-D2-KpU" secondAttribute="top" id="dCM-X5-ATt"/>
                                                         <constraint firstAttribute="trailing" secondItem="eTI-Aw-85d" secondAttribute="trailing" id="j9k-Ik-aA7"/>
-                                                        <constraint firstAttribute="width" constant="43.5" id="sco-a2-NzC"/>
+                                                        <constraint firstAttribute="width" constant="33.5" id="sco-a2-NzC"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YcZ-sG-Baj">
@@ -2171,7 +2173,7 @@ Developed in New York</string>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Nq-gz-nEJ">
-                                                    <rect key="frame" x="88.5" y="6" width="156.5" height="32"/>
+                                                    <rect key="frame" x="78.5" y="6" width="166.5" height="32"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2180,14 +2182,14 @@ Developed in New York</string>
                                             <constraints>
                                                 <constraint firstItem="3Nq-gz-nEJ" firstAttribute="top" secondItem="IEC-rv-oJB" secondAttribute="top" constant="6" id="2zm-oB-lez"/>
                                                 <constraint firstItem="J87-D2-KpU" firstAttribute="leading" secondItem="IEC-rv-oJB" secondAttribute="leading" constant="15" id="80x-3I-dfs"/>
-                                                <constraint firstItem="J87-D2-KpU" firstAttribute="top" secondItem="IEC-rv-oJB" secondAttribute="top" id="9dJ-Cd-kWT"/>
+                                                <constraint firstItem="J87-D2-KpU" firstAttribute="top" secondItem="IEC-rv-oJB" secondAttribute="top" constant="5" id="9dJ-Cd-kWT"/>
                                                 <constraint firstItem="YcZ-sG-Baj" firstAttribute="leading" secondItem="3Nq-gz-nEJ" secondAttribute="trailing" constant="8" id="AgW-JP-CaW"/>
                                                 <constraint firstItem="3Nq-gz-nEJ" firstAttribute="leading" secondItem="J87-D2-KpU" secondAttribute="trailing" constant="30" id="JM0-s8-avB"/>
                                                 <constraint firstAttribute="bottom" secondItem="3Nq-gz-nEJ" secondAttribute="bottom" constant="6" id="UZG-Hj-mqZ"/>
                                                 <constraint firstItem="YcZ-sG-Baj" firstAttribute="top" secondItem="IEC-rv-oJB" secondAttribute="top" constant="6" id="Vzg-bA-exM"/>
                                                 <constraint firstAttribute="trailing" secondItem="YcZ-sG-Baj" secondAttribute="trailing" constant="10" id="bJr-vb-Xff"/>
                                                 <constraint firstAttribute="bottom" secondItem="YcZ-sG-Baj" secondAttribute="bottom" constant="6" id="fFd-Q7-fgM"/>
-                                                <constraint firstAttribute="bottom" secondItem="J87-D2-KpU" secondAttribute="bottom" id="yFY-ZL-Exq"/>
+                                                <constraint firstAttribute="bottom" secondItem="J87-D2-KpU" secondAttribute="bottom" constant="5" id="yFY-ZL-Exq"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -2600,15 +2602,15 @@ Developed in New York</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gfh-rc-NyX">
-                                                    <rect key="frame" x="15" y="0.0" width="43.5" height="43.5"/>
+                                                    <rect key="frame" x="15" y="5" width="33.5" height="33.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="fHg-xg-QEE">
-                                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="43.5" id="C0B-hL-RQa"/>
+                                                        <constraint firstAttribute="width" constant="33.5" id="C0B-hL-RQa"/>
                                                         <constraint firstAttribute="bottom" secondItem="fHg-xg-QEE" secondAttribute="bottom" id="Dhn-qU-aAD"/>
                                                         <constraint firstItem="fHg-xg-QEE" firstAttribute="leading" secondItem="Gfh-rc-NyX" secondAttribute="leading" id="n7J-8N-2ix"/>
                                                         <constraint firstAttribute="trailing" secondItem="fHg-xg-QEE" secondAttribute="trailing" id="vE9-fQ-5R7"/>
@@ -2634,7 +2636,7 @@ Developed in New York</string>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SWC-KW-Lo7">
-                                                    <rect key="frame" x="88.5" y="6" width="156.5" height="32"/>
+                                                    <rect key="frame" x="78.5" y="6" width="166.5" height="32"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2643,12 +2645,12 @@ Developed in New York</string>
                                             <constraints>
                                                 <constraint firstItem="UKb-Fe-S8r" firstAttribute="top" secondItem="lpH-s2-7eJ" secondAttribute="top" constant="6" id="4MS-4n-RkO"/>
                                                 <constraint firstItem="SWC-KW-Lo7" firstAttribute="leading" secondItem="Gfh-rc-NyX" secondAttribute="trailing" constant="30" id="6LP-gu-4Oj"/>
-                                                <constraint firstItem="Gfh-rc-NyX" firstAttribute="top" secondItem="lpH-s2-7eJ" secondAttribute="top" id="Cmc-fZ-c05"/>
+                                                <constraint firstItem="Gfh-rc-NyX" firstAttribute="top" secondItem="lpH-s2-7eJ" secondAttribute="top" constant="5" id="Cmc-fZ-c05"/>
                                                 <constraint firstAttribute="bottom" secondItem="SWC-KW-Lo7" secondAttribute="bottom" constant="6" id="J4d-To-aZa"/>
                                                 <constraint firstItem="Gfh-rc-NyX" firstAttribute="leading" secondItem="lpH-s2-7eJ" secondAttribute="leading" constant="15" id="OBc-D5-CFZ"/>
                                                 <constraint firstAttribute="trailing" secondItem="UKb-Fe-S8r" secondAttribute="trailing" constant="10" id="X6m-ei-ikR"/>
                                                 <constraint firstItem="SWC-KW-Lo7" firstAttribute="top" secondItem="lpH-s2-7eJ" secondAttribute="top" constant="6" id="fZd-4h-PVR"/>
-                                                <constraint firstAttribute="bottom" secondItem="Gfh-rc-NyX" secondAttribute="bottom" id="hCG-I0-iFp"/>
+                                                <constraint firstAttribute="bottom" secondItem="Gfh-rc-NyX" secondAttribute="bottom" constant="5" id="hCG-I0-iFp"/>
                                                 <constraint firstAttribute="bottom" secondItem="UKb-Fe-S8r" secondAttribute="bottom" constant="6" id="qtx-fN-sWx"/>
                                                 <constraint firstItem="UKb-Fe-S8r" firstAttribute="leading" secondItem="SWC-KW-Lo7" secondAttribute="trailing" constant="8" id="zic-4U-Lm3"/>
                                             </constraints>
@@ -2769,15 +2771,15 @@ Developed in New York</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NRf-4g-3SE">
-                                                    <rect key="frame" x="15" y="0.0" width="43.5" height="43.5"/>
+                                                    <rect key="frame" x="15" y="5" width="33.5" height="33.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="iaZ-6p-aM9">
-                                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="43.5" id="HAO-yL-8wu"/>
+                                                        <constraint firstAttribute="width" constant="33.5" id="HAO-yL-8wu"/>
                                                         <constraint firstItem="iaZ-6p-aM9" firstAttribute="leading" secondItem="NRf-4g-3SE" secondAttribute="leading" id="Idt-Bw-k43"/>
                                                         <constraint firstAttribute="trailing" secondItem="iaZ-6p-aM9" secondAttribute="trailing" id="h0U-6D-Cfs"/>
                                                         <constraint firstAttribute="bottom" secondItem="iaZ-6p-aM9" secondAttribute="bottom" id="uiH-bG-kHu"/>
@@ -2803,7 +2805,7 @@ Developed in New York</string>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ca-Nn-9a4">
-                                                    <rect key="frame" x="88.5" y="6" width="156.5" height="32"/>
+                                                    <rect key="frame" x="78.5" y="6" width="166.5" height="32"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2815,8 +2817,8 @@ Developed in New York</string>
                                                 <constraint firstItem="6Ca-Nn-9a4" firstAttribute="top" secondItem="wOq-po-Czb" secondAttribute="top" constant="6" id="EDp-qg-yuR"/>
                                                 <constraint firstItem="NRf-4g-3SE" firstAttribute="leading" secondItem="wOq-po-Czb" secondAttribute="leading" constant="15" id="K2Z-pY-rOX"/>
                                                 <constraint firstItem="8cD-mM-Mxh" firstAttribute="leading" secondItem="6Ca-Nn-9a4" secondAttribute="trailing" constant="8" id="PbN-DN-Z8b"/>
-                                                <constraint firstAttribute="bottom" secondItem="NRf-4g-3SE" secondAttribute="bottom" id="Qe4-yQ-bdY"/>
-                                                <constraint firstItem="NRf-4g-3SE" firstAttribute="top" secondItem="wOq-po-Czb" secondAttribute="top" id="d0y-bM-JiY"/>
+                                                <constraint firstAttribute="bottom" secondItem="NRf-4g-3SE" secondAttribute="bottom" constant="5" id="Qe4-yQ-bdY"/>
+                                                <constraint firstItem="NRf-4g-3SE" firstAttribute="top" secondItem="wOq-po-Czb" secondAttribute="top" constant="5" id="d0y-bM-JiY"/>
                                                 <constraint firstItem="6Ca-Nn-9a4" firstAttribute="leading" secondItem="NRf-4g-3SE" secondAttribute="trailing" constant="30" id="eSE-B0-wY0"/>
                                                 <constraint firstItem="8cD-mM-Mxh" firstAttribute="top" secondItem="wOq-po-Czb" secondAttribute="top" constant="6" id="hrU-tJ-SLQ"/>
                                                 <constraint firstAttribute="trailing" secondItem="8cD-mM-Mxh" secondAttribute="trailing" constant="10" id="qKH-hr-Uu5"/>
@@ -2871,6 +2873,24 @@ Developed in New York</string>
             </objects>
             <point key="canvasLocation" x="1948" y="3287.4062968515746"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Az2-Iy-Vz9">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Udu-x0-M2R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bwF-TL-9Nu" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="C7x-tx-nBt">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="qYf-tp-bdO" kind="relationship" relationship="rootViewController" id="OVk-5l-PbU"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="294" y="1769"/>
+        </scene>
     </scenes>
     <resources>
         <image name="default-profile.png" width="376" height="376"/>
@@ -2881,15 +2901,15 @@ Developed in New York</string>
         <image name="upbutton.png" width="750" height="239"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="iv0-Ki-ZXu"/>
-        <segue reference="qep-w4-cPm"/>
-        <segue reference="pNl-so-2QV"/>
-        <segue reference="ZZo-15-HQy"/>
-        <segue reference="1im-HA-DMT"/>
         <segue reference="Cgu-gH-SeN"/>
-        <segue reference="1EZ-OE-hna"/>
+        <segue reference="L1R-xD-xZR"/>
+        <segue reference="1im-HA-DMT"/>
+        <segue reference="6xd-VD-U0H"/>
+        <segue reference="Gp6-ez-xjS"/>
+        <segue reference="ZZo-15-HQy"/>
+        <segue reference="bO0-Sd-gHI"/>
         <segue reference="hb0-hX-kg5"/>
-        <segue reference="Fd9-DO-sMw"/>
-        <segue reference="sL4-p9-g3v"/>
+        <segue reference="zlT-xm-ux4"/>
+        <segue reference="iv0-Ki-ZXu"/>
     </inferredMetricsTieBreakers>
 </document>

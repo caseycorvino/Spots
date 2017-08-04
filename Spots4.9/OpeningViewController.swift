@@ -25,7 +25,7 @@ class OpeningViewController: UIViewController {
     @IBOutlet var registerView: UIView!
     @IBOutlet var registerButton: UIButton!
     
-    
+    var backendless = Backendless.sharedInstance()
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -51,6 +51,10 @@ class OpeningViewController: UIViewController {
         //add gestures to view
         self.view!.addGestureRecognizer(swipeRight)
         self.view!.addGestureRecognizer(swipeLeft)
+        
+        let deviceId = backendless?.messaging.currentDevice().deviceId
+        
+        cancelDeviceRegistration(deviceId: deviceId!)
         
         
     }
@@ -83,7 +87,17 @@ class OpeningViewController: UIViewController {
     }
     
     
-    
+    func cancelDeviceRegistration(deviceId: String) {
+        backendless?.messaging.unregisterDevice(deviceId,
+                                               response: {
+                                                (result : Any?) -> Void in
+                                                print("Device registration canceled: \(result.debugDescription )")
+        },
+                                               error: {
+                                                (fault : Fault?) -> Void in
+                                                print("Server reported an error: \(fault.debugDescription )")
+        })
+    }
     
     
     //override variables
