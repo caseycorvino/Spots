@@ -23,10 +23,16 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        FollowingCount.text = "\(activeUserFollowing.count)"
-        oldActiveUserFollowing = activeUserFollowing
         
-        filteredResult = oldActiveUserFollowing;
+        
+        followServices.calculateFollowing(userId: activeUserId, followingLabel: FollowingCount, view: self, completionHandler: {
+            self.FollowingCount.text = "\(activeUserFollowing.count)"
+           
+            self.oldActiveUserFollowing = activeUserFollowing
+            
+            self.filteredResult = self.oldActiveUserFollowing;
+            self.followingTable.reloadData()
+        })
         // Do any additional setup after loading the view.
     }
 
@@ -54,7 +60,7 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
             cell.followImageView.layer.cornerRadius = 17;
             cell.followImageView.layer.masksToBounds = true;
             
-            if(userInList(user: cell.cellUser, list: activeUserFollowing)){
+            if(followingList.contains(cell.cellUser.objectId as String)){
                 cell.followButton.setTitle("Following", for: UIControlState.normal)
                 cell.followButton.setTitleColor(UIColor.black, for: UIControlState.normal)
                 cell.followButtonBackground.backgroundColor = silver;
@@ -94,43 +100,18 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
         let buttonIndex = sender?.tag
         let cell: FollowTableViewCell = followingTable.cellForRow(at: [0,buttonIndex!]) as! FollowTableViewCell
        
-        if(userInList(user: cell.cellUser, list: activeUserFollowing)){
+        if(followingList.contains(cell.cellUser.objectId as String)){
             cell.followButton.setTitle("Follow", for: UIControlState.normal)
             cell.followButton.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
             cell.followButtonBackground.backgroundColor = UIColor.white;
             cell.followButtonBackground.layer.borderColor = UIColor.black.cgColor
             
-           
-            let dataStore = backendless?.data.of(Followers.ofClass())
-            let query = DataQueryBuilder().setWhereClause("following = '\(cell.cellUser.objectId ?? "")' and follower = '\(activeUserId)'")
-            dataStore?.find(query,
-                            response: { (datas: [Any]?) in
-                                if((datas?.count)! > 0){
-                                    
-                                    for data in datas!{
-                                        dataStore?.remove(data, response: {(num: NSNumber?) in
-//                                            self.calculateFollowing(completionHandler: {
-//                                                print(num!)
-//                                            })//do same thing to activeUserFollowing
-                                            for (index, element) in activeUserFollowing.enumerated() {
-                                                if cell.cellUser.name ?? "" == element.name ?? ""{
-                                                    activeUserFollowing.remove(at: index)
-                                                }
-                                            }
-                                            self.FollowingCount.text = "\(activeUserFollowing.count)"
-                                            UIApplication.shared.endIgnoringInteractionEvents()
-                                        }
-                                            , error: { (fault: Fault?) in
-                                                print(fault ?? "fault")
-                                                UIApplication.shared.endIgnoringInteractionEvents()
-                                        })
-                                    }
-                                }
-            },
-                            error: { (fault: Fault?) in
-                                print(fault ?? "fault")
-                                UIApplication.shared.endIgnoringInteractionEvents()
+       
+            followServices.unfollowUserInActiveUserTable(user: cell.cellUser, FollowingCount: FollowingCount, completionHandler: {
+                UIApplication.shared.endIgnoringInteractionEvents()
             })
+            
+
             
             
             
@@ -143,29 +124,15 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
             cell.followButtonBackground.backgroundColor = silver;
             cell.followButtonBackground.layer.borderColor = UIColor.white.cgColor
             
-            let dataStore = backendless?.data.of(Followers.ofClass())
-            let newFollow = Followers()
+            //let dataStore = backendless?.data.of(Followers.ofClass())
+           /* let newFollow = Followers()
             newFollow.follower = "\(activeUserId)"
-            newFollow.following = "\(cell.cellUser.objectId ?? "")"
+            newFollow.following = "\(cell.cellUser.objectId ?? "")"*/
             
-            dataStore?.save(newFollow, response: { (new: Any?) in
-               
-//                self.calculateFollowing(completionHandler: {
-//                    print("\(activeUserId) now following \(cell.cellUser.objectId ?? "")")
-//                })//do same thing to activeUserFollowing
-                activeUserFollowing.append(cell.cellUser)
-                self.FollowingCount.text = "\(activeUserFollowing.count)";
-                
-                let deviceId = cell.cellUser.getProperty("deviceId")!
-                let helping = Helping()
-                helping.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
-
-                
-                UIApplication.shared.endIgnoringInteractionEvents()
-            }, error: { (fault: Fault?) in
-                print("fault")
+            followServices.followUserInActiveUserTable(user: cell.cellUser, FollowingCount: nil, completionHandler: {
                 UIApplication.shared.endIgnoringInteractionEvents()
             })
+   
             
         }
 
@@ -188,9 +155,11 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
         
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
         clickedUser = filteredResult[indexPath.row]
-        
+        // fromBackButton = false;
         segueBack = "clickedUserToFollowing"
-        performSegue(withIdentifier: "followingToClickedUser", sender: nil)
+        let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "clickedUserView")
+        self.navigationController?.pushViewController(nextPage!, animated: true)
+        //performSegue(withIdentifier: "followingToClickedUser", sender: nil)
     }
     
     
@@ -200,62 +169,7 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
         // Dispose of any resources that can be recreated.
     }
     
-//    func calculateFollowing(completionHandler: @escaping () -> ()) -> Void {
-//     
-//        let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId)'")
-//        
-//        
-//        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
-//                                                                
-//                                                                response: { ( anyObjects: [Any]?) in
-//                                                                    
-//                                                                    //fill followers Array.
-//                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
-//                                                                    
-//                                                                    let followingCount = anyObjects?.count
-//                                                                    
-//                                                                    //empty array
-//                                                                    activeUserFollowing.removeAll()
-//                                                                    
-//                                                                    
-//                                                                    let followerObjects = anyObjects as! [Followers]
-//                                                                    print("Followers: \(followerObjects.count)")
-//                                                                    
-//                                                                    
-//                                                                    if(followerObjects.count == 0){
-//                                                                        completionHandler()
-//                                                                    }
-//                                                                    var count = 0;
-//                                                                    print("Following: \(followerObjects.count)")
-//                                                                    for followerObject: Followers in followerObjects {
-//                                                                        self.backendless?.userService.find(byId: followerObject.following,
-//                                                                                                           response: { (followingUser: BackendlessUser!) in
-//                                                                                                            activeUserFollowing.append(followingUser)
-//                                                                                                            count += 1;
-//                                                                                                            if(count == followerObjects.count){
-//                                                                                                                completionHandler()
-//                                                                                                            }
-//                                                                                                            
-//                                                                                                            
-//                                                                        }, error: { (fault: Fault?) in
-//                                                                            print(fault ?? "Fault")
-//                                                                            print("Could not load following")
-//                                                                            completionHandler();
-//                                                                        })
-//                                                                    }
-//                                                                    
-//                                                                    self.FollowingCount.text = "\(followingCount!)"
-//                                                                    
-//                                                                    
-//                                                                    
-//        },//if error print error
-//            error: { (fault: Fault?) in
-//                print("\(String(describing: fault))")
-//                completionHandler();
-//        })
-//        
-//        
-//    }
+
 
     var filteredResult: [BackendlessUser] = [BackendlessUser]()
     
@@ -302,6 +216,12 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
     //keyboard dismissed on search clicked
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.searchBar.endEditing(true)
+    }
+    
+    @IBAction func backButtonClicked(_ sender: Any) {
+         //fromBackButton = true;
+        navigationController?.popViewController(animated: true)
+        //performSegue(withIdentifier: "back", sender: nil)
     }
     
     /*
