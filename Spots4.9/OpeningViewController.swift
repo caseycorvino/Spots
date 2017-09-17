@@ -8,9 +8,6 @@
 
 import UIKit
 
-//universal color declarations for the rest of the app
-var orange: UIColor = UIColor.init(red: 1.0, green: 0.5, blue: 0.0, alpha: 1.0)
-var silver: UIColor = UIColor.init(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
 
 
 

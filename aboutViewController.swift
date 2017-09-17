@@ -17,7 +17,7 @@ class aboutViewController: UIViewController {
     }
     @IBAction func goToWebsite(_ sender: Any) {
         
-        let url = URL(string: "http://www.caseycorvino.co")!
+        let url = URL(string: "http://www.caseycorvino.co/spotss.html")!
         if #available(iOS 10.0, *) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         } else {

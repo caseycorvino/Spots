@@ -22,10 +22,16 @@ class PasswordViewController: UIViewController {
     @IBOutlet var nextButtonView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        background.backgroundColor = silver;
+        //background.backgroundColor = silver;
         nextButtonView.layer.cornerRadius = 25
         nextButtonView.layer.masksToBounds = true;
-                // Do any additional setup after loading the view.
+        
+       
+        helper.putBorderOnButton(buttonView: nextButtonView, radius: 25)
+        helper.underlineTextField(field: passwordField)
+        helper.underlineTextField(field: confirmPasswordField)
+        
+        // Do any additional setup after loading the view.
     }
     
     //clicked next button checks fields then goes to password page

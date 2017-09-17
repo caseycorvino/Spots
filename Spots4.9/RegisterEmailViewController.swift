@@ -32,10 +32,17 @@ class registerEmailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         backgroundView.backgroundColor = silver;
-        nextButtonView.layer.cornerRadius = 25;
-        nextButtonView.layer.masksToBounds = true;
-        nextButton.setTitleColor(UIColor.gray, for: UIControlState.normal);
+        
+        nextButtonView.backgroundColor = clear
+    
+        helper.putBorderOnButton(buttonView: nextButtonView, radius: 25)
+        nextButton.setTitleColor(UIColor.black, for: UIControlState.normal);
+        helper.underlineTextField(field: usernameField)
+        helper.underlineTextField(field: emailField)
+        helper.underlineTextField(field: confirmEmailField)
         // Do any additional setup after loading the view.
         
         //declare gestures

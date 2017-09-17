@@ -29,11 +29,17 @@ class EditBasicInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        submitButtonView.layer.borderColor = UIColor.gray.cgColor
-        submitButtonView.layer.borderWidth = 1
-        submitButtonView.layer.cornerRadius = 25
-        submitButtonView.layer.masksToBounds = true;
         
+
+        helper.putBorderOnButton(buttonView: submitButtonView, radius: 25)
+        
+//        submitButtonView.layer.borderColor = UIColor.black.cgColor
+//        submitButtonView.layer.borderWidth = 1
+//        submitButtonView.layer.cornerRadius = 25
+//        submitButtonView.layer.masksToBounds = true;
+        helper.underlineTextField(field: usernameField)
+        helper.underlineTextField(field: emailField)
+        helper.underlineTextField(field: passwordField)
         userName = activeUser.name
         usernameField.text = userName as String
        
@@ -77,7 +83,7 @@ class EditBasicInfoViewController: UIViewController {
                 if self.flag{
                     self.displayAlert("Sumbit error", message: self.errorMessage)
                 } else {
-                    self.displayAlertAndSegue("Basic Info Updated", message: "")
+                    self.displayAlertAndSegue("Updated", message: "Basic info has been updated")
                 }
             })
         })
@@ -207,7 +213,7 @@ class EditBasicInfoViewController: UIViewController {
     //check username in external method wth regex
     func isValidUsername(testStr:String) -> Bool {
         //create valid username regex
-        let usernameRegEx = "^[0-9a-zA-Z\\_]{6,18}$"
+        let usernameRegEx = "^[0-9a-zA-Z\\_]{8,18}$"
         
         //set up regex test
         let usernameTest = NSPredicate(format:"SELF MATCHES %@", usernameRegEx)

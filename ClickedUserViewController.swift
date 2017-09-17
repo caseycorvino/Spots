@@ -20,6 +20,8 @@ var clickedUserFollowers: [BackendlessUser] = []
 //instantiate activeUserSpots Array
 var clickedUserSpots = [Spot]();
 
+var allClickedUserSpots = [Spot]();
+
 var clickedUser: BackendlessUser = BackendlessUser()
 
 var segueBack: String! = ""
@@ -51,6 +53,7 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
     
     @IBOutlet var followButton: UIButton!
     
+    @IBOutlet var myAccountButton: UIButton!
     
     //blur effect
     var blurEffect = UIBlurEffect()
@@ -86,8 +89,8 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        sleep(1)
-        locationManager.stopUpdatingLocation()
+//        sleep(1)
+//        locationManager.stopUpdatingLocation()
         
         blurEffect = UIBlurEffect(style: .extraLight)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -95,6 +98,10 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         blurEffectView.frame = view.bounds
         view.sendSubview(toBack: blurEffectView)
         
+        
+        myAccountButton.layer.cornerRadius = 36;
+        myAccountButton.layer.masksToBounds = true
+        myAccountButton.layer.borderWidth = 1
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector(toggleTable))
         tableButtonView.addGestureRecognizer(gesture)
@@ -115,17 +122,20 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         followButtonBackground.layer.masksToBounds = true
         followButtonBackground.layer.borderWidth = 1
         
-        if(userInList(user: clickedUser, list: activeUserFollowing)){
+        if(followingList.contains(clickedUser.objectId as String)){
+            
             followButton.setTitle("Following", for: UIControlState.normal)
             followButton.setTitleColor(UIColor.black, for: UIControlState.normal)
             followButtonBackground.backgroundColor = silver;
             followButtonBackground.layer.borderColor = silver.cgColor
             
         } else {
+            
             followButton.setTitle("Follow", for: UIControlState.normal)
             followButton.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
             followButtonBackground.backgroundColor = UIColor.init(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0);
             followButtonBackground.layer.borderColor = UIColor.black.cgColor
+        
         }
 
         if(clickedUser.objectId == activeUserId as NSString){
@@ -134,7 +144,7 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         
         
         //set up activity indicator
-        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
@@ -147,22 +157,35 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         
         clickedUserSpots.removeAll()
         
+//        loadClickedUserSpots(completionHandler: {
+//            self.SortSpotsArray()
+//            self.calculateClickedFollowers(completionHandler: {
+//                
+//                self.SortFollowersArray()
+//                
+//                self.calculateClickedFollowing(completionHandler:{
+//                    
+//                    self.sortFollowingArray()
+//                   
+//                    UIApplication.shared.endIgnoringInteractionEvents()
+//                    
+//                    self.activityIndicator.stopAnimating()
+//                    self.view.sendSubview(toBack: self.blurEffectView)
+//                    self.tableView.reloadData()
+//
+//                })
+//            })
+//        })
+        
         loadClickedUserSpots(completionHandler: {
             self.SortSpotsArray()
-            self.calculateClickedFollowers(completionHandler: {
-                
-                self.SortFollowersArray()
-                
-                self.calculateClickedFollowing(completionHandler:{
-                    
-                    self.sortFollowingArray()
-                   
+            followServices.getFollowerCount(userId: clickedUser.objectId as String, followerButton: self.followersButton, completionHandler: {
+                followServices.getFollowingCount(userId: clickedUser.objectId as String, followingButton: self.followingButton, completionHandler: {
                     UIApplication.shared.endIgnoringInteractionEvents()
-                    
                     self.activityIndicator.stopAnimating()
                     self.view.sendSubview(toBack: self.blurEffectView)
                     self.tableView.reloadData()
-                    
+
                 })
             })
         })
@@ -171,8 +194,14 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         setOriginForTableButtonView()
         setOriginForTableButton()
         setOriginForTableView()
-        tableButtonView.backgroundColor = silver
         
+        tableButtonView.backgroundColor = UIColor.init(white: 0.0, alpha: 0.0)
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        locationManager.stopUpdatingLocation()
     }
     
     
@@ -209,13 +238,14 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
     
     @IBAction func followButtonClicked() {
         UIApplication.shared.beginIgnoringInteractionEvents()
-        if(userInList(user: clickedUser, list: activeUserFollowing)){
+        if(followingList.contains(clickedUser.objectId as String)){
             followButton.setTitle("Follow", for: UIControlState.normal)
             followButton.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
             followButtonBackground.backgroundColor = UIColor.init(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0);
             followButtonBackground.layer.borderColor = UIColor.black.cgColor
             
             
+
             let dataStore = backendless?.data.of(Followers.ofClass())
             let query = DataQueryBuilder().setWhereClause("following = '\(clickedUser.objectId ?? "")' and follower = '\(activeUserId)'")
             dataStore?.find(query,
@@ -236,8 +266,16 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
                                                         activeUserFollowing.remove(at: index)
                                                     }
                                                 }
+                                            
+                                            for (index, element) in followingList.enumerated() {
+                                                if clickedUser.objectId as String == element {
+                                                    followingList.remove(at: index)
+                                                    
+                                                }
+                                            }
+                                            
                                                 //do same thing
-                                              self.followersButton.setTitle("\(clickedUserFollowers.count)", for: UIControlState.normal)
+//                                              self.followersButton.setTitle("\(clickedUserFollowers.count)", for: UIControlState.normal)
                                             UIApplication.shared.endIgnoringInteractionEvents()
 
                                         }
@@ -251,7 +289,7 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
                             error: { (fault: Fault?) in
                                 print(fault?.message ?? "fault")
             })
-            
+        
         } else {
             
             followButton.setTitle("Following", for: UIControlState.normal)
@@ -267,10 +305,11 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
             dataStore?.save(newFollow, response: { (new: Any?) in
                 clickedUserFollowers.append(activeUser)
                 activeUserFollowing.append(clickedUser)
-                self.followersButton.setTitle("\(clickedUserFollowers.count)", for: UIControlState.normal)
+                followingList.append(clickedUser.objectId as String)
+                //self.followersButton.setTitle("\(clickedUserFollowers.count)", for: UIControlState.normal)
                 let deviceId = clickedUser.getProperty("deviceId")!
-                let helping = Helping()
-                helping.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
+                
+                helper.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
                 UIApplication.shared.endIgnoringInteractionEvents()
             }, error: { (fault: Fault?) in
                 print(fault?.message ?? "fault")
@@ -308,7 +347,15 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
                                                            response: { ( userObjects: [Any]?) in
                                                            
                                                             //fill activeUserSpots Array.
-                                                            clickedUserSpots = userObjects as! [Spot]
+                                                            //fill activeUserSpots Array.
+                                                            allClickedUserSpots = userObjects as! [Spot]
+                                                            
+                                                            let now: Date = NSDate() as Date
+                                                            for s in allClickedUserSpots{
+                                                                if ((s.startTime as Date) < now) && ((s.endTime as Date) > now) {
+                                                                    clickedUserSpots.append(s)
+                                                                }
+                                                            }
 //                                                                                                                      print(clickedUserSpots)
                                                             
                                                             self.putSpotsOnMap(completionHandler: {
@@ -342,8 +389,10 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
             annotation.coordinate = CLLocationCoordinate2D.init(latitude: spot.Latitude, longitude: spot.Longitude)
             annotation.title = spot.Title
             
-            formatter.dateFormat = "MM/dd/yyyy"
-            let subtitle = formatter.string(from: spot.created! as Date)
+            formatter.dateFormat = "h:mma"
+            let stime = formatter.string(from: spot.startTime as Date)
+            let etime = formatter.string(from: spot.endTime as Date)
+            let subtitle = "\(stime)-\(etime)"
             
             annotation.subtitle = subtitle
             map.addAnnotation(annotation)
@@ -352,256 +401,7 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         
     }
     
-//    func calculateActiveUserFollowing(completionHandler: @escaping () -> ()) -> Void {
-//        
-//        print("follower = '\(activeUserId )'")
-//        let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId )'")
-//        
-//        
-//        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
-//                                                                
-//                                                                response: { ( anyObjects: [Any]?) in
-//                                                                    
-//                                                                    //fill followers Array.
-//                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
-//                                                                    
-//                                                                  
-//                                                                    
-//                                                                    //empty array
-//                                                                    activeUserFollowing.removeAll()
-//                                                                    
-//                                                                    
-//                                                                    let followerObjects = anyObjects as! [Followers]
-//                                                                    print("Clicked User Followers: \(followerObjects.count)")
-//                                                                    
-//                                                                    
-//                                                                    if(followerObjects.count == 0){
-//                                                                        completionHandler()
-//                                                                    }
-//                                                                    var count = 0;
-//                                                                    print("Clicked User Following: \(followerObjects.count)")
-//                                                                    for followerObject: Followers in followerObjects {
-//                                                                        self.backendless?.userService.find(byId: followerObject.following,
-//                                                                                                           response: { (followingUser: BackendlessUser!) in
-//                                                                                                            activeUserFollowing.append(followingUser)
-//                                                                                                            count += 1;
-//                                                                                                            if(count == followerObjects.count){
-//                                                                                                                completionHandler()
-//                                                                                                            }
-//                                                                                                            
-//                                                                                                            
-//                                                                        }, error: { (fault: Fault?) in
-//                                                                            print(fault?.message ?? "Fault")
-//                                                                            completionHandler();
-//                                                                        })
-//                                                                    }
-//                                                                    
-//                                                                    
-//                                                                    
-//                                                                    
-//                                                                    
-//        },//if error print error
-//            error: { (fault: Fault?) in
-//                print(fault?.message ?? "Fault")
-//                completionHandler();
-//        })
-//        
-//        
-//    }
 
-    
-    func calculateClickedFollowers(completionHandler: @escaping () -> ()) -> Void {
-        
-        let activeUserId: String! = clickedUser.objectId as String!
-        let query = DataQueryBuilder().setWhereClause("following = '\(activeUserId ?? "")'")
-        _ = query?.setPageSize(100).setOffset(0)
-        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
-                                                                
-                                                                response: { ( anyObjects: [Any]?) in
-                                                                    
-                                                                    //fill followers Array.
-                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
-                                                                    
-                                                                    let followersCount = anyObjects?.count
-                                                                    
-                                                                    let followerObjects = anyObjects as! [Followers]
-                                                                    print("Clicked User Followers: \(followerObjects.count)")
-                                                                    
-                                                                    //empty array
-                                                                    clickedUserFollowers.removeAll()
-                                                                    
-                                                                    
-                                                                    
-                                                                    
-                                                                    print("Clicked User Followers: \(followerObjects.count)")
-                                                                    
-                                                                    if(followerObjects.count == 0){
-                                                                        completionHandler()
-                                                                    }
-                                                                    
-                                                                    //activeUserFollowing = followerObjects
-                                                                    
-                                                                    
-                                                                    var whereQuery = "objectId = "
-                                                                    
-                                                                    
-                                                                    for (index, followerObject) in followerObjects.enumerated() {
-                                                                        
-                                                                        if(index != followerObjects.count - 1){
-                                                                            
-                                                                            whereQuery += "'\(followerObject.follower)' OR objectId = "
-                                                                            
-                                                                        } else {
-                                                                            whereQuery += "'\(followerObject.follower)'"
-                                                                        }
-                                                                        
-                                                                        
-                                                                    }
-                                                                    
-                                                                    
-                                                                    
-                                                                    
-                                                                    let query2 = DataQueryBuilder().setWhereClause(whereQuery)
-                                                                    _ = query2?.setPageSize(100).setOffset(0)
-                                                                    
-                                                                    _ = self.backendless?.data.of(BackendlessUser.ofClass()).find(query2, response: { (followUsers: [Any]?) in
-                                                                        
-                                                                        
-                                                                        clickedUserFollowers = followUsers as! [BackendlessUser];                                                                        completionHandler()
-                                                                        
-                                                                    },//if error print error
-                                                                        error: { (fault: Fault?) in
-                                                                            print("\(String(describing: fault))")
-                                                                            completionHandler();
-                                                                            
-                                                                    })
-//                                                                    if(followerObjects.count == 0){
-//                                                                        completionHandler()
-//                                                                    }
-//                                                                    var count = 0;
-//                                                                    for followerObject: Followers in followerObjects {
-//                                                                        self.backendless?.userService.find(byId: followerObject.follower,
-//                                                                                                           response: { (followerUser: BackendlessUser!) in
-//                                                                                                            clickedUserFollowers.append(followerUser)
-//                                                                                                            count += 1;
-//                                                                                                            if(count == followerObjects.count){
-//                                                                                                                completionHandler()
-//                                                                                                            }
-//                                                                                                            
-//                                                                                                            
-//                                                                        }, error: { (fault: Fault?) in
-//                                                                            print(fault?.message ?? "Fault")
-//                                                                         
-//                                                                            completionHandler();
-//                                                                        })
-//                                                                    }
-                                                                    
-                                                                    
-                                                                    self.followersButton.setTitle("\(followersCount!)", for: UIControlState.normal)
-                                                                    
-                                                                    
-        },//if error print error
-            error: { (fault: Fault?) in
-                print(fault?.message ?? "Fault")
-                completionHandler();
-                
-        })
-        
-    }
-    
-    
-    func calculateClickedFollowing(completionHandler: @escaping () -> ()) -> Void {
-        let activeUserId: String! = clickedUser.objectId as String!
-        let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId ?? "")'")
-        _ = query?.setPageSize(100).setOffset(0)
-        
-        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
-                                                                
-                                                                response: { ( anyObjects: [Any]?) in
-                                                                    
-                                                                    //fill followers Array.
-                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
-                                                                    
-                                                                    let followingCount = anyObjects?.count
-                                                                    
-                                                                    //empty array
-                                                                    clickedUserFollowing.removeAll()
-                                                                    
-                                                                    
-                                                                    
-                                                                    let followerObjects = anyObjects as! [Followers]
-                                                                    print("Clicked User Following: \(followerObjects.count)")
-                                                                    
-                                                                    if(followerObjects.count == 0){
-                                                                        completionHandler()
-                                                                    }
-                                                                    
-                                                                    //activeUserFollowing = followerObjects
-                                                                    
-                                                                    
-                                                                    var whereQuery = "objectId = "
-                                                                    
-                                                                    
-                                                                    for (index, followerObject) in followerObjects.enumerated() {
-                                                                        
-                                                                        if(index != followerObjects.count - 1){
-                                                                            
-                                                                            whereQuery += "'\(followerObject.following)' OR objectId = "
-                                                                            
-                                                                        } else {
-                                                                            whereQuery += "'\(followerObject.following)'"
-                                                                        }
-                                                                        
-                                                                        
-                                                                    }
-                                                                    
-                                                                    
-                                                                    
-                                                                    
-                                                                    let query2 = DataQueryBuilder().setWhereClause(whereQuery)
-                                                                    _ = query2?.setPageSize(100).setOffset(0)
-                                                                    
-                                                                    _ = self.backendless?.data.of(BackendlessUser.ofClass()).find(query2, response: { (followUsers: [Any]?) in
-                                                                        
-                                                                        
-                                                                        clickedUserFollowing = followUsers as! [BackendlessUser];                                                                        completionHandler()
-                                                                        
-                                                                    },//if error print error
-                                                                        error: { (fault: Fault?) in
-                                                                            print("\(String(describing: fault))")
-                                                                            completionHandler();
-                                                                            
-                                                                    })
-//                                                                    var count = 0;
-//                                                                    print("Clicked User Following: \(followerObjects.count)")
-//                                                                    for followerObject: Followers in followerObjects {
-//                                                                        self.backendless?.userService.find(byId: followerObject.following,
-//                                                                                                           response: { (followingUser: BackendlessUser!) in
-//                                                                                                            clickedUserFollowing.append(followingUser)
-//                                                                                                            count += 1;
-//                                                                                                            if(count == followerObjects.count){
-//                                                                                                                completionHandler()
-//                                                                                                            }
-//                                                                                                            
-//                                                                                                            
-//                                                                        }, error: { (fault: Fault?) in
-//                                                                            print(fault?.message ?? "Fault")
-//                                                                            completionHandler();
-//                                                                        })
-//                                                                    }
-                                                                    
-                                                                    self.followingButton.setTitle("\(followingCount!)", for: UIControlState.normal)
-                                                                    
-                                                                    
-                                                                    
-        },//if error print error
-            error: { (fault: Fault?) in
-                print(fault?.message ?? "fault")
-                completionHandler();
-        })
-        
-        
-    }
 
 
     //custom annotation
@@ -680,23 +480,28 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
     
     
     @IBAction func followingButtonClicked(_ sender: Any) {
-        
-       performSegue(withIdentifier: "clickedUserToClickedUserFollowing", sender: nil)
+         //fromBackButton = false;
+        let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "clickedUserFollowingView")
+        self.navigationController?.pushViewController(nextPage!, animated: true)
+       //performSegue(withIdentifier: "clickedUserToClickedUserFollowing", sender: nil)
         
     }
     
     
     @IBAction func followersButtonClicked(_ sender: Any) {
-        
-        
-        performSegue(withIdentifier: "clickedUserToClickedUserFollowers", sender: nil)
+        // fromBackButton = false;
+        let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "clickedUserFollowersView")
+        self.navigationController?.pushViewController(nextPage!, animated: true)
+        //performSegue(withIdentifier: "clickedUserToClickedUserFollowers", sender: nil)
         
     }
     
     
     @IBAction func backButtonClicked(_ sender: Any){
     //switch statement of dif segues based on identifier 
-        performSegue(withIdentifier: segueBack, sender: nil)
+        // fromBackButton = true;
+        self.navigationController?.popViewController(animated: true)
+        //performSegue(withIdentifier: segueBack, sender: nil)
     }
 
 
@@ -812,6 +617,7 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
             self.tableSubView.frame = CGRect.init(x: xPosition, y: yPosition, width: width, height: height)
         })
         tableActive = false;
+        
     }
     
     func showTableView(){
@@ -888,7 +694,7 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
     
     func SortSpotsArray(){
         
-        clickedUserSpots.sort(by: {($0.created! as Date).compare($1.created! as Date) == .orderedDescending})
+        clickedUserSpots.sort(by: {($0.startTime as Date).compare($1.startTime as Date) == .orderedDescending})
         
     }
     
@@ -933,6 +739,69 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         
     }
     
+    @IBAction func TypeSegmentedControlClicked(_ sender: UISegmentedControl!) {
+        
+        switch (sender.selectedSegmentIndex) {
+        case 0:
+            SpotsType = "Past";
+            //load spots
+            let now: Date = Date()
+            let yesterday: Date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+            var removeCount = 0
+            clickedUserSpots.removeAll()
+            for (index,s) in allClickedUserSpots.enumerated(){
+                if ((s.endTime as Date) < now){
+                    if ((s.endTime as Date) > yesterday){
+                        clickedUserSpots.append(s)
+                    } else {
+                        spotServices.removeSpot(s: s)
+                        allClickedUserSpots.remove(at: index - removeCount)
+                        removeCount += 1
+                    }
+                }
+            }
+            putSpotsOnMap(completionHandler: {
+                
+            })
+            tableView.reloadData()
+            break;
+        case 2:
+            SpotsType = "Upcoming";
+            let now: Date = NSDate() as Date
+            clickedUserSpots.removeAll()
+            
+            
+            for s in allClickedUserSpots{
+               
+                if ((s.startTime as Date) > now) {
+                    clickedUserSpots.append(s)
+                }
+            }
+            putSpotsOnMap(completionHandler: {
+                
+            })
+            tableView.reloadData()
+            break;
+        default:
+            SpotsType = "Now";
+            let now: Date = NSDate() as Date
+            clickedUserSpots.removeAll()
+            for s in allClickedUserSpots{
+                if ((s.startTime as Date) < now) && ((s.endTime as Date) > now) {
+                    clickedUserSpots.append(s)
+                }
+            }
+            putSpotsOnMap(completionHandler: {
+                
+            })
+            tableView.reloadData()
+            break;
+            
+        }
+        
+        
+    }
+
     
     /*
     // MARK: - Navigation

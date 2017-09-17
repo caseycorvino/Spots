@@ -25,13 +25,13 @@ class editMySpotsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return activeUserSpots.count
+        return mySpots.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "editMySpotsCell", for: indexPath)
         
-        cell.textLabel?.text = activeUserSpots[indexPath.row].Title
+        cell.textLabel?.text = mySpots[indexPath.row].Title
         
         return cell
         
@@ -63,9 +63,9 @@ class editMySpotsViewController: UIViewController, UITableViewDataSource, UITabl
         if editingStyle == .delete {
             // Delete the row from the data source
             print("deleting")
-            spotsBackend?.remove(activeUserSpots[indexPath.row], response: { (num: NSNumber?) in
+            spotsBackend?.remove(mySpots[indexPath.row], response: { (num: NSNumber?) in
                 print("succesful remove")
-                activeUserSpots.remove(at: indexPath.row)
+                mySpots.remove(at: indexPath.row)
                 self.table.reloadData()
                 
             }, error: { (fault: Fault?) in

@@ -17,4 +17,9 @@ class Spot: NSObject {
     var Title: String = ""
     var created: NSDate?
     
+    var endTime: NSDate = NSDate()
+    var startTime: NSDate = NSDate()
+    var url = "none"
+    
+    var ownerId: String?
 }

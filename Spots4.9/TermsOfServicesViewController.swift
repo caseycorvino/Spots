@@ -26,11 +26,13 @@ class TermsOfServicesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        background.backgroundColor = silver;
-        buttonBackground.backgroundColor = UIColor.white;
-        buttonBackground.layer.cornerRadius = 25
-        buttonBackground.layer.masksToBounds = true;
-        acceptlabel.textColor = UIColor.gray        // Do any additional setup after loading the view.
+        //background.backgroundColor = silver;
+        
+        
+        acceptlabel.textColor = UIColor.black        // Do any additional setup after loading the view.
+        
+     
+        helper.putBorderOnButton(buttonView: buttonBackground, radius: 25)
         
         //set up activity indicator
         activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))

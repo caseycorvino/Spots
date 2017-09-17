@@ -32,11 +32,12 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         backgroundView.backgroundColor = orange;
-        enterButtonView.backgroundColor = silver
-        enterButtonView.layer.cornerRadius = 25
-        enterButtonView.layer.masksToBounds = true;
+        enterButtonView.backgroundColor = clear;
+       
+        helper.putBorderOnButton(buttonView: enterButtonView, radius: 25)
         // Do any additional setup after loading the view.
-        
+        helper.underlineTextField(field: emailField)
+        helper.underlineTextField(field: passwordField)
         //declare gestures
         let swipeLeft = UISwipeGestureRecognizer()
         

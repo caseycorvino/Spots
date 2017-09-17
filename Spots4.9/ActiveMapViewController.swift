@@ -22,8 +22,21 @@ var activeUserFollowers: [BackendlessUser] = []
 //instantiate activeUserSpots Array
 var activeUserSpots = [Spot]();
 
+var mySpots = [Spot]()
+
+var allSpots = [Spot]();
+
 var clickedSpot = Spot()
 
+var SpotsType = "Now"
+
+let helper = Helping();
+
+let followServices = FollowServices();
+
+let spotServices = SpotServices();
+
+var followingCount: Int = 0;
 
 class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
 
@@ -34,9 +47,17 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     @IBOutlet var followersButtonView: UIView!
     @IBOutlet var settingButtonView: UIView!
     
+    
+    
     //overlay view
     @IBOutlet var addSpotView: UIView!
     @IBOutlet var addSpotTitleField: UITextField!
+    @IBOutlet var addSpotLinkField: UITextField!
+    @IBOutlet var addSpotLocationField: UITextField!
+    @IBOutlet var addSpotStartTime: UIDatePicker!
+    @IBOutlet var addSpotEndTime: UIDatePicker!
+    @IBOutlet var addSpotTypeSwitch: UISegmentedControl!
+    
     
     @IBOutlet var resetLocationButton: UIButton!
     
@@ -55,6 +76,12 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     @IBOutlet var followingButton: UIButton!
     @IBOutlet var followersButton: UIButton!
     
+    
+    
+    //profile pick
+    @IBOutlet var myAccountButton: UIButton!
+    
+    
     //instantiante user location
     var locationManager = CLLocationManager()
     
@@ -68,6 +95,11 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+       
+        helper.underlineTextField(field: addSpotTitleField)
+        helper.underlineTextField(field: addSpotLinkField)
+        setForNow()
+        
         self.navigationController?.isNavigationBarHidden = true
         
         resetLocationButton.isHidden = true;
@@ -78,6 +110,13 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         followingButtonView.backgroundColor = silver
         followersButtonView.backgroundColor = silver
         settingButtonView.backgroundColor = silver
+        
+        
+        locationResultsTable.isHidden = true
+        addSpotLocationField.addTarget(self, action: #selector(locationTextFieldDidChange(textField:)), for: .editingChanged)
+        //locationResultsTable.backgroundColor = UIColor.init(white: 0.0, alpha: 0.0)
+        
+        
         
         addSpotView.backgroundColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.0)
         addSpotView.isHidden = true
@@ -90,6 +129,12 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
 //        let gestureDrag = UIPanGestureRecognizer(target: self, action: #selector(tableButtonDragged))
 //        tableButtonView.addGestureRecognizer(gestureDrag)
 //        tableButtonView.isUserInteractionEnabled = true
+        
+        
+        //profile pick
+        myAccountButton.layer.cornerRadius = 36;
+        myAccountButton.layer.masksToBounds = true
+        myAccountButton.layer.borderWidth = 1
         
         
         
@@ -109,8 +154,8 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        sleep(1)
-        locationManager.stopUpdatingLocation()
+//        sleep(1)
+//        locationManager.stopUpdatingLocation()
         
         //set up activity indicator
         activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
@@ -123,20 +168,38 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         UIApplication.shared.beginIgnoringInteractionEvents()
         activityIndicator.startAnimating()
         
-        activeUserSpots.removeAll()
         
-        loadActiveUserSpots(completionHandler: {
-            self.calculateFollowers(completionHandler: {
-                self.SortFollowersArray()
-                self.calculateFollowing(completionHandler:{
-                    self.SortFollowersArray()
-                    UIApplication.shared.endIgnoringInteractionEvents()
-                    self.activityIndicator.stopAnimating()
-                    self.view.sendSubview(toBack: self.blurEffectView)
-                    self.tableView.reloadData()
+     
+        activeUserSpots.removeAll()
+
+        
+        followServices.getFollowerCount(userId: activeUserId, followerButton: followersButton, completionHandler: {
+            
+        })
+        
+        followServices.setFollowingList(followingButton: followingButton, completionHandler: {
+           
+            self.loadFollowingSpots(completionHandler: {
+               
+                    self.loadActiveUserSpots(completionHandler: {
+                        
+                                self.SortMySpotsArray()
+                        self.tableView.reloadData()
+                        self.putSpotsOnMap(completionHandler:  {
+                            
+                            UIApplication.shared.endIgnoringInteractionEvents()
+                            self.activityIndicator.stopAnimating()
+                            self.view.sendSubview(toBack: self.blurEffectView)
+                            self.tableView.reloadData()
+                            self.updateCounts(completionHandler: {})
+                        })
+
                 })
             })
+
         })
+        
+
         
         setOriginForTableSubView()
         setOriginForTableButtonView()
@@ -152,10 +215,31 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         blurEffectView2.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         tableSubView.addSubview(blurEffectView2)
         tableSubView.sendSubview(toBack: blurEffectView2)
+        
+        tableButtonView.backgroundColor = UIColor.init(white: 0.0, alpha: 0.0)
+        
+        
+        
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        //set up user location
+       
+      
+        locationManager.stopUpdatingLocation()
+        followServices.getFollowingCount(userId: activeUserId, followingButton: followingButton, completionHandler: {
+            
+        })
     
+    }
     
+    func updateCounts(completionHandler:  @escaping () -> ()){
+//        self.followersButton.setTitle("\(activeUserFollowers.count)", for: UIControlState.normal)
+//        self.followingButton.setTitle("\(activeUserFollowing.count)", for: UIControlState.normal)
+        //update for followingList
+        self.followingButton.setTitle("\(followingList.count)", for: UIControlState.normal)
+        
+    }
     
     //basic map set up
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -187,7 +271,8 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     func loadActiveUserSpots(completionHandler: @escaping () -> ()) -> Void{
        
-        
+        //todo 
+        //query by type
         let query = DataQueryBuilder().setWhereClause("ownerId = '\(activeUserId)'")
         _ = query?.setPageSize(100).setOffset(0)
         _ = self.backendless?.data.of(Spot.ofClass()).find(query,
@@ -195,12 +280,21 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
             response: { ( userObjects: [Any]?) in
                 
                 //fill activeUserSpots Array.
-                activeUserSpots = userObjects as! [Spot]
+                allSpots += userObjects as! [Spot]
+                mySpots = userObjects as! [Spot]
+                
+                let now: Date = NSDate() as Date
+                for s in allSpots{
+                    if ((s.startTime as Date) < now) && ((s.endTime as Date) > now) {
+                        activeUserSpots.append(s)
+                    }
+                }
+             
+               
                 self.SortSpotsArray()
                 self.putSpotsOnMap(completionHandler: {
                     completionHandler()
                 })
-                
                 
                 
                 
@@ -211,6 +305,58 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                 
                 
         })
+    }
+    
+    func loadFollowingSpots(completionHandler: @escaping () -> ()) -> Void{
+    
+        
+        var whereQuery = "ownerId = "
+        
+        
+        for (index, user) in followingList.enumerated() {
+            
+            if(index != followingList.count - 1){
+                
+                whereQuery += "'\(user)' OR ownerId = "
+                
+            } else {
+                whereQuery += "'\(user)'"
+            }
+            
+            
+        }
+        
+      
+        
+        if(whereQuery != "ownerId = "){
+            
+            let query = DataQueryBuilder().setWhereClause(whereQuery)
+            _ = query?.setPageSize(100).setOffset(0)
+            _ = self.backendless?.data.of(Spot.ofClass()).find(query,
+                                                           
+                                                           response: { ( userObjects: [Any]?) in
+                                                            
+                                                            //fill activeUserSpots Array.
+                                                            allSpots = userObjects as! [Spot]
+                                                            print("loadFollowingSpots succesful")
+                                                            completionHandler()
+                                                            
+                                                            
+                                                            
+                                                            
+            },//if print error
+                error: { (fault: Fault?) in
+                print("\(String(describing: fault))")
+                completionHandler()
+                
+                
+            })
+        } else {
+            completionHandler()
+        }
+        
+        
+        
     }
     
     func putSpotsOnMap(completionHandler: @escaping () -> ()) -> Void{
@@ -225,8 +371,10 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
             annotation.coordinate = CLLocationCoordinate2D.init(latitude: spot.Latitude, longitude: spot.Longitude)
             annotation.title = spot.Title
             
-            formatter.dateFormat = "MM/dd/yyyy"
-            let subtitle = formatter.string(from: spot.created! as Date)
+            formatter.dateFormat = "h:mma"
+            let stime = formatter.string(from: spot.startTime as Date)
+            let etime = formatter.string(from: spot.endTime as Date)
+            let subtitle = "\(stime)-\(etime)"
            
             annotation.subtitle = subtitle
             map.addAnnotation(annotation)
@@ -236,209 +384,41 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     }
     
     
-    func calculateFollowers(completionHandler: @escaping () -> ()) -> Void {
+    /*func calculateFollowers(completionHandler: @escaping () -> ()) -> Void {
         
-       
-        let query = DataQueryBuilder().setWhereClause("following = '\(activeUserId)'")
-        
-        _ = query?.setPageSize(100).setOffset(0)
-        
-        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
-                                                           
-                                                                response: { ( anyObjects: [Any]?) in
-                                                                    
-                                                                    //fill followers Array.
-                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
-                                                                    
-                                                                    let followersCount = anyObjects?.count
-                                                                    
-                                                                    let followerObjects = anyObjects as! [Followers]
-                                                                    print("Active User Followers: \(followerObjects.count)")
-                                                                    
-                                                                    //empty array
-                                                                    activeUserFollowers.removeAll()
-                                                                    
-                                                                    
-                                                                    if(followerObjects.count == 0){
-                                                                        completionHandler()
-                                                                    }
-                                                                    //activeUserFollowers = followerObjects
-                                                                    
-                                                                    //todo: comment out
-                                                                    //var count = 0;
-                                                                    
-                                                                    var whereQuery = "objectId = "
-                                                                   
-                                                                    
-                                                                    for (index, followerObject) in followerObjects.enumerated() {
-                                                                       
-                                                                        if(index != followerObjects.count - 1){
-                                                                            
-                                                                            whereQuery += "'\(followerObject.follower)' OR objectId = "
-                                                                            
-                                                                        } else {
-                                                                            whereQuery += "'\(followerObject.follower)'"
-                                                                        }
-                                                                        
-                                                                        
-                                                                    }
-                                                                    
-                                                                  
-                                                                    
-                                                                    
-                                                                    let query2 = DataQueryBuilder().setWhereClause(whereQuery)
-                                                                    _ = query2?.setPageSize(100).setOffset(0)
-                                                                    
-                                                                    _ = self.backendless?.data.of(BackendlessUser.ofClass()).find(query2, response: { (followUsers: [Any]?) in
-                                                                        
-                                                                    
-                                                                        activeUserFollowers = followUsers as! [BackendlessUser];                                                                        completionHandler()
-                                                                    
-                                                                    },//if error print error
-                                                                        error: { (fault: Fault?) in
-                                                                            print("\(String(describing: fault))")
-                                                                            completionHandler();
-                                                                            
-                                                                    })
-                                                                    
-//                                                                    for followerObject: Followers in followerObjects {
-//                                                                        self.backendless?.userService.find(byId: followerObject.follower,
-//                                                                                                           response: { (followerUser: BackendlessUser!) in
-//                                                                                                            activeUserFollowers.append(followerUser)
-//                                                                                                            count += 1;
-//                                                                                                            if(count == followerObjects.count){
-//                                                                                                                completionHandler()
-//                                                                                                            }
-//                                                                                                            
-//                                                                                                            
-//                                                                        }, error: { (fault: Fault?) in
-//                                                                            print(fault ?? "Fault")
-//                                                                            print("Could not load following")
-//                                                                             completionHandler();
-//                                                                        })
-//                                                                    }
-                                                                   
-                                                                    
-                                                                    self.followersButton.setTitle("\(followersCount!)", for: UIControlState.normal)
-                                                                    
-                                                            
-        },//if error print error
-            error: { (fault: Fault?) in
-                print("\(String(describing: fault))")
-               completionHandler();
-                
+        helper.calculateFollowers(userId: activeUserId, followersButton: followersButton, view: self, completionHandler: {
+            completionHandler();
         })
+//        helper.getFollowerCount(followerButton: followersButton, completionHandler: {
+//            completionHandler()
+//        })
+      
 
-    }
+    }*/
     
     
-    func calculateFollowing(completionHandler: @escaping () -> ()) -> Void {
+    /*func calculateFollowing(completionHandler: @escaping () -> ()) -> Void {
         
-        let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId)'")
-        
-        _ = query?.setPageSize(100).setOffset(0)
-        
-        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
-                                                                
-                                                                response: { ( anyObjects: [Any]?) in
-                                                                    
-                                                                    //fill followers Array.
-                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
-                                                                    
-                                                                    let followingCount = anyObjects?.count
-                                                                    
-                                                                    //empty array
-                                                                    activeUserFollowing.removeAll()
-                                                                    
-                                                                    
-                                                                    let followerObjects = anyObjects as! [Followers]
-                                                                    print("Active User Following: \(followerObjects.count)")
-                                                                    
-                                                                   
-                                                                    if(followerObjects.count == 0){
-                                                                        completionHandler()
-                                                                    }
-                                                                    
-                                                                    //activeUserFollowing = followerObjects
-                                                                    
-                                                                    
-                                                                    var whereQuery = "objectId = "
-                                                                    
-                                                                    
-                                                                    for (index, followerObject) in followerObjects.enumerated() {
-                                                                        
-                                                                        if(index != followerObjects.count - 1){
-                                                                            
-                                                                            whereQuery += "'\(followerObject.following)' OR objectId = "
-                                                                            
-                                                                        } else {
-                                                                            whereQuery += "'\(followerObject.following)'"
-                                                                        }
-                                                                        
-                                                                        
-                                                                    }
-                                                                    
-                                                                    
-                                                                    
-                                                                    
-                                                                    let query2 = DataQueryBuilder().setWhereClause(whereQuery)
-                                                                    _ = query2?.setPageSize(100).setOffset(0)
-                                                                    
-                                                                    _ = self.backendless?.data.of(BackendlessUser.ofClass()).find(query2, response: { (followUsers: [Any]?) in
-                                                                        
-                                                                        
-                                                                        activeUserFollowing = followUsers as! [BackendlessUser];                                                                        completionHandler()
-                                                                        
-                                                                    },//if error print error
-                                                                        error: { (fault: Fault?) in
-                                                                            print("\(String(describing: fault))")
-                                                                            completionHandler();
-                                                                            
-                                                                    })
-                                                                    
-                                                                    //todo: comment out
-//                                                                    var count = 0;
-//                                                                    for followerObject: Followers in followerObjects {
-//                                                                        self.backendless?.userService.find(byId: followerObject.following,
-//                                                                                                           response: { (followingUser: BackendlessUser!) in
-//                                                                            activeUserFollowing.append(followingUser)
-//                                                                                                            count += 1;
-//                                                                                                            if(count == followerObjects.count){
-//                                                                                                                completionHandler()
-//                                                                                                            }
-//                                                                                                           
-//                                                                            
-//                                                                        }, error: { (fault: Fault?) in
-//                                                                            print(fault ?? "Fault")
-//                                                                            print("Could not load following")
-//                                                                             completionHandler();
-//                                                                        })
-//                                                                        }
-                                                                    
-                                                                    self.followingButton.setTitle("\(followingCount!)", for: UIControlState.normal)
-                                                   
-                                                                    
-                                                                    
-        },//if error print error
-            error: { (fault: Fault?) in
-                print("\(fault?.message ?? "fault"))")
-                completionHandler();
+        helper.calculateFollowing(userId: activeUserId, followingButton: followingButton, view: self, completionHandler: {
+            completionHandler();
         })
+        
+
 
         
-    }
+    }*/
     
     @IBAction func newSpotButton(_ sender: Any) {
         
         
         addSpotView.isHidden = false
         addSpotTitleField.becomeFirstResponder()
+
+        addSpotTypeSwitch.selectedSegmentIndex = 0;
+        setForNow()
         
-        
-        
+        self.view.insertSubview(blurEffectView, at: 11)
        
-        self.view.insertSubview(blurEffectView, at: 9)
-        
     }
     
     
@@ -458,45 +438,47 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         UIApplication.shared.beginIgnoringInteractionEvents()
         
         if (addSpotTitleField.text?.characters.count)! > 5{
-            let newSpot = Spot()
-            newSpot.Title = addSpotTitleField.text!
-            newSpot.Latitude = userLat
-            newSpot.Longitude = userLon
             
+            let validUrl = spotServices.isValidUrl(urlString: addSpotLinkField.text)
+            if(addSpotLinkField.text == "" || (addSpotLinkField.text != "" && validUrl)){
             
-            let dataStore = backendless?.data.of(Spot().ofClass())
+                let newSpot = Spot()
+                
+                newSpot.Title = addSpotTitleField.text!
+                if(addSpotLinkField.text != ""){
+                    newSpot.url = addSpotLinkField.text!
+                }
+                
+                newSpot.endTime = spotServices.getTimeFor(picker: addSpotEndTime) as NSDate
             
-            dataStore!.save(newSpot,
-                            response: {
-                                (newSpot) -> () in
-                                print("Spot saved and succesfully uploaded to backend")
-                                self.view.endEditing(true)
-                                self.addSpotView.isHidden = true
-                                UIApplication.shared.endIgnoringInteractionEvents()
-
-                                self.addSpotTitleField.text = ""
-                                activeUserSpots.append(newSpot as! Spot)
-                                //replace with addSpot to activeUserSpots and re annotate map
-                                self.putSpotsOnMap( completionHandler: {
-                                     self.view.sendSubview(toBack: self.blurEffectView)
-                                    self.tableView.reloadData()
-                                    self.SortSpotsArray()
-                                    
-                                })
-                               
-            },
-                            error: {
-                                (fault : Fault?) -> () in
-                                print("Server reported an error: \(fault?.message ?? "Fault"))")
-                                UIApplication.shared.endIgnoringInteractionEvents()
-
-                                self.displayAlert("Server Error", message: fault?.message ?? "Fault")
-                                
-            })
+                if(addSpotTypeSwitch.selectedSegmentIndex == 0){
+                
+                    newSpot.Latitude = userLat
+                    newSpot.Longitude = userLon
             
+                    newSpot.startTime = addSpotStartTime.clampedDate as NSDate
+                    self.uploadNewSpot(newSpot: newSpot)
             
-            
-            
+                } else if(addSpotTypeSwitch.selectedSegmentIndex == 1){
+                  
+                    newSpot.startTime = spotServices.getTimeFor(picker: addSpotStartTime) as NSDate
+                    
+                
+                    getLocationForAddress(newSpot: newSpot, address: addSpotLocationField.text!, completionHandler: {
+                        if self.getLocationError == false{
+                            self.uploadNewSpot(newSpot: newSpot)
+                        }
+                    })
+                    
+                }
+                
+                
+               
+                
+            } else {
+                displayAlert("Invalid Url", message: "Please check url and try again")
+                UIApplication.shared.endIgnoringInteractionEvents()
+            }
         } else {
             displayAlert("Invalid Title", message: "Title needs to be longer than 5 characters.")
             UIApplication.shared.endIgnoringInteractionEvents()
@@ -504,33 +486,102 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         
         
     }
+    var getLocationError =  false
+    func getLocationForAddress(newSpot: Spot, address: String, completionHandler: @escaping () -> ()){
+        getLocationError =  false
+
+        
+        let geoCoder = CLGeocoder()
+        
+        var err: Error?
+
+        geoCoder.geocodeAddressString(address) { (placemarks, error) in
+            
+            if(error == nil){
+                newSpot.Latitude = (placemarks?.first?.location?.coordinate.latitude)!
+                newSpot.Longitude = (placemarks?.first?.location?.coordinate.longitude)!
+                completionHandler()
+                
+                
+            } else {
+                err = error!
+                print(err.debugDescription)
+                helper.displayAlertOK("Invalid Address", message: "Upcoming events require a location", view: self)
+                self.getLocationError = true
+                completionHandler()
+            }
+            
+            
+        }
+        
+        
+    }
     
     @IBAction func settingsButton(_ sender: Any) {
-        
+         //fromBackButton = false;
+
         performSegue(withIdentifier: "activeMapToSettings", sender: nil)
+        
     }
     
      
-    
-    func updateMap() -> Void {
+    func uploadNewSpot(newSpot: Spot){
+        let dataStore = backendless?.data.of(Spot().ofClass())
         
-        updateLocation()
-        
-        UIApplication.shared.beginIgnoringInteractionEvents()
-        activityIndicator.startAnimating()
-
-        loadActiveUserSpots(completionHandler: {
-            self.putSpotsOnMap(completionHandler: {
-                self.calculateFollowers(completionHandler: {
-                    self.calculateFollowing(completionHandler: {
-                        UIApplication.shared.endIgnoringInteractionEvents()
-                        self.activityIndicator.stopAnimating()
-                    })
-                })
-            })
+        dataStore!.save(newSpot,
+                        response: {
+                            (newSpot) -> () in
+                            print("Spot saved and succesfully uploaded to backend")
+                            self.view.endEditing(true)
+                            self.addSpotView.isHidden = true
+                            UIApplication.shared.endIgnoringInteractionEvents()
+                            
+                            self.addSpotTitleField.text = ""
+                            self.addSpotLinkField.text = ""
+                            
+                            allSpots.append(newSpot as! Spot)
+                            mySpots.append(newSpot as! Spot)
+                            //replace with addSpot to activeUserSpots and re annotate map
+                            
+                            self.TypeSegmentedControlClicked(self.TypeSegmentedControl)
+                            
+                            self.putSpotsOnMap( completionHandler: {
+                                self.view.sendSubview(toBack: self.blurEffectView)
+                                self.tableView.reloadData()
+                                self.SortSpotsArray()
+                                
+                            })
+                            
+        },
+                        error: {
+                            (fault : Fault?) -> () in
+                            print("Server reported an error: \(fault?.message ?? "Fault"))")
+                            UIApplication.shared.endIgnoringInteractionEvents()
+                            
+                            self.displayAlert("Server Error", message: fault?.message ?? "Fault")
+                            
         })
-        
     }
+    
+//    func updateMap() -> Void {
+//        
+//        updateLocation()
+//        
+//        UIApplication.shared.beginIgnoringInteractionEvents()
+//        activityIndicator.startAnimating()
+//
+//        loadActiveUserSpots(completionHandler: {
+//            self.putSpotsOnMap(completionHandler: {
+//                self.calculateFollowers(completionHandler: {
+//                    self.calculateFollowing(completionHandler: {
+//                        UIApplication.shared.endIgnoringInteractionEvents()
+//                        self.activityIndicator.stopAnimating()
+//                    })
+//                })
+//            })
+//        })
+//        
+//    }
     
     
     func updateLocation(){
@@ -607,9 +658,21 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     func calloutClicked(_ sender:UITapGestureRecognizer){
         
             //todo. callout clicked
+        if(clickedSpot.url != "none"){
+            let url = URL(string: clickedSpot.url)!
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        } else {
+            //handle if no url
+        }
         
         
     }
+    
+    
     
     func  mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
@@ -636,28 +699,34 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     }
     
     @IBAction func followingButtonClicked(_ sender: Any) {
-    
-        performSegue(withIdentifier: "settingsToFollowing", sender: nil)
+     //fromBackButton = false;
+        let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "followingView")
+        self.navigationController?.pushViewController(nextPage!, animated: true)
+        //performSegue(withIdentifier: "settingsToFollowing", sender: nil)
     
     }
 
 
     @IBAction func followersButtonClicked(_ sender: Any) {
         
-        
-        performSegue(withIdentifier: "settingsToFollowers", sender: nil)
+         //fromBackButton = false;
+        let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "followersView")
+        self.navigationController?.pushViewController(nextPage!, animated: true)
+        //performSegue(withIdentifier: "settingsToFollowers", sender: nil)
         
     }
    
     @IBAction func searchButtonClicked(_ sender: Any) {
-        
-        performSegue(withIdentifier: "activeMapToSearch", sender: nil)
+        // fromBackButton = false;
+        let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "searchView")
+        self.navigationController?.pushViewController(nextPage!, animated: true)
+        //performSegue(withIdentifier: "activeMapToSearch", sender: nil)
     
     }
     
     
     
-    //--------------------------------------
+    //--------------------------------------============//
     //table view shit
     var tableActive: Bool = false;
     
@@ -785,6 +854,8 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if tableView == self.tableView {
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
         let spot = activeUserSpots[indexPath.row]
         let lat = spot.Latitude - 0.004
@@ -799,26 +870,72 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
             }
         
         }
+        }
+        
+        if tableView == self.locationResultsTable{
+            
+            tableView.isHidden = true;
+            
+            let searchRequest = MKLocalSearchRequest(completion: searchResultsArr[indexPath.row])
+            let search = MKLocalSearch(request: searchRequest)
+            search.start { (response, error) in
+                let pl = response?.mapItems[0].placemark
+                let addy = "\(pl?.subThoroughfare ?? "") \(pl?.thoroughfare ?? ""), \(pl?.locality ?? "")"
+                self.addSpotLocationField.text = addy
+            }
+            
+            
+        }
+        
         
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return activeUserSpots.count
+        var count: Int?
+        
+        if tableView == self.tableView{
+            count = activeUserSpots.count
+        }
+        if tableView == self.locationResultsTable{
+           count = searchSource?.count ?? 0
+        }
+        
+        return count!
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
+        if(tableView == self.tableView){
         let cell = tableView.dequeueReusableCell(withIdentifier: "mapCell", for: indexPath) as! MapTableViewCell
         cell.spot = activeUserSpots[indexPath.row]
         cell.spotTitle.text = activeUserSpots[indexPath.row].Title
         cell.backgroundColor = UIColor.init(white: 0.0, alpha: 0.0)
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy"
-        cell.spotDateCreated.text = formatter.string(from: activeUserSpots[indexPath.row].created! as Date)
+        formatter.dateFormat = "h:mma"
+        let stime = formatter.string(from: cell.spot.startTime as Date)
+        let etime = formatter.string(from: cell.spot.endTime as Date)
+        let subtitle = "\(stime)-\(etime)"
+
+            
+        cell.spotDateCreated.text = subtitle
         
         return cell;
+        }
+        
+        else if(tableView == self.locationResultsTable){
+        let cell = self.locationResultsTable.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+            cell.backgroundColor = UIColor.init(white: 0.0, alpha: 0.0)
+            cell.textLabel?.text = self.searchSource?[indexPath.row]
+
+            //cell.title.text = self.searchSource?[indexPath.row]
+        //            + " " + searchResult.subtitle
+            //cell.subtitle?.text = self.searchSourceSub?[indexPath.row]
+        
+            return cell
+        }
+        return UITableViewCell()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -842,7 +959,13 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     func SortSpotsArray(){
         
-        activeUserSpots.sort(by: {($0.created! as Date).compare($1.created! as Date) == .orderedDescending})
+        activeUserSpots.sort(by: {($0.startTime as Date).compare($1.startTime as Date) == .orderedDescending})
+        
+    }
+    
+    func SortMySpotsArray(){
+        
+        mySpots.sort(by: {($0.created! as Date).compare($1.created! as Date) == .orderedDescending})
         
     }
     
@@ -876,6 +999,178 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         
     }
     
+    @IBOutlet var TypeSegmentedControl: UISegmentedControl!
+    
+    
+    
+    @IBAction func TypeSegmentedControlClicked(_ sender: UISegmentedControl!) {
+        
+        switch (sender.selectedSegmentIndex) {
+            case 0:
+                SpotsType = "Past";
+                //load spots
+                let now: Date = Date()
+                let yesterday: Date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+                var removeCount = 0;
+                activeUserSpots.removeAll()
+                for (index,s) in allSpots.enumerated(){
+                    if ((s.endTime as Date) < now){
+                        if ((s.endTime as Date) > yesterday){
+                            activeUserSpots.append(s)
+                        } else {
+                            spotServices.removeSpot(s: s)
+                            
+                            allSpots.remove(at: index - removeCount)
+                            removeCount += 1
+                        }
+                    }
+                }
+                putSpotsOnMap(completionHandler: {
+                    
+                })
+                tableView.reloadData()
+                break;
+            case 2:
+                SpotsType = "Upcoming";
+                let now: Date = NSDate() as Date
+                activeUserSpots.removeAll()
+                
+                
+                for s in allSpots{
+                   
+                    if ((s.startTime as Date) > now) {
+                        activeUserSpots.append(s)
+                    }
+                }
+                putSpotsOnMap(completionHandler: {
+                    
+                })
+                tableView.reloadData()
+                break;
+            default:
+                SpotsType = "Now";
+                let now: Date = NSDate() as Date
+                activeUserSpots.removeAll()
+                for s in allSpots{
+                    if ((s.startTime as Date) < now) && ((s.endTime as Date) > now) {
+                        activeUserSpots.append(s)
+                    }
+                }
+                putSpotsOnMap(completionHandler: {
+                    
+                })
+                tableView.reloadData()
+                break;
+            
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    @IBAction func AddSpotTypeSegmentedControlClicked(_ sender: UISegmentedControl!) {
+        switch (sender.selectedSegmentIndex){
+            case 0:
+                setForNow()
+                break;
+            
+            case 1:
+                setForUpcoming()
+                break;
+            
+            default:
+                setForNow()
+                break;
+            
+        }
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    func setForNow(){
+        
+        helper.underlineTextFieldInactive(field: addSpotLocationField)
+        addSpotStartTime.isEnabled = false
+        addSpotStartTime.setValue(UIColor.gray, forKeyPath: "textColor")
+        addSpotStartTime.setDate(NSDate() as Date, animated: true)
+        addSpotEndTime.setDate(NSDate.init(timeIntervalSinceNow: 3600) as Date, animated: true)
+        
+    }
+    func setForUpcoming(){
+        
+        helper.underlineTextField(field: addSpotLocationField)
+        addSpotStartTime.isEnabled = true
+        addSpotStartTime.setValue(UIColor.black, forKeyPath: "textColor")
+        addSpotStartTime.setDate(NSDate.init(timeIntervalSinceNow: 3600) as Date, animated: true)
+        addSpotEndTime.setDate(NSDate.init(timeIntervalSinceNow: 7200) as Date, animated: true)
+        
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true);
+        clickedSpot = Spot();
+    }
+    
+    
+    
+    //location search shit
+    
+    @IBOutlet var locationResultsTable: UITableView!
+    
+    //create a completer
+    lazy var searchCompleter: MKLocalSearchCompleter = {
+        let sC = MKLocalSearchCompleter()
+        sC.delegate = self
+        return sC
+    }()
+    
+    var searchResultsArr = [MKLocalSearchCompletion]()
+    
+    var searchSource: [String]?
+    var searchSourceSub: [String]?
+    var searchSourceAddress: MKMapItem = MKMapItem()
+    
+    func locationTextFieldDidChange(textField: UITextField){
+        
+        if(textField.text == ""){
+            locationResultsTable.isHidden = true
+            
+        } else {
+            locationResultsTable.isHidden = false
+            searchCompleter.queryFragment = textField.text!
+        }
+       
+        
+    }
+    
+    
+    @IBAction func myAccountButtonClicked(_ sender: Any) {
+        
+        clickedUser = activeUser
+        
+        let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "clickedUserView")
+        self.navigationController?.pushViewController(nextPage!, animated: true)
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     //status bar
@@ -900,3 +1195,25 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     */
 
 }
+
+
+extension ActiveMapViewController: MKLocalSearchCompleterDelegate {
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        //get result, transform it to our needs and fill our dataSource
+        self.searchSource = completer.results.map { $0.title }
+        self.searchSourceSub = completer.results.map { $0.subtitle }
+        //self.searchSourceAddress = completer.
+        searchResultsArr = completer.results
+        
+        DispatchQueue.main.async {
+            self.locationResultsTable.reloadData()
+        }
+    }
+    
+    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
+        //handle the error
+        print(error.localizedDescription)
+    }
+}
+
+

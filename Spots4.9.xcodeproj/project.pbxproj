@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C90964581F2C19500076F48D /* splashscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C90964571F2C19500076F48D /* splashscreen.png */; };
 		C90C7F301F2B96CE008440C5 /* crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = C90C7F2F1F2B96CE008440C5 /* crosshair.png */; };
+		C91B2D271F6B104A003EA2D6 /* comments in Resources */ = {isa = PBXBuildFile; fileRef = C91B2D261F6B104A003EA2D6 /* comments */; };
+		C922D81D1F65EB2600A2690C /* splashscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C922D81C1F65EB2600A2690C /* splashscreen.png */; };
 		C929E4A21EF979D800E2FFF0 /* settingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C929E4A11EF979D800E2FFF0 /* settingsViewController.swift */; };
 		C92E177B1F07682D001FA94F /* clickedUserFollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92E177A1F07682D001FA94F /* clickedUserFollowingViewController.swift */; };
 		C92E177D1F076839001FA94F /* clickedUserFollowersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92E177C1F076839001FA94F /* clickedUserFollowersViewController.swift */; };
@@ -35,6 +36,8 @@
 		C97FB1361EF1DB430013DFB9 /* ActiveMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97FB1351EF1DB430013DFB9 /* ActiveMapViewController.swift */; };
 		C97FB13A1EF1E91C0013DFB9 /* beforeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97FB1391EF1E91C0013DFB9 /* beforeViewController.swift */; };
 		C97FB13C1EF1FE0E0013DFB9 /* Spot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97FB13B1EF1FE0E0013DFB9 /* Spot.swift */; };
+		C98346371F695B0D005B0474 /* FollowServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98346361F695B0D005B0474 /* FollowServices.swift */; };
+		C98346391F695D5A005B0474 /* SpotServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98346381F695D5A005B0474 /* SpotServices.swift */; };
 		C98833ED1F2050900028424B /* resetLocationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C98833EC1F2050900028424B /* resetLocationIcon.png */; };
 		C9B3876F1F01EDF5003893DA /* EditBasicInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B3876E1F01EDF5003893DA /* EditBasicInfoViewController.swift */; };
 		C9C7491E1F0473EA000FEBB1 /* FollowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7491D1F0473EA000FEBB1 /* FollowTableViewCell.swift */; };
@@ -60,8 +63,9 @@
 		1534714B587311BAD24D6464 /* Pods_Spots4_9.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Spots4_9.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2067718CE112D176B1C661D6 /* Pods-Spots4.9.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spots4.9.release.xcconfig"; path = "Pods/Target Support Files/Pods-Spots4.9/Pods-Spots4.9.release.xcconfig"; sourceTree = "<group>"; };
 		3E8E5BAF5164E925CB6FA53F /* Pods-Spots4.9.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spots4.9.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Spots4.9/Pods-Spots4.9.debug.xcconfig"; sourceTree = "<group>"; };
-		C90964571F2C19500076F48D /* splashscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splashscreen.png; sourceTree = "<group>"; };
 		C90C7F2F1F2B96CE008440C5 /* crosshair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshair.png; sourceTree = "<group>"; };
+		C91B2D261F6B104A003EA2D6 /* comments */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = comments; sourceTree = "<group>"; };
+		C922D81C1F65EB2600A2690C /* splashscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splashscreen.png; sourceTree = "<group>"; };
 		C929E4A11EF979D800E2FFF0 /* settingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = settingsViewController.swift; sourceTree = "<group>"; };
 		C92E177A1F07682D001FA94F /* clickedUserFollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = clickedUserFollowingViewController.swift; path = ../clickedUserFollowingViewController.swift; sourceTree = "<group>"; };
 		C92E177C1F076839001FA94F /* clickedUserFollowersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = clickedUserFollowersViewController.swift; path = ../clickedUserFollowersViewController.swift; sourceTree = "<group>"; };
@@ -90,6 +94,8 @@
 		C97FB1351EF1DB430013DFB9 /* ActiveMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveMapViewController.swift; sourceTree = "<group>"; };
 		C97FB1391EF1E91C0013DFB9 /* beforeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = beforeViewController.swift; sourceTree = "<group>"; };
 		C97FB13B1EF1FE0E0013DFB9 /* Spot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spot.swift; sourceTree = "<group>"; };
+		C98346361F695B0D005B0474 /* FollowServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowServices.swift; sourceTree = "<group>"; };
+		C98346381F695D5A005B0474 /* SpotServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotServices.swift; sourceTree = "<group>"; };
 		C98833EC1F2050900028424B /* resetLocationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resetLocationIcon.png; sourceTree = "<group>"; };
 		C9B3876E1F01EDF5003893DA /* EditBasicInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditBasicInfoViewController.swift; path = ../EditBasicInfoViewController.swift; sourceTree = "<group>"; };
 		C9C7491D1F0473EA000FEBB1 /* FollowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowTableViewCell.swift; path = ../FollowTableViewCell.swift; sourceTree = "<group>"; };
@@ -102,10 +108,10 @@
 		C9D884BF1F088C950026EB20 /* searchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = searchViewController.swift; sourceTree = "<group>"; };
 		C9E1DC3F1F33E352008972F5 /* Spots4.9.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Spots4.9.entitlements; sourceTree = "<group>"; };
 		C9E1DC401F33F14A008972F5 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
-		C9E1DC421F3417ED008972F5 /* Helping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helping.swift; sourceTree = "<group>"; };
+		C9E1DC421F3417ED008972F5 /* Helping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helping.swift; path = ../Helping.swift; sourceTree = "<group>"; };
 		C9E3769D1F113DF000B4DDCF /* upbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upbutton.png; sourceTree = "<group>"; };
 		C9E376E21F12F36A00B4DDCF /* downbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downbutton.png; sourceTree = "<group>"; };
-		C9E376E41F12FFA000B4DDCF /* MapTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTableViewCell.swift; sourceTree = "<group>"; };
+		C9E376E41F12FFA000B4DDCF /* MapTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapTableViewCell.swift; path = ../MapTableViewCell.swift; sourceTree = "<group>"; };
 		C9E64E841F0328CF00DB17E5 /* editMySpotsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = editMySpotsViewController.swift; path = ../editMySpotsViewController.swift; sourceTree = "<group>"; };
 		C9E64E861F034FCD00DB17E5 /* FollowersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowersViewController.swift; path = ../FollowersViewController.swift; sourceTree = "<group>"; };
 		C9E64E881F034FD900DB17E5 /* FollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowingViewController.swift; path = ../FollowingViewController.swift; sourceTree = "<group>"; };
@@ -145,8 +151,6 @@
 		C94929CB1EEF64C700A30760 = {
 			isa = PBXGroup;
 			children = (
-				C9E1DC421F3417ED008972F5 /* Helping.swift */,
-				C9E376E41F12FFA000B4DDCF /* MapTableViewCell.swift */,
 				C94929D61EEF64C700A30760 /* Spots4.9 */,
 				C94929D51EEF64C700A30760 /* Products */,
 				2C8A0CE25330BADDD2B2CB4E /* Pods */,
@@ -167,9 +171,9 @@
 			children = (
 				C9E1DC3F1F33E352008972F5 /* Spots4.9.entitlements */,
 				C94929D71EEF64C700A30760 /* AppDelegate.swift */,
+				C98346331F6959A2005B0474 /* Services */,
 				C97FB1331EF1C19D0013DFB9 /* View Controllers */,
-				C97FB13B1EF1FE0E0013DFB9 /* Spot.swift */,
-				C95B4B711EF39B4000E7D329 /* Followers.swift */,
+				C98346321F695974005B0474 /* Objects */,
 				C95B4B751EF432FD00E7D329 /* button icons */,
 				C94929DB1EEF64C700A30760 /* Main.storyboard */,
 				C94929E31EEF64C700A30760 /* LaunchScreen.storyboard */,
@@ -177,6 +181,7 @@
 				C94929E61EEF64C700A30760 /* Info.plist */,
 				C94929DE1EEF64C700A30760 /* Spots4_9.xcdatamodeld */,
 				C97FB1301EF1B03E0013DFB9 /* segues */,
+				C91B2D261F6B104A003EA2D6 /* comments */,
 			);
 			path = Spots4.9;
 			sourceTree = "<group>";
@@ -191,7 +196,7 @@
 				C9C749241F048BBA000FEBB1 /* default-profile.png */,
 				C95B4B761EF4341300E7D329 /* settings.png */,
 				C95B4B731EF432F700E7D329 /* search.png */,
-				C90964571F2C19500076F48D /* splashscreen.png */,
+				C922D81C1F65EB2600A2690C /* splashscreen.png */,
 				C9D884BD1F087E420026EB20 /* splash.png */,
 				C9D5BBC31F09A12F0099F419 /* directions.png */,
 			);
@@ -215,12 +220,12 @@
 		C97FB1331EF1C19D0013DFB9 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C94929EC1EEF661600A30760 /* OpeningViewController.swift */,
+				C97FB1391EF1E91C0013DFB9 /* beforeViewController.swift */,
+				C97FB1351EF1DB430013DFB9 /* ActiveMapViewController.swift */,
 				C9D884BF1F088C950026EB20 /* searchViewController.swift */,
 				C9D884B81F07814B0026EB20 /* clickedUserViewControllers */,
-				C97FB1391EF1E91C0013DFB9 /* beforeViewController.swift */,
-				C94929EC1EEF661600A30760 /* OpeningViewController.swift */,
-				C97FB1351EF1DB430013DFB9 /* ActiveMapViewController.swift */,
-				C9C7491F1F0473F7000FEBB1 /* FollowViewControllers&Assets */,
+				C9C7491F1F0473F7000FEBB1 /* FollowViewControllers-Assets */,
 				C97FB1341EF1C1D60013DFB9 /* Register View Controllers */,
 				C97FB1381EF1DB630013DFB9 /* Login View Controllers */,
 				C9B387681F01DC11003893DA /* SettingsViewControllers */,
@@ -247,6 +252,25 @@
 			name = "Login View Controllers";
 			sourceTree = "<group>";
 		};
+		C98346321F695974005B0474 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				C97FB13B1EF1FE0E0013DFB9 /* Spot.swift */,
+				C95B4B711EF39B4000E7D329 /* Followers.swift */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
+		C98346331F6959A2005B0474 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C9E1DC421F3417ED008972F5 /* Helping.swift */,
+				C98346361F695B0D005B0474 /* FollowServices.swift */,
+				C98346381F695D5A005B0474 /* SpotServices.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		C9B387681F01DC11003893DA /* SettingsViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,19 +282,20 @@
 			name = SettingsViewControllers;
 			sourceTree = "<group>";
 		};
-		C9C7491F1F0473F7000FEBB1 /* FollowViewControllers&Assets */ = {
+		C9C7491F1F0473F7000FEBB1 /* FollowViewControllers-Assets */ = {
 			isa = PBXGroup;
 			children = (
 				C9C7491D1F0473EA000FEBB1 /* FollowTableViewCell.swift */,
 				C9E64E881F034FD900DB17E5 /* FollowingViewController.swift */,
 				C9E64E861F034FCD00DB17E5 /* FollowersViewController.swift */,
 			);
-			name = "FollowViewControllers&Assets";
+			name = "FollowViewControllers-Assets";
 			sourceTree = "<group>";
 		};
 		C9D884B81F07814B0026EB20 /* clickedUserViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				C9E376E41F12FFA000B4DDCF /* MapTableViewCell.swift */,
 				C92E177A1F07682D001FA94F /* clickedUserFollowingViewController.swift */,
 				C92E177C1F076839001FA94F /* clickedUserFollowersViewController.swift */,
 				C97476D01F05C83E0066BB92 /* ClickedUserViewController.swift */,
@@ -355,9 +380,10 @@
 				C94929E51EEF64C700A30760 /* LaunchScreen.storyboard in Resources */,
 				C94929E21EEF64C700A30760 /* Assets.xcassets in Resources */,
 				C9E3769E1F113DF000B4DDCF /* upbutton.png in Resources */,
-				C90964581F2C19500076F48D /* splashscreen.png in Resources */,
+				C922D81D1F65EB2600A2690C /* splashscreen.png in Resources */,
 				C94929DD1EEF64C700A30760 /* Main.storyboard in Resources */,
 				C9C749251F048BBA000FEBB1 /* default-profile.png in Resources */,
+				C91B2D271F6B104A003EA2D6 /* comments in Resources */,
 				C95B4B741EF432F700E7D329 /* search.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,6 +449,7 @@
 				C94929FB1EEF66BA00A30760 /* SegueFromRight2.swift in Sources */,
 				C92E177D1F076839001FA94F /* clickedUserFollowersViewController.swift in Sources */,
 				C9C749211F047443000FEBB1 /* SegueFromTop.swift in Sources */,
+				C98346371F695B0D005B0474 /* FollowServices.swift in Sources */,
 				C9E376E51F12FFA000B4DDCF /* MapTableViewCell.swift in Sources */,
 				C9E1DC431F3417ED008972F5 /* Helping.swift in Sources */,
 				C95B4B721EF39B4000E7D329 /* Followers.swift in Sources */,
@@ -437,6 +464,7 @@
 				C94929F11EEF663700A30760 /* RegisterEmailViewController.swift in Sources */,
 				C94929D81EEF64C700A30760 /* AppDelegate.swift in Sources */,
 				C929E4A21EF979D800E2FFF0 /* settingsViewController.swift in Sources */,
+				C98346391F695D5A005B0474 /* SpotServices.swift in Sources */,
 				C92E177B1F07682D001FA94F /* clickedUserFollowingViewController.swift in Sources */,
 				C9B3876F1F01EDF5003893DA /* EditBasicInfoViewController.swift in Sources */,
 				C9E64E851F0328CF00DB17E5 /* editMySpotsViewController.swift in Sources */,

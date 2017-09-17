@@ -25,6 +25,9 @@ class ForgotPasswordViewController: UIViewController {
         // Do any additional setup after loading the view.
         background.backgroundColor = silver;
         
+  
+        helper.underlineTextField(field: emailField)
+        
         //make gestures
         // declare gestures
         let swipeLeft = UISwipeGestureRecognizer()

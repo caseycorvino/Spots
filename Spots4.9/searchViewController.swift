@@ -22,10 +22,22 @@ class searchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if(activeUserFollowing.count < 1){
+        followServices.calculateFollowingSearch(userId: activeUserId, view: self, completionHandler: {
+            
+     
         if searchedUsers.count > 0{
             if searchedUsers[0].name == nil{
                 searchedUsers.removeAll()
-                searchTable.reloadData()
+                self.searchTable.reloadData()
+            }
+        }
+        })} else {
+            if searchedUsers.count > 0{
+                if searchedUsers[0].name == nil{
+                    searchedUsers.removeAll()
+                    self.searchTable.reloadData()
+                }
             }
         }
         // Do any additional setup after loading the view.
@@ -104,9 +116,11 @@ class searchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
         clickedUser = searchedUsers[indexPath.row]
-        
+         //fromBackButton = false;
         segueBack = "clickedUserToSearch"
-        performSegue(withIdentifier: "searchToClickedUser", sender: nil)
+        let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "clickedUserView")
+        self.navigationController?.pushViewController(nextPage!, animated: true)
+        //performSegue(withIdentifier: "searchToClickedUser", sender: nil)
     }
     
     
@@ -323,7 +337,9 @@ class searchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBAction func back(_ sender: Any) {
         
         searchedUsers.removeAll()
-        performSegue(withIdentifier: "searchToActiveMap", sender: nil)
+         //fromBackButton = true;
+        self.navigationController?.popViewController(animated: true)
+        //performSegue(withIdentifier: "searchToActiveMap", sender: nil)
         
     }
     override func didReceiveMemoryWarning() {

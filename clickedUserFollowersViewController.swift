@@ -19,9 +19,14 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        clickedUserFollowerCount.text = "\(clickedUserFollowers.count)"
-        filteredResult = clickedUserFollowers
-        searchBar.placeholder = "\(clickedUser.name ?? "")'s Followers"
+        followServices.calculateFollowers(userId: clickedUser.objectId as String, followersLabel: clickedUserFollowerCount, view: self, completionHandler: {
+
+        self.clickedUserFollowerCount.text = "\(clickedUserFollowers.count)"
+        self.filteredResult = clickedUserFollowers
+        self.searchBar.placeholder = "\(clickedUser.name ?? "")'s Followers"
+            self.followerTable.reloadData()
+
+        })
         // Do any additional setup after loading the view.
     }
     @IBOutlet var followerTable: UITableView!
@@ -50,7 +55,7 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
             cell.followImageView.backgroundColor = silver
             cell.followImageView.layer.cornerRadius = 17;
             cell.followImageView.layer.masksToBounds = true;
-            if(userInList(user: followUser, list: activeUserFollowing)){
+            if(followingList.contains(cell.cellUser.objectId as String)){
                 cell.followButton.setTitle("Following", for: UIControlState.normal)
                 cell.followButton.setTitleColor(UIColor.black, for: UIControlState.normal)
                 cell.followButtonBackground.backgroundColor = silver;
@@ -99,7 +104,7 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
         let buttonIndex = sender?.tag
         let cell: FollowTableViewCell = followerTable.cellForRow(at: [0,buttonIndex!]) as! FollowTableViewCell
         
-        if(userInList(user: cell.cellUser, list: activeUserFollowing)){
+        if(followingList.contains(cell.cellUser.objectId as String)){
             cell.followButton.setTitle("Follow", for: UIControlState.normal)
             cell.followButton.setTitleColor(UIColor.darkGray, for: UIControlState.normal)
             cell.followButtonBackground.backgroundColor = UIColor.white;
@@ -117,6 +122,12 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
                                             for (index, element) in activeUserFollowing.enumerated() {
                                                 if cell.cellUser.name ?? "" == element.name ?? ""{
                                                     activeUserFollowing.remove(at: index)
+                                                }
+                                            }
+                                            for (index, element) in followingList.enumerated() {
+                                                if cell.cellUser.objectId as String == element {
+                                                    followingList.remove(at: index)
+                                                    
                                                 }
                                             }
                                             
@@ -148,9 +159,10 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
             
             dataStore?.save(newFollow, response: { (new: Any?) in
                 activeUserFollowing.append(cell.cellUser)
+                followingList.append(cell.cellUser.objectId as String)
                 let deviceId = cell.cellUser.getProperty("deviceId")!
-                let helping = Helping()
-                helping.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
+                
+                helper.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
                 UIApplication.shared.endIgnoringInteractionEvents()
                 
             }, error: { (fault: Fault?) in
@@ -161,61 +173,7 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
         }
     }
     
-//    func calculateFollowing(completionHandler: @escaping () -> ()) -> Void {
-//       
-//        let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId)'")
-//        
-//        
-//        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
-//                                                                
-//                                                                response: { ( anyObjects: [Any]?) in
-//                                                                    
-//                                                                    //fill followers Array.
-//                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
-//                                                                    
-//                                                                    
-//                                                                    
-//                                                                    //empty array
-//                                                                    activeUserFollowing.removeAll()
-//                                                                    
-//                                                                    
-//                                                                    let followerObjects = anyObjects as! [Followers]
-//                                                                    print("Clicked User Followers: \(followerObjects.count)")
-//                                                                    
-//                                                                    
-//                                                                    if(followerObjects.count == 0){
-//                                                                        completionHandler()
-//                                                                    }
-//                                                                    var count = 0;
-//                                                                    print("Clicked User Following: \(followerObjects.count)")
-//                                                                    for followerObject: Followers in followerObjects {
-//                                                                        self.backendless?.userService.find(byId: followerObject.following,
-//                                                                                                           response: { (followingUser: BackendlessUser!) in
-//                                                                                                            activeUserFollowing.append(followingUser)
-//                                                                                                            count += 1;
-//                                                                                                            if(count == followerObjects.count){
-//                                                                                                                completionHandler()
-//                                                                                                            }
-//                                                                                                            
-//                                                                                                            
-//                                                                        }, error: { (fault: Fault?) in
-//                                                                            print(fault?.message ?? "Fault")
-//                                                                            completionHandler();
-//                                                                        })
-//                                                                    }
-//                                                                    
-//                                                                    
-//                                                                    
-//                                                                    
-//                                                                    
-//        },//if error print error
-//            error: { (fault: Fault?) in
-//                print(fault?.message ?? "Fault")
-//                completionHandler();
-//        })
-//        
-//        
-//    }
+
     
     
     //MARK: TableView Delegate
@@ -224,8 +182,12 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
         clickedUser = filteredResult[indexPath.row]
         //clickedUserId = filteredResult[indexPath.row].followerId
         //in clickedUserMap.viewDidLoad query from clickedUserId
+         // = false;
+        let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "clickedUserView")
+        self.navigationController?.pushViewController(nextPage!, animated: true)
+
         
-        performSegue(withIdentifier: "clickedUserFollowersToClickedUser", sender: nil)
+        //performSegue(withIdentifier: "clickedUserFollowersToClickedUser", sender: nil)
     }
     
   
@@ -281,7 +243,9 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
     
     
     @IBAction func back(_ sender: Any) {
-        performSegue(withIdentifier: "clickedUserFollowersToClickedUser", sender: nil)
+         //fromBackButton = true;
+        self.navigationController?.popViewController(animated: true)
+        //performSegue(withIdentifier: "clickedUserFollowersToClickedUser", sender: nil)
     }
     
     override func didReceiveMemoryWarning() {

@@ -1,0 +1,1099 @@
+Helper
+
+/*
+//================is valid link===========//
+
+func isValidUrl(urlString: String?) -> Bool {
+//Check for nil
+if(urlString != ""){
+if let urlString = urlString {
+// create NSURL instance
+if let url = NSURL(string: urlString) {
+// check if your application can open the NSURL instance
+return UIApplication.shared.canOpenURL(url as URL)
+}
+}
+return false
+}else {
+return false
+}
+}
+
+
+
+//================^is valid link regex===========//
+
+//===============set dates for time ================//
+
+func getTimeFor(picker: UIDatePicker) -> Date{
+let time = picker.clampedDate
+if (time < NSDate() as Date){
+let newTime = Calendar.current.date(byAdding: .day, value: 1, to: time)
+return newTime!
+}
+return time
+}
+*/
+//===============^set dates for time ================//
+/*
+//===============remove spot from backend ================//
+func removeSpot(s: Spot){
+let dataStore = backendless?.data.of(Spot().ofClass())
+
+dataStore?.remove(byId: s.objectId,
+response: {
+(num : NSNumber?) -> () in
+print("spott removed")
+},
+error: {
+(fault : Fault?) -> () in
+print("Server reported an error: \(fault?.description ?? "unknown fault")")
+})
+
+
+}
+//===============^remove spot from backend ================//
+*/
+
+/* //================get follower count===================//
+
+func getFollowerCount (userId: String, followerButton: UIButton,completionHandler: @escaping ()->()) {
+let dataStore = self.backendless?.persistenceService.of(Followers.ofClass())
+let query = DataQueryBuilder().setWhereClause("following = '\(userId)'")
+dataStore?.getObjectCount(query,
+response: {
+(objectCount : NSNumber?) -> () in
+
+
+followerButton.setTitle("\(objectCount ?? 0)", for: .normal)
+print("Found follower objects: \(objectCount ?? 0)")
+completionHandler()
+},
+error: {
+(fault : Fault?) -> () in
+print("Server reported an error: \(fault?.description ?? "Unknonw fault")")
+completionHandler()
+})
+}
+
+func getFollowingCount (userId: String, followingButton: UIButton,completionHandler: @escaping ()->()) {
+let dataStore = self.backendless?.persistenceService.of(Followers.ofClass())
+let query = DataQueryBuilder().setWhereClause("follower = '\(userId)'")
+dataStore?.getObjectCount(query,
+response: {
+(objectCount : NSNumber?) -> () in
+followingCount = Int(objectCount!)
+
+followingButton.setTitle("\(objectCount ?? 0)", for: .normal)
+print("Found following objects: \(objectCount ?? 0)")
+completionHandler()
+},
+error: {
+(fault : Fault?) -> () in
+print("Server reported an error: \(fault?.description ?? "Unknown fault")")
+completionHandler()
+})
+}
+*/
+//================^get follower count===================//
+
+/*
+func setFollowingList(followingButton: UIButton, completionHandler: @escaping () -> ()){
+
+print("okay")
+
+followingList.removeAll()
+
+
+let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId)'")
+
+_ = query?.setPageSize(100).setOffset(0)
+
+let dataStore = self.backendless?.data.of(Followers().ofClass())
+
+_ = dataStore?.find(query,
+
+response: { ( anyObjects: [Any]?) in
+
+//fill followers Array.
+//loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+
+
+
+let followerObjects = anyObjects as! [Followers]
+for f in followerObjects{
+followingList.append(f.following)
+}
+
+
+
+self.retrieveNextFollowingPage(query: query!, data: dataStore!, completionHandler: {
+completionHandler()
+})
+
+
+},//if error print error
+error: { (fault: Fault?) in
+print("\(fault?.message ?? "fault"))")
+completionHandler()
+
+})
+
+
+
+}
+
+
+
+func  retrieveNextFollowingPage(query: DataQueryBuilder, data:IDataStore,completionHandler: @escaping () -> () ) -> Void {
+print("\(followingList.count) < \(followingCount) ")
+if(followingList.count < followingCount){
+
+_ = query.prepareNextPage()
+
+data.find(query, response: { (anyObjects: [Any]?) in
+let followerObjects = anyObjects as! [Followers]
+
+for f in followerObjects{
+followingList.append(f.following)
+}
+self.retrieveNextFollowingPage(query: query, data: data, completionHandler: {
+completionHandler()
+})
+
+}, error: { (fault: Fault?) in
+print(fault?.description ?? "fault")
+completionHandler()
+})
+
+
+} else {
+completionHandler()
+}
+}*/
+
+
+
+//=======================Calculate Followers====================//
+
+/*
+
+func calculateFollowers(userId: String, followersLabel: UILabel, view: UIViewController, completionHandler: @escaping () -> ()) -> Void {
+
+
+let query = DataQueryBuilder().setWhereClause("following = '\(userId)'")
+
+_ = query?.setPageSize(100).setOffset(0)
+
+_ = self.backendless?.data.of(Followers.ofClass()).find(query,
+
+response: { ( anyObjects: [Any]?) in
+
+//fill followers Array.
+//loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+
+let followersCount = anyObjects?.count
+
+let followerObjects = anyObjects as! [Followers]
+print("\(userId) Followers: \(followerObjects.count)")
+
+//empty array
+//activeUserFollowers.removeAll()
+
+
+if(followerObjects.count == 0){
+completionHandler()
+}
+//activeUserFollowers = followerObjects
+
+//todo: comment out
+//var count = 0;
+
+var whereQuery = "objectId = "
+
+
+for (index, followerObject) in followerObjects.enumerated() {
+
+if(index != followerObjects.count - 1){
+
+whereQuery += "'\(followerObject.follower)' OR objectId = "
+
+} else {
+whereQuery += "'\(followerObject.follower)'"
+}
+
+
+}
+
+
+
+
+let query2 = DataQueryBuilder().setWhereClause(whereQuery)
+_ = query2?.setPageSize(100).setOffset(0)
+
+_ = self.backendless?.data.of(BackendlessUser.ofClass()).find(query2, response: { (followUsers: [Any]?) in
+
+if let _ : FollowersViewController = view as? FollowersViewController{
+activeUserFollowers.removeAll()
+activeUserFollowers = followUsers as! [BackendlessUser];                                                                        completionHandler()
+}
+if let _ : clickedUserFollowersViewController = view as? clickedUserFollowersViewController {
+clickedUserFollowers.removeAll()
+clickedUserFollowers = followUsers as! [BackendlessUser];                                                                        completionHandler()
+}
+
+
+},//if error print error
+error: { (fault: Fault?) in
+print("\(String(describing: fault))")
+completionHandler();
+
+})
+
+
+followersLabel.text = "\(followersCount!)"
+
+
+},//if error print error
+error: { (fault: Fault?) in
+print("\(String(describing: fault))")
+completionHandler();
+
+})
+
+}
+
+
+//=======================Calculate Following====================//
+
+
+func calculateFollowing(userId: String, followingLabel: UILabel, view: UIViewController, completionHandler: @escaping () -> ()) -> Void {
+
+let query = DataQueryBuilder().setWhereClause("follower = '\(userId)'")
+
+_ = query?.setPageSize(100).setOffset(0)
+
+_ = self.backendless?.data.of(Followers.ofClass()).find(query,
+
+response: { ( anyObjects: [Any]?) in
+
+//fill followers Array.
+//loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+
+let followingCount = anyObjects?.count
+
+//empty array
+//activeUserFollowing.removeAll()
+
+
+let followerObjects = anyObjects as! [Followers]
+print("\(userId) Following: \(followerObjects.count)")
+
+
+if(followerObjects.count == 0){
+completionHandler()
+}
+
+
+var whereQuery = "objectId = "
+
+
+for (index, followerObject) in followerObjects.enumerated() {
+
+if(index != followerObjects.count - 1){
+
+whereQuery += "'\(followerObject.following)' OR objectId = "
+
+} else {
+whereQuery += "'\(followerObject.following)'"
+}
+
+
+}
+
+
+let query2 = DataQueryBuilder().setWhereClause(whereQuery)
+_ = query2?.setPageSize(100).setOffset(0)
+
+_ = self.backendless?.data.of(BackendlessUser.ofClass()).find(query2, response: { (followUsers: [Any]?) in
+
+
+if let _ : FollowingViewController = view as? FollowingViewController{
+activeUserFollowing.removeAll()
+activeUserFollowing = followUsers as! [BackendlessUser];                                                                        completionHandler()
+}
+if let _ : clickedUserFollowingViewController = view as? clickedUserFollowingViewController {
+clickedUserFollowing.removeAll()
+clickedUserFollowing = followUsers as! [BackendlessUser];                                                                        completionHandler()
+}
+
+},//if error print error
+error: { (fault: Fault?) in
+print("\(String(describing: fault))")
+completionHandler();
+
+})
+
+
+followingLabel.text = "\(followingCount!)"
+
+
+
+},//if error print error
+error: { (fault: Fault?) in
+print("\(fault?.message ?? "fault"))")
+completionHandler();
+})
+
+
+}
+
+func calculateFollowingSearch(userId: String, view: UIViewController, completionHandler: @escaping () -> ()) -> Void {
+
+let query = DataQueryBuilder().setWhereClause("follower = '\(userId)'")
+
+_ = query?.setPageSize(100).setOffset(0)
+
+_ = self.backendless?.data.of(Followers.ofClass()).find(query,
+
+response: { ( anyObjects: [Any]?) in
+
+//fill followers Array.
+//loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+
+
+
+//empty array
+//activeUserFollowing.removeAll()
+
+
+let followerObjects = anyObjects as! [Followers]
+print("\(userId) Following: \(followerObjects.count)")
+
+
+if(followerObjects.count == 0){
+completionHandler()
+}
+
+
+var whereQuery = "objectId = "
+
+
+for (index, followerObject) in followerObjects.enumerated() {
+
+if(index != followerObjects.count - 1){
+
+whereQuery += "'\(followerObject.following)' OR objectId = "
+
+} else {
+whereQuery += "'\(followerObject.following)'"
+}
+
+
+}
+
+
+let query2 = DataQueryBuilder().setWhereClause(whereQuery)
+_ = query2?.setPageSize(100).setOffset(0)
+
+_ = self.backendless?.data.of(BackendlessUser.ofClass()).find(query2, response: { (followUsers: [Any]?) in
+
+
+
+activeUserFollowing.removeAll()
+activeUserFollowing = followUsers as! [BackendlessUser];                                                                        completionHandler()
+
+
+
+},//if error print error
+error: { (fault: Fault?) in
+print("\(String(describing: fault))")
+completionHandler();
+
+})
+
+
+
+
+
+},//if error print error
+error: { (fault: Fault?) in
+print("\(fault?.message ?? "fault"))")
+completionHandler();
+})
+
+
+}
+
+*/
+//=======================^Calculate Following^====================//
+
+
+//=======================Follow user====================//
+/*
+func followUserInActiveUserTable(user: BackendlessUser, FollowingCount: UILabel!, completionHandler: @escaping() -> ()) {
+let dataStore = backendless?.data.of(Followers.ofClass())
+let newFollow = Followers()
+newFollow.follower = "\(activeUserId)"
+newFollow.following = "\(user.objectId ?? "")"
+
+dataStore?.save(newFollow, response: { (new: Any?) in
+//                self.calculateFollowing(completionHandler: {
+//                    print("\(activeUserId) now following \(cell.cellUser.objectId ?? "")")
+//
+//                })//do same thing
+activeUserFollowing.append(user)
+if(FollowingCount != nil){
+FollowingCount.text = "\(activeUserFollowing.count)";
+}
+
+let deviceId = user.getProperty("deviceId")!
+self.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
+
+followingList.append(user.objectId as String)
+
+//            self.adjustFollowerCount(user: user, count: 1, completionHandler: {
+//                completionHandler()
+//            })
+
+completionHandler()
+//UIApplication.shared.endIgnoringInteractionEvents()
+
+}, error: { (fault: Fault?) in
+print("fault")
+completionHandler()
+//UIApplication.shared.endIgnoringInteractionEvents()
+})
+
+}
+
+*/
+
+
+
+
+//=======================Unfollow user====================//
+/*
+func unfollowUserInActiveUserTable(user: BackendlessUser, FollowingCount: UILabel!,completionHandler: @escaping() -> ()){
+
+
+let dataStore = backendless?.data.of(Followers.ofClass())
+let query = DataQueryBuilder().setWhereClause("following = '\(user.objectId ?? "")' and follower = '\(activeUserId)'")
+dataStore?.find(query,
+response: { (datas: [Any]?) in
+if((datas?.count)! > 0){
+
+for data in datas!{
+dataStore?.remove(data, response: {(num: NSNumber?) in
+//                                            self.calculateFollowing(completionHandler: {
+//                                                print(num!)
+//                                            })//do same thing to activeUserFollowing
+for (index, element) in activeUserFollowing.enumerated() {
+if user.name ?? "" == element.name ?? ""{
+activeUserFollowing.remove(at: index)
+
+}
+}
+for (index, element) in followingList.enumerated() {
+if user.objectId as String == element {
+followingList.remove(at: index)
+
+}
+}
+if(FollowingCount != nil){
+FollowingCount.text = "\(activeUserFollowing.count)"
+}
+
+//                                        self.adjustFollowerCount(user: user, count: -1, completionHandler: {
+//                                            completionHandler()
+//                                        })
+
+completionHandler();
+//UIApplication.shared.endIgnoringInteractionEvents()
+}
+, error: { (fault: Fault?) in
+print(fault ?? "fault")
+completionHandler()
+//UIApplication.shared.endIgnoringInteractionEvents()
+})
+}
+}
+},
+error: { (fault: Fault?) in
+print(fault ?? "fault")
+completionHandler()
+//UIApplication.shared.endIgnoringInteractionEvents()
+})
+
+
+
+}
+*/
+
+
+Active Map View Controller
+//        calculateFollowing(completionHandler:{
+//        self.loadFollowingSpots(completionHandler: {
+//            self.loadActiveUserSpots(completionHandler: {
+//                self.SortMySpotsArray()
+//                self.calculateFollowers(completionHandler: {
+//                    self.SortFollowersArray()
+//
+//                        self.SortFollowersArray()
+//                    //UIApplication.shared.endIgnoringInteractionEvents()
+//                    //self.activityIndicator.stopAnimating()
+//                    //self.view.sendSubview(toBack: self.blurEffectView)
+//                    //self.tableView.reloadData()
+//                        self.putSpotsOnMap(completionHandler:  {
+//                            UIApplication.shared.endIgnoringInteractionEvents()
+//                            self.activityIndicator.stopAnimating()
+//                            self.view.sendSubview(toBack: self.blurEffectView)
+//                            self.tableView.reloadData()
+//                            self.updateCounts(completionHandler: {})
+//                        })
+//
+//                    })
+//                })
+//            })
+//        })
+
+clicked user view controller
+//    func calculateActiveUserFollowing(completionHandler: @escaping () -> ()) -> Void {
+//
+//        print("follower = '\(activeUserId )'")
+//        let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId )'")
+//
+//
+//        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
+//
+//                                                                response: { ( anyObjects: [Any]?) in
+//
+//                                                                    //fill followers Array.
+//                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+//
+//
+//
+//                                                                    //empty array
+//                                                                    activeUserFollowing.removeAll()
+//
+//
+//                                                                    let followerObjects = anyObjects as! [Followers]
+//                                                                    print("Clicked User Followers: \(followerObjects.count)")
+//
+//
+//                                                                    if(followerObjects.count == 0){
+//                                                                        completionHandler()
+//                                                                    }
+//                                                                    var count = 0;
+//                                                                    print("Clicked User Following: \(followerObjects.count)")
+//                                                                    for followerObject: Followers in followerObjects {
+//                                                                        self.backendless?.userService.find(byId: followerObject.following,
+//                                                                                                           response: { (followingUser: BackendlessUser!) in
+//                                                                                                            activeUserFollowing.append(followingUser)
+//                                                                                                            count += 1;
+//                                                                                                            if(count == followerObjects.count){
+//                                                                                                                completionHandler()
+//                                                                                                            }
+//
+//
+//                                                                        }, error: { (fault: Fault?) in
+//                                                                            print(fault?.message ?? "Fault")
+//                                                                            completionHandler();
+//                                                                        })
+//                                                                    }
+//
+//
+//
+//
+//
+//        },//if error print error
+//            error: { (fault: Fault?) in
+//                print(fault?.message ?? "Fault")
+//                completionHandler();
+//        })
+//
+//
+//    }
+
+
+/* func calculateClickedFollowers(completionHandler: @escaping () -> ()) -> Void {
+
+let activeUserId: String! = clickedUser.objectId as String!
+
+helper.calculateFollowers(userId: activeUserId, followersButton: followersButton, view: self, completionHandler: {
+completionHandler();
+})
+
+//        let activeUserId: String! = clickedUser.objectId as String!
+//        let query = DataQueryBuilder().setWhereClause("following = '\(activeUserId ?? "")'")
+//        _ = query?.setPageSize(100).setOffset(0)
+//        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
+//
+//                                                                response: { ( anyObjects: [Any]?) in
+//
+//                                                                    //fill followers Array.
+//                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+//
+//                                                                    let followersCount = anyObjects?.count
+//
+//                                                                    let followerObjects = anyObjects as! [Followers]
+//                                                                    print("Clicked User Followers: \(followerObjects.count)")
+//
+//                                                                    //empty array
+//                                                                    clickedUserFollowers.removeAll()
+//
+//
+//
+//
+//                                                                    print("Clicked User Followers: \(followerObjects.count)")
+//
+//                                                                    if(followerObjects.count == 0){
+//                                                                        completionHandler()
+//                                                                    }
+//
+//                                                                    //activeUserFollowing = followerObjects
+//
+//
+//                                                                    var whereQuery = "objectId = "
+//
+//
+//                                                                    for (index, followerObject) in followerObjects.enumerated() {
+//
+//                                                                        if(index != followerObjects.count - 1){
+//
+//                                                                            whereQuery += "'\(followerObject.follower)' OR objectId = "
+//
+//                                                                        } else {
+//                                                                            whereQuery += "'\(followerObject.follower)'"
+//                                                                        }
+//
+//
+//                                                                    }
+//
+//
+//
+//
+//                                                                    let query2 = DataQueryBuilder().setWhereClause(whereQuery)
+//                                                                    _ = query2?.setPageSize(100).setOffset(0)
+//
+//                                                                    _ = self.backendless?.data.of(BackendlessUser.ofClass()).find(query2, response: { (followUsers: [Any]?) in
+//
+//
+//                                                                        clickedUserFollowers = followUsers as! [BackendlessUser];                                                                        completionHandler()
+//
+//                                                                    },//if error print error
+//                                                                        error: { (fault: Fault?) in
+//                                                                            print("\(String(describing: fault))")
+//                                                                            completionHandler();
+//
+//                                                                    })
+////                                                                    if(followerObjects.count == 0){
+////                                                                        completionHandler()
+////                                                                    }
+////                                                                    var count = 0;
+////                                                                    for followerObject: Followers in followerObjects {
+////                                                                        self.backendless?.userService.find(byId: followerObject.follower,
+////                                                                                                           response: { (followerUser: BackendlessUser!) in
+////                                                                                                            clickedUserFollowers.append(followerUser)
+////                                                                                                            count += 1;
+////                                                                                                            if(count == followerObjects.count){
+////                                                                                                                completionHandler()
+////                                                                                                            }
+////
+////
+////                                                                        }, error: { (fault: Fault?) in
+////                                                                            print(fault?.message ?? "Fault")
+////
+////                                                                            completionHandler();
+////                                                                        })
+////                                                                    }
+//
+//
+//                                                                    self.followersButton.setTitle("\(followersCount!)", for: UIControlState.normal)
+//
+//
+//        },//if error print error
+//            error: { (fault: Fault?) in
+//                print(fault?.message ?? "Fault")
+//                completionHandler();
+//
+//        })
+
+}*/
+
+
+/*  func calculateClickedFollowing(completionHandler: @escaping () -> ()) -> Void {
+let activeUserId: String! = clickedUser.objectId as String!
+
+helper.calculateFollowing(userId: activeUserId, followingButton: followingButton, view: self, completionHandler: {
+completionHandler();
+})
+
+
+//        let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId ?? "")'")
+//        _ = query?.setPageSize(100).setOffset(0)
+//
+//        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
+//
+//                                                                response: { ( anyObjects: [Any]?) in
+//
+//                                                                    //fill followers Array.
+//                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+//
+//                                                                    let followingCount = anyObjects?.count
+//
+//                                                                    //empty array
+//                                                                    clickedUserFollowing.removeAll()
+//
+//
+//
+//                                                                    let followerObjects = anyObjects as! [Followers]
+//                                                                    print("Clicked User Following: \(followerObjects.count)")
+//
+//                                                                    if(followerObjects.count == 0){
+//                                                                        completionHandler()
+//                                                                    }
+//
+//                                                                    //activeUserFollowing = followerObjects
+//
+//
+//                                                                    var whereQuery = "objectId = "
+//
+//
+//                                                                    for (index, followerObject) in followerObjects.enumerated() {
+//
+//                                                                        if(index != followerObjects.count - 1){
+//
+//                                                                            whereQuery += "'\(followerObject.following)' OR objectId = "
+//
+//                                                                        } else {
+//                                                                            whereQuery += "'\(followerObject.following)'"
+//                                                                        }
+//
+//
+//                                                                    }
+//
+//
+//
+//
+//                                                                    let query2 = DataQueryBuilder().setWhereClause(whereQuery)
+//                                                                    _ = query2?.setPageSize(100).setOffset(0)
+//
+//                                                                    _ = self.backendless?.data.of(BackendlessUser.ofClass()).find(query2, response: { (followUsers: [Any]?) in
+//
+//
+//                                                                        clickedUserFollowing = followUsers as! [BackendlessUser];                                                                        completionHandler()
+//
+//                                                                    },//if error print error
+//                                                                        error: { (fault: Fault?) in
+//                                                                            print("\(String(describing: fault))")
+//                                                                            completionHandler();
+//
+//                                                                    })
+////                                                                    var count = 0;
+////                                                                    print("Clicked User Following: \(followerObjects.count)")
+////                                                                    for followerObject: Followers in followerObjects {
+////                                                                        self.backendless?.userService.find(byId: followerObject.following,
+////                                                                                                           response: { (followingUser: BackendlessUser!) in
+////                                                                                                            clickedUserFollowing.append(followingUser)
+////                                                                                                            count += 1;
+////                                                                                                            if(count == followerObjects.count){
+////                                                                                                                completionHandler()
+////                                                                                                            }
+////
+////
+////                                                                        }, error: { (fault: Fault?) in
+////                                                                            print(fault?.message ?? "Fault")
+////                                                                            completionHandler();
+////                                                                        })
+////                                                                    }
+//
+//                                                                    self.followingButton.setTitle("\(followingCount!)", for: UIControlState.normal)
+//
+//
+//
+//        },//if error print error
+//            error: { (fault: Fault?) in
+//                print(fault?.message ?? "fault")
+//                completionHandler();
+//        })
+
+
+}*/
+
+follower view controller
+/    func calculateFollowing(completionHandler: @escaping () -> ()) -> Void {
+//
+//        let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId)'")
+//
+//
+//        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
+//
+//                                                                response: { ( anyObjects: [Any]?) in
+//
+//                                                                    //fill followers Array.
+//                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+//
+//
+//
+//                                                                    //empty array
+//                                                                    activeUserFollowing.removeAll()
+//
+//
+//                                                                    let followerObjects = anyObjects as! [Followers]
+//                                                                    print("Followers: \(followerObjects.count)")
+//
+//
+//                                                                    if(followerObjects.count == 0){
+//                                                                        completionHandler()
+//                                                                    }
+//                                                                    var count = 0;
+//                                                                    print("Following: \(followerObjects.count)")
+//                                                                    for followerObject: Followers in followerObjects {
+//                                                                        self.backendless?.userService.find(byId: followerObject.following,
+//                                                                                                           response: { (followingUser: BackendlessUser!) in
+//                                                                                                            activeUserFollowing.append(followingUser)
+//                                                                                                            count += 1;
+//                                                                                                            if(count == followerObjects.count){
+//                                                                                                                completionHandler()
+//                                                                                                            }
+//
+//
+//                                                                        }, error: { (fault: Fault?) in
+//                                                                            print(fault ?? "Fault")
+//                                                                            print("Could not load following")
+//                                                                            completionHandler();
+//                                                                        })
+//                                                                    }
+//
+//
+//
+//
+//
+//        },//if error print error
+//            error: { (fault: Fault?) in
+//                print("\(String(describing: fault))")
+//                completionHandler();
+//        })
+//
+//
+//    }
+//            let dataStore = backendless?.data.of(Followers.ofClass())
+//            let newFollow = Followers()
+//            newFollow.follower = "\(activeUserId)"
+//            newFollow.following = "\(cell.cellUser.objectId ?? "")"
+//
+//            dataStore?.save(newFollow, response: { (new: Any?) in
+////                self.calculateFollowing(completionHandler: {
+////                    print("\(activeUserId) now following \(cell.cellUser.objectId ?? "")")
+////
+////                })//do same thing
+//                activeUserFollowing.append(cell.cellUser)
+//                let deviceId = cell.cellUser.getProperty("deviceId")!
+//                let helping = Helping()
+//                helping.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
+//                UIApplication.shared.endIgnoringInteractionEvents()
+//
+//            }, error: { (fault: Fault?) in
+//                print("fault")
+//                UIApplication.shared.endIgnoringInteractionEvents()
+//            })
+
+//            let dataStore = backendless?.data.of(Followers.ofClass())
+//            let query = DataQueryBuilder().setWhereClause("following = '\(cell.cellUser.objectId ?? "")' and follower = '\(activeUserId)'")
+//            dataStore?.find(query,
+//                            response: { (datas: [Any]?) in
+//                                if((datas?.count)! > 0){
+//
+//                                for data in datas!{
+//
+//                                    dataStore?.remove(data, response: {(num: NSNumber?) in
+////                                        self.calculateFollowing(completionHandler: {
+////                                        print(num!)})//do same thing
+//                                        for (index, element) in activeUserFollowing.enumerated() {
+//                                            if cell.cellUser.name ?? "" == element.name ?? ""{
+//                                                activeUserFollowing.remove(at: index)
+//                                            }
+//                                        }
+//                                        UIApplication.shared.endIgnoringInteractionEvents()
+//                                    }
+//                                , error: { (fault: Fault?) in
+//                                    print(fault ?? "fault")
+//                                    UIApplication.shared.endIgnoringInteractionEvents()
+//                                })
+//                                }
+//                                }
+//                         },
+//                            error: { (fault: Fault?) in
+//                                print(fault ?? "fault")
+//                                UIApplication.shared.endIgnoringInteractionEvents()
+//            })
+
+//    func calculateFollowing(completionHandler: @escaping () -> ()) -> Void {
+//
+//        let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId)'")
+//
+//
+//        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
+//
+//                                                                response: { ( anyObjects: [Any]?) in
+//
+//                                                                    //fill followers Array.
+//                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+//
+//                                                                    let followingCount = anyObjects?.count
+//
+//                                                                    //empty array
+//                                                                    activeUserFollowing.removeAll()
+//
+//
+//                                                                    let followerObjects = anyObjects as! [Followers]
+//                                                                    print("Followers: \(followerObjects.count)")
+//
+//
+//                                                                    if(followerObjects.count == 0){
+//                                                                        completionHandler()
+//                                                                    }
+//                                                                    var count = 0;
+//                                                                    print("Following: \(followerObjects.count)")
+//                                                                    for followerObject: Followers in followerObjects {
+//                                                                        self.backendless?.userService.find(byId: followerObject.following,
+//                                                                                                           response: { (followingUser: BackendlessUser!) in
+//                                                                                                            activeUserFollowing.append(followingUser)
+//                                                                                                            count += 1;
+//                                                                                                            if(count == followerObjects.count){
+//                                                                                                                completionHandler()
+//                                                                                                            }
+//
+//
+//                                                                        }, error: { (fault: Fault?) in
+//                                                                            print(fault ?? "Fault")
+//                                                                            print("Could not load following")
+//                                                                            completionHandler();
+//                                                                        })
+//                                                                    }
+//
+//                                                                    self.FollowingCount.text = "\(followingCount!)"
+//
+//
+//
+//        },//if error print error
+//            error: { (fault: Fault?) in
+//                print("\(String(describing: fault))")
+//                completionHandler();
+//        })
+//
+//
+//    }
+
+//            let dataStore = backendless?.data.of(Followers.ofClass())
+//            let query = DataQueryBuilder().setWhereClause("following = '\(cell.cellUser.objectId ?? "")' and follower = '\(activeUserId)'")
+//            dataStore?.find(query,
+//                            response: { (datas: [Any]?) in
+//                                if((datas?.count)! > 0){
+//
+//                                    for data in datas!{
+//                                        dataStore?.remove(data, response: {(num: NSNumber?) in
+////                                            self.calculateFollowing(completionHandler: {
+////                                                print(num!)
+////                                            })//do same thing to activeUserFollowing
+//                                            for (index, element) in activeUserFollowing.enumerated() {
+//                                                if cell.cellUser.name ?? "" == element.name ?? ""{
+//                                                    activeUserFollowing.remove(at: index)
+//                                                }
+//                                            }
+//                                            self.FollowingCount.text = "\(activeUserFollowing.count)"
+//                                            UIApplication.shared.endIgnoringInteractionEvents()
+//                                        }
+//                                            , error: { (fault: Fault?) in
+//                                                print(fault ?? "fault")
+//                                                UIApplication.shared.endIgnoringInteractionEvents()
+//                                        })
+//                                    }
+//                                }
+//            },
+//                            error: { (fault: Fault?) in
+//                                print(fault ?? "fault")
+//                                UIApplication.shared.endIgnoringInteractionEvents()
+//            })
+
+/*
+dataStore?.save(newFollow, response: { (new: Any?) in
+
+//                self.calculateFollowing(completionHandler: {
+//                    print("\(activeUserId) now following \(cell.cellUser.objectId ?? "")")
+//                })//do same thing to activeUserFollowing
+activeUserFollowing.append(cell.cellUser)
+self.FollowingCount.text = "\(activeUserFollowing.count)";
+
+let deviceId = cell.cellUser.getProperty("deviceId")!
+
+helper.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
+
+
+UIApplication.shared.endIgnoringInteractionEvents()
+}, error: { (fault: Fault?) in
+print("fault")
+UIApplication.shared.endIgnoringInteractionEvents()
+
+
+
+})*/
+
+
+//    func calculateFollowing(completionHandler: @escaping () -> ()) -> Void {
+//
+//        let query = DataQueryBuilder().setWhereClause("follower = '\(activeUserId)'")
+//
+//
+//        _ = self.backendless?.data.of(Followers.ofClass()).find(query,
+//
+//                                                                response: { ( anyObjects: [Any]?) in
+//
+//                                                                    //fill followers Array.
+//                                                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+//
+//                                                                    let followingCount = anyObjects?.count
+//
+//                                                                    //empty array
+//                                                                    activeUserFollowing.removeAll()
+//
+//
+//                                                                    let followerObjects = anyObjects as! [Followers]
+//                                                                    print("Clicked User Followers: \(followerObjects.count)")
+//
+//
+//                                                                    if(followerObjects.count == 0){
+//                                                                        completionHandler()
+//                                                                    }
+//                                                                    var count = 0;
+//                                                                    print("Clicked User Following: \(followerObjects.count)")
+//                                                                    for followerObject: Followers in followerObjects {
+//                                                                        self.backendless?.userService.find(byId: followerObject.following,
+//                                                                                                           response: { (followingUser: BackendlessUser!) in
+//                                                                                                            activeUserFollowing.append(followingUser)
+//                                                                                                            count += 1;
+//                                                                                                            if(count == followerObjects.count){
+//                                                                                                                completionHandler()
+//                                                                                                            }
+//
+//
+//                                                                        }, error: { (fault: Fault?) in
+//                                                                            print(fault?.message ?? "Fault")
+//                                                                            print("Could not load following")
+//                                                                            completionHandler();
+//                                                                        })
+//                                                                    }
+//
+//                                                                    self.clickedUserFollowingCount.text = "\(followingCount!)"
+//
+//
+//
+//        },//if error print error
+//            error: { (fault: Fault?) in
+//                print(fault?.message ?? "fault")
+//                completionHandler();
+//        })
+//
+//
+//    }

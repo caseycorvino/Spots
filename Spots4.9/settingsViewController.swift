@@ -47,6 +47,7 @@ class settingsViewController: UIViewController, UITableViewDataSource, UITableVi
             print("User has been logged out")
             activeUser = BackendlessUser();
             activeUserId = "";
+             //fromBackButton = false;
             self.performSegue(withIdentifier: "settingsToOpening", sender: nil)
         },
                                         
@@ -58,6 +59,7 @@ class settingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     
     @IBAction func back(_ sender: Any) {
+        // fromBackButton = true;
         self.performSegue(withIdentifier: "settingsToActiveMap", sender: nil)
     }
     
