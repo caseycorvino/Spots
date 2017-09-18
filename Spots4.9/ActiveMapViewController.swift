@@ -95,6 +95,10 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        followersButtonView.isHidden = true
+        followingButtonView.isHidden = true
+        
+        
        
         helper.underlineTextField(field: addSpotTitleField)
         helper.underlineTextField(field: addSpotLinkField)
@@ -172,12 +176,14 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
      
         activeUserSpots.removeAll()
 
-        
+        /*
         followServices.getFollowerCount(userId: activeUserId, followerButton: followersButton, completionHandler: {
             
-        })
-        
-        followServices.setFollowingList(followingButton: followingButton, completionHandler: {
+        })*/
+        followServices.getFollowingCount(userId: activeUserId, followingButton: followingButton, completionHandler: {
+            
+            
+        followServices.setFollowingList(followingButton: self.followingButton, completionHandler: {
            
             self.loadFollowingSpots(completionHandler: {
                
@@ -197,6 +203,7 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                 })
             })
 
+        })
         })
         
 
@@ -227,9 +234,10 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
        
       
         locationManager.stopUpdatingLocation()
-        followServices.getFollowingCount(userId: activeUserId, followingButton: followingButton, completionHandler: {
+        
+        //followServices.getFollowingCount(userId: activeUserId, followingButton: followingButton, completionHandler: {
             
-        })
+        //})
     
     }
     

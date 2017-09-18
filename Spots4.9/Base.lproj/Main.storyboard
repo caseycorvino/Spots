@@ -956,7 +956,7 @@ We are committed to conducting our business in accordance with these principles 
                                         <rect key="frame" x="0.0" y="28" width="359" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XDJ-Zz-0kN" id="IU8-W5-rxE">
-                                            <rect key="frame" x="0.0" y="0.0" width="359" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="359" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1389,7 +1389,7 @@ We are committed to conducting our business in accordance with these principles 
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n65-dG-3Ks">
-                                <rect key="frame" x="16" y="134" width="60" height="60"/>
+                                <rect key="frame" x="17" y="300" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="following" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2h5-fS-Duf">
@@ -1437,7 +1437,7 @@ We are committed to conducting our business in accordance with these principles 
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eL4-3H-zBQ">
-                                <rect key="frame" x="17" y="270" width="60" height="60"/>
+                                <rect key="frame" x="17" y="134" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xvt-zG-pwE">
@@ -1481,7 +1481,7 @@ We are committed to conducting our business in accordance with these principles 
                                                 <rect key="frame" x="0.0" y="28" width="360" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0Us-Wh-grP" id="XzL-Zp-h2h">
-                                                    <rect key="frame" x="0.0" y="0.0" width="360" height="44"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="360" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OER-F0-ppV">
@@ -1641,7 +1641,7 @@ We are committed to conducting our business in accordance with these principles 
                                                 <rect key="frame" x="0.0" y="28" width="235" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4cX-3K-F4O" id="at2-6I-arf">
-                                                    <rect key="frame" x="0.0" y="0.0" width="235" height="44"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="235" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
@@ -1788,7 +1788,7 @@ We are committed to conducting our business in accordance with these principles 
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r47-Uc-fj8" id="NqK-UN-qoI">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jxm-nG-b36">
@@ -1962,7 +1962,7 @@ We are committed to conducting our business in accordance with these principles 
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Wd-f9-vCA" id="2IW-0Z-HjE">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TtB-Ob-CJK">
@@ -2186,7 +2186,7 @@ Developed in New York</string>
                                         <rect key="frame" x="0.0" y="28" width="359" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YL8-8V-NRb" id="qLQ-By-YTM">
-                                            <rect key="frame" x="0.0" y="0.0" width="359" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="359" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2312,7 +2312,7 @@ Developed in New York</string>
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NPP-Dj-7Kx" id="IEC-rv-oJB">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J87-D2-KpU">
@@ -2620,7 +2620,7 @@ Developed in New York</string>
                                                 <rect key="frame" x="0.0" y="28" width="360" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hEs-vl-xk8" id="XQM-Pi-koo">
-                                                    <rect key="frame" x="0.0" y="0.0" width="360" height="43"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="360" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yWO-Nu-hk2">
@@ -2807,7 +2807,7 @@ Developed in New York</string>
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rmt-cD-dwX" id="lpH-s2-7eJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gfh-rc-NyX">
@@ -2976,7 +2976,7 @@ Developed in New York</string>
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VO8-ql-hSf" id="wOq-po-Czb">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NRf-4g-3SE">
@@ -3106,19 +3106,19 @@ Developed in New York</string>
         <image name="resetLocationIcon.png" width="256" height="256"/>
         <image name="search.png" width="256" height="256"/>
         <image name="settings.png" width="512" height="512"/>
-        <image name="splashscreen.png" width="1081" height="1921"/>
+        <image name="splashscreen.png" width="4504" height="8004"/>
         <image name="upbutton.png" width="750" height="239"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Fd9-DO-sMw"/>
-        <segue reference="sL4-p9-g3v"/>
-        <segue reference="zZh-hO-mOq"/>
-        <segue reference="Cgu-gH-SeN"/>
-        <segue reference="bO0-Sd-gHI"/>
-        <segue reference="z5U-Jx-VJT"/>
-        <segue reference="x4e-IA-5h2"/>
-        <segue reference="zlT-xm-ux4"/>
-        <segue reference="oIz-eh-2GX"/>
         <segue reference="NUR-Ug-gs7"/>
+        <segue reference="oIz-eh-2GX"/>
+        <segue reference="zlT-xm-ux4"/>
+        <segue reference="Cgu-gH-SeN"/>
+        <segue reference="zZh-hO-mOq"/>
+        <segue reference="Gp6-ez-xjS"/>
+        <segue reference="Fd9-DO-sMw"/>
+        <segue reference="1im-HA-DMT"/>
+        <segue reference="ZZo-15-HQy"/>
+        <segue reference="bO0-Sd-gHI"/>
     </inferredMetricsTieBreakers>
 </document>
