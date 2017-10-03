@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C90C7F301F2B96CE008440C5 /* crosshair.png in Resources */ = {isa = PBXBuildFile; fileRef = C90C7F2F1F2B96CE008440C5 /* crosshair.png */; };
+		C90D3B351F817FC900A07BEF /* ProfilePicServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D3B341F817FC900A07BEF /* ProfilePicServices.swift */; };
+		C90E67881F82A74B001E13B0 /* EditProfilePictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90E67871F82A74B001E13B0 /* EditProfilePictureViewController.swift */; };
 		C91B2D271F6B104A003EA2D6 /* comments in Resources */ = {isa = PBXBuildFile; fileRef = C91B2D261F6B104A003EA2D6 /* comments */; };
 		C922D81D1F65EB2600A2690C /* splashscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C922D81C1F65EB2600A2690C /* splashscreen.png */; };
 		C929E4A21EF979D800E2FFF0 /* settingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C929E4A11EF979D800E2FFF0 /* settingsViewController.swift */; };
@@ -64,6 +66,8 @@
 		2067718CE112D176B1C661D6 /* Pods-Spots4.9.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spots4.9.release.xcconfig"; path = "Pods/Target Support Files/Pods-Spots4.9/Pods-Spots4.9.release.xcconfig"; sourceTree = "<group>"; };
 		3E8E5BAF5164E925CB6FA53F /* Pods-Spots4.9.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spots4.9.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Spots4.9/Pods-Spots4.9.debug.xcconfig"; sourceTree = "<group>"; };
 		C90C7F2F1F2B96CE008440C5 /* crosshair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshair.png; sourceTree = "<group>"; };
+		C90D3B341F817FC900A07BEF /* ProfilePicServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePicServices.swift; sourceTree = "<group>"; };
+		C90E67871F82A74B001E13B0 /* EditProfilePictureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfilePictureViewController.swift; sourceTree = "<group>"; };
 		C91B2D261F6B104A003EA2D6 /* comments */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = comments; sourceTree = "<group>"; };
 		C922D81C1F65EB2600A2690C /* splashscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splashscreen.png; sourceTree = "<group>"; };
 		C929E4A11EF979D800E2FFF0 /* settingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = settingsViewController.swift; sourceTree = "<group>"; };
@@ -267,6 +271,7 @@
 				C9E1DC421F3417ED008972F5 /* Helping.swift */,
 				C98346361F695B0D005B0474 /* FollowServices.swift */,
 				C98346381F695D5A005B0474 /* SpotServices.swift */,
+				C90D3B341F817FC900A07BEF /* ProfilePicServices.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -278,6 +283,7 @@
 				C929E4A11EF979D800E2FFF0 /* settingsViewController.swift */,
 				C9B3876E1F01EDF5003893DA /* EditBasicInfoViewController.swift */,
 				C9E64E841F0328CF00DB17E5 /* editMySpotsViewController.swift */,
+				C90E67871F82A74B001E13B0 /* EditProfilePictureViewController.swift */,
 			);
 			name = SettingsViewControllers;
 			sourceTree = "<group>";
@@ -445,6 +451,7 @@
 			files = (
 				C9E64E891F034FD900DB17E5 /* FollowingViewController.swift in Sources */,
 				C94929F51EEF667300A30760 /* SegueFromLeftUnwind.swift in Sources */,
+				C90D3B351F817FC900A07BEF /* ProfilePicServices.swift in Sources */,
 				C94929FF1EF0D38100A30760 /* TermsOfServicesViewController.swift in Sources */,
 				C94929FB1EEF66BA00A30760 /* SegueFromRight2.swift in Sources */,
 				C92E177D1F076839001FA94F /* clickedUserFollowersViewController.swift in Sources */,
@@ -461,6 +468,7 @@
 				C9C7491E1F0473EA000FEBB1 /* FollowTableViewCell.swift in Sources */,
 				C94929F31EEF665B00A30760 /* SegueFromLeft.swift in Sources */,
 				C9D884B71F077F860026EB20 /* aboutViewController.swift in Sources */,
+				C90E67881F82A74B001E13B0 /* EditProfilePictureViewController.swift in Sources */,
 				C94929F11EEF663700A30760 /* RegisterEmailViewController.swift in Sources */,
 				C94929D81EEF64C700A30760 /* AppDelegate.swift in Sources */,
 				C929E4A21EF979D800E2FFF0 /* settingsViewController.swift in Sources */,
@@ -616,6 +624,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Pods/Backendless/SDK/ios/backendless/include/Backendless-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -638,6 +647,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Pods/Backendless/SDK/ios/backendless/include/Backendless-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -22,4 +22,6 @@ class Spot: NSObject {
     var url = "none"
     
     var ownerId: String?
+    var owner: String = ""
+    
 }

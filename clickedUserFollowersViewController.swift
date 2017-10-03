@@ -70,7 +70,10 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
             cell.followButton.tag = indexPath.row
             cell.followButton.addTarget(self, action: #selector(self.followButtonClicked(sender:)), for: .touchUpInside)
             
-            // cell.followImg.image = getImageFrom"{backendles url}/\(cell.objectId)"
+            let profilePicService = ProfilePicServices()
+            profilePicService.getProfPicAsync(userId: cell.cellUser.objectId as String, imageView: cell.followImg, completionHandler: {
+                
+            })
             
             if(cell.cellUser.objectId == activeUserId as NSString){
                 cell.followButtonBackground.isHidden = true;

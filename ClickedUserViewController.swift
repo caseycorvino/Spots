@@ -99,7 +99,7 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         view.sendSubview(toBack: blurEffectView)
         
         
-        myAccountButton.layer.cornerRadius = 36;
+        myAccountButton.layer.cornerRadius = 46;
         myAccountButton.layer.masksToBounds = true
         myAccountButton.layer.borderWidth = 1
         
@@ -188,6 +188,11 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
 
                 })
             })
+        })
+        
+        let profilePicServices = ProfilePicServices()
+        profilePicServices.getProfPicAsync(userId: clickedUser.objectId as String, imageView: myAccountButton, completionHandler: {
+            
         })
         
         setOriginForTableSubView()
@@ -671,8 +676,15 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
         
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy"
-        cell.spotDateCreated.text = formatter.string(from: clickedUserSpots[indexPath.row].created! as Date)
+//        formatter.dateFormat = "MM/dd/yyyy"
+//        cell.spotDateCreated.text = formatter.string(from: clickedUserSpots[indexPath.row].created! as Date)
+        //        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mma"
+        let stime = formatter.string(from: cell.spot.startTime as Date)
+        let etime = formatter.string(from: cell.spot.endTime as Date)
+        let subtitle = "\(stime)-\(etime)"
+         cell.spotDateCreated.text = subtitle
+        cell.owner.setTitle(cell.spot.owner, for: .normal)
         
         return cell;
     }

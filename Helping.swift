@@ -117,9 +117,10 @@ class Helping{
     //===========Dispay Alert==============//
     
     func displayAlertOK(_ title: String, message: String, view :UIViewController) {
-        
+       
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+           
             alert.dismiss(animated: true, completion: nil)
         })))
         

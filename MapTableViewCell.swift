@@ -14,6 +14,9 @@ class MapTableViewCell: UITableViewCell {
     
     @IBOutlet var spotDateCreated: UILabel!
     
+    @IBOutlet var owner: UIButton!
+    
+    
     var spot = Spot()
     
     override func awakeFromNib() {

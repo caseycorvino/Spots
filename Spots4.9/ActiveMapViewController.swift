@@ -206,6 +206,10 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         })
         })
         
+        let profilePicServices = ProfilePicServices()
+        profilePicServices.getProfPicAsync(userId: activeUserId, imageView: myAccountButton, completionHandler: {
+            
+        })
 
         
         setOriginForTableSubView()
@@ -456,7 +460,7 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                 if(addSpotLinkField.text != ""){
                     newSpot.url = addSpotLinkField.text!
                 }
-                
+                 newSpot.owner = activeUser.name! as String
                 newSpot.endTime = spotServices.getTimeFor(picker: addSpotEndTime) as NSDate
             
                 if(addSpotTypeSwitch.selectedSegmentIndex == 0){
@@ -465,6 +469,9 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                     newSpot.Longitude = userLon
             
                     newSpot.startTime = addSpotStartTime.clampedDate as NSDate
+                    
+                   
+                    print(activeUser.name)
                     self.uploadNewSpot(newSpot: newSpot)
             
                 } else if(addSpotTypeSwitch.selectedSegmentIndex == 1){
@@ -473,8 +480,12 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                     
                 
                     getLocationForAddress(newSpot: newSpot, address: addSpotLocationField.text!, completionHandler: {
+                       
                         if self.getLocationError == false{
+                            
                             self.uploadNewSpot(newSpot: newSpot)
+                        } else {
+                            UIApplication.shared.endIgnoringInteractionEvents()
                         }
                     })
                     
@@ -925,7 +936,7 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         let stime = formatter.string(from: cell.spot.startTime as Date)
         let etime = formatter.string(from: cell.spot.endTime as Date)
         let subtitle = "\(stime)-\(etime)"
-
+        cell.owner.setTitle( cell.spot.owner, for: .normal)
             
         cell.spotDateCreated.text = subtitle
         

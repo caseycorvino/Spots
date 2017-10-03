@@ -20,7 +20,7 @@ class settingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     let settingsCategories = ["MY ACCOUNT", "MY SPOTS", "MORE" ]
     
-    let settingsArray = [["Edit Basic Info"] , ["Edit My Spots"], ["About Spots", "Contact", "Terms of Services and Privacy Policy"]]
+    let settingsArray = [["Edit Basic Info","Edit Profile Picture"] , ["Edit My Spots"], ["About Spots", "Contact", "Terms of Services and Privacy Policy"]]
     
     
     override func viewDidLoad() {
@@ -92,6 +92,9 @@ class settingsViewController: UIViewController, UITableViewDataSource, UITableVi
         switch indexPath {
         case [0,0]:
             performSegue(withIdentifier: "settingsToEditBasicInfo", sender: nil)
+            break;
+        case [0,1]:
+            performSegue(withIdentifier: "settingsToEditProfilePicture", sender: nil)
             break;
         case [1,0]:
             performSegue(withIdentifier: "settingsToEditMySpots", sender: nil)
