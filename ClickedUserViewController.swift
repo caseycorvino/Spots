@@ -26,6 +26,10 @@ var clickedUser: BackendlessUser = BackendlessUser()
 
 var segueBack: String! = ""
 
+var clickedFollowerCount:Int?
+
+var clickedFollowingCount: Int?
+
 class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate {
 
     
@@ -185,7 +189,14 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
                     self.activityIndicator.stopAnimating()
                     self.view.sendSubview(toBack: self.blurEffectView)
                     self.tableView.reloadData()
-
+                    
+                    if let count: Int = Int(self.followersButton.currentTitle!){
+                        clickedFollowerCount = count
+                    }
+                    if let count: Int = Int(self.followingButton.currentTitle!){
+                        clickedFollowingCount = count
+                    }
+                    
                 })
             })
         })

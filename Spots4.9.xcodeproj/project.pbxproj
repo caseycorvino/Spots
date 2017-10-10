@@ -279,8 +279,8 @@
 		C9B387681F01DC11003893DA /* SettingsViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				C9D884B61F077F860026EB20 /* aboutViewController.swift */,
 				C929E4A11EF979D800E2FFF0 /* settingsViewController.swift */,
+				C9D884B61F077F860026EB20 /* aboutViewController.swift */,
 				C9B3876E1F01EDF5003893DA /* EditBasicInfoViewController.swift */,
 				C9E64E841F0328CF00DB17E5 /* editMySpotsViewController.swift */,
 				C90E67871F82A74B001E13B0 /* EditProfilePictureViewController.swift */,

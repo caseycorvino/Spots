@@ -16,16 +16,18 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
     
     @IBOutlet var searchBar: UISearchBar!
     
+    var offset = 0;
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        followServices.calculateFollowers(userId: clickedUser.objectId as String, followersLabel: clickedUserFollowerCount, view: self, completionHandler: {
-
-        self.clickedUserFollowerCount.text = "\(clickedUserFollowers.count)"
+        followServices.calculateFollowers(offset: offset, userId: clickedUser.objectId as String, followersLabel: clickedUserFollowerCount, view: self, completionHandler: {
+        self.offset += 100;
+        self.clickedUserFollowerCount.text = "\(clickedFollowerCount ?? 0)"
+            
         self.filteredResult = clickedUserFollowers
         self.searchBar.placeholder = "\(clickedUser.name ?? "")'s Followers"
             self.followerTable.reloadData()
-
+            
         })
         // Do any additional setup after loading the view.
     }
@@ -236,6 +238,19 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
     //keyboard dismissed on scroll
     func  scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.searchBar.endEditing(true)
+        let  height = scrollView.frame.size.height
+        let contentYoffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+        if distanceFromBottom < height {
+            //calculate more followers
+            if(clickedFollowerCount ?? 0 > offset){
+                //calcualet more and chnage offset
+                followServices.calculateFollowers(offset: offset, userId: clickedUser.objectId as String, followersLabel: clickedUserFollowerCount, view: self, completionHandler: {
+                        //self.offset+=100
+                        //self.followerTable.reloadData()
+                })
+            }
+        }
     }
     
     //keyboard dismissed on search clicked
@@ -255,6 +270,12 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    
+   
+    
     
     
     /*

@@ -88,7 +88,7 @@ class searchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             let profilePicService = ProfilePicServices()
             profilePicService.getProfPicAsync(userId: cell.cellUser.objectId as String, imageView: cell.followImg, completionHandler: {
-                
+               
             })
             
             if(cell.cellUser.objectId == activeUserId as NSString!){
@@ -186,6 +186,11 @@ class searchViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //                })
                 //replace with activeUserFollowing.add(data)
                 activeUserFollowing.append(cell.cellUser)
+                followingList.append(cell.cellUser.objectId as String)
+                let deviceId = cell.cellUser.getProperty("deviceId")!
+                
+                helper.publishPushNotification(message: "New Follower!", deviceId: deviceId as? String ?? "")
+
                 UIApplication.shared.endIgnoringInteractionEvents()
             }, error: { (fault: Fault?) in
                 print("fault")

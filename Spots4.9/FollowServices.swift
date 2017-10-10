@@ -15,12 +15,12 @@ class FollowServices {
     var backendless = Backendless.sharedInstance()
     
     
-    func calculateFollowers(userId: String, followersLabel: UILabel, view: UIViewController, completionHandler: @escaping () -> ()) -> Void {
+    func calculateFollowers(offset: Int, userId: String, followersLabel: UILabel, view: UIViewController, completionHandler: @escaping () -> ()) -> Void {
         
         
         let query = DataQueryBuilder().setWhereClause("following = '\(userId)'")
         
-        _ = query?.setPageSize(100).setOffset(0)
+        _ = query?.setPageSize(100).setOffset(Int32(offset))
         
         _ = self.backendless?.data.of(Followers.ofClass()).find(query,
                                                                 
@@ -29,7 +29,7 @@ class FollowServices {
                                                                     //fill followers Array.
                                                                     //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
                                                                     
-                                                                    let followersCount = anyObjects?.count
+                                                                   // let followersCount = anyObjects?.count
                                                                     
                                                                     let followerObjects = anyObjects as! [Followers]
                                                                     print("\(userId) Followers: \(followerObjects.count)")
@@ -66,7 +66,7 @@ class FollowServices {
                                                                     
                                                                     
                                                                     let query2 = DataQueryBuilder().setWhereClause(whereQuery)
-                                                                    _ = query2?.setPageSize(100).setOffset(0)
+                                                                    _ = query2?.setPageSize(100).setOffset(Int32(offset))
                                                                     
                                                                     _ = self.backendless?.data.of(BackendlessUser.ofClass()).find(query2, response: { (followUsers: [Any]?) in
                                                                         
@@ -75,8 +75,11 @@ class FollowServices {
                                                                             activeUserFollowers = followUsers as! [BackendlessUser];                                                                        completionHandler()
                                                                         }
                                                                         if let _ : clickedUserFollowersViewController = view as? clickedUserFollowersViewController {
-                                                                            clickedUserFollowers.removeAll()
-                                                                            clickedUserFollowers = followUsers as! [BackendlessUser];                                                                        completionHandler()
+                                                                            clickedUserFollowers.removeAll()//move this to view controller
+                                                                            
+                                                                            clickedUserFollowers = followUsers as! [BackendlessUser];
+                                                                            // append instead of deleting                                                      
+                                                                            completionHandler()
                                                                         }
                                                                         
                                                                         
@@ -88,7 +91,7 @@ class FollowServices {
                                                                     })
                                                                     
                                                                     
-                                                                    followersLabel.text = "\(followersCount!)"
+                                                                    //followersLabel.text = "\(followersCount!)"
                                                                     
                                                                     
         },//if error print error
@@ -160,8 +163,9 @@ class FollowServices {
                                                                             activeUserFollowing = followUsers as! [BackendlessUser];                                                                        completionHandler()
                                                                         }
                                                                         if let _ : clickedUserFollowingViewController = view as? clickedUserFollowingViewController {
-                                                                            clickedUserFollowing.removeAll()
-                                                                            clickedUserFollowing = followUsers as! [BackendlessUser];                                                                        completionHandler()
+                                                                            clickedUserFollowing.removeAll()//move to view controller
+                                                                            clickedUserFollowing = followUsers as! [BackendlessUser]; //append instead of deleting                                                                       
+                                                                            completionHandler()
                                                                         }
                                                                         
                                                                     },//if error print error

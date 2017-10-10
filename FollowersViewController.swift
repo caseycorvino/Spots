@@ -19,7 +19,7 @@ class FollowersViewController: UIViewController, UITableViewDataSource, UITableV
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        followServices.calculateFollowers(userId: activeUserId, followersLabel: FollowerCount, view: self, completionHandler: {
+        followServices.calculateFollowers(offset: 0, userId: activeUserId, followersLabel: FollowerCount, view: self, completionHandler: {
             self.FollowerCount.text = "\(activeUserFollowers.count)"
             
             

@@ -48,6 +48,15 @@ class settingsViewController: UIViewController, UITableViewDataSource, UITableVi
             activeUser = BackendlessUser();
             activeUserId = "";
              //fromBackButton = false;
+            //TODO remove device id
+            /*
+            activeUser.setProperty("deviceId", object: "")
+            self.backendless?.userService.update(activeUser, response: { (user: BackendlessUser?) in
+                print("Removed DeviceId: succesful")
+            }, error: { (fault: Fault?) in
+                print("Fault=\(fault?.description ?? "")")
+            })*/
+            
             self.performSegue(withIdentifier: "settingsToOpening", sender: nil)
         },
                                         
