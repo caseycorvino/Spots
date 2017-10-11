@@ -74,7 +74,7 @@ class TermsOfServicesViewController: UIViewController {
                                             //end stop receiving touches
                                             UIApplication.shared.endIgnoringInteractionEvents()
                                             self.activityIndicator.stopAnimating()
-                                            self.displayAlertAndSegue("REGISTRATION SUCCESFULL", message: "You can now login to Spots!")
+                                            self.displayAlertAndSegue("Registration Succesfull!", message: "You can now login to Spots!")
                                             print("User registered \(String(describing: registeredUser?.value(forKey: "email")!))")
                                             
         },

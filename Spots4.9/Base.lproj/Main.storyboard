@@ -1648,12 +1648,28 @@ We are committed to conducting our business in accordance with these principles 
                                         <rect key="frame" x="70" y="254" width="235" height="203"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="4cX-3K-F4O">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="ikV-aq-Nb7" detailTextLabel="gJU-lp-LJY" style="IBUITableViewCellStyleSubtitle" id="4cX-3K-F4O">
                                                 <rect key="frame" x="0.0" y="28" width="235" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4cX-3K-F4O" id="at2-6I-arf">
                                                     <rect key="frame" x="0.0" y="0.0" width="235" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ikV-aq-Nb7">
+                                                            <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gJU-lp-LJY">
+                                                            <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                            <color key="textColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                         </prototypes>
@@ -3217,15 +3233,15 @@ Developed in New York</string>
         <image name="upbutton.png" width="750" height="239"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="x4e-IA-5h2"/>
         <segue reference="B1g-xQ-gop"/>
-        <segue reference="sL4-p9-g3v"/>
-        <segue reference="z5U-Jx-VJT"/>
+        <segue reference="Gp6-ez-xjS"/>
         <segue reference="zZh-hO-mOq"/>
         <segue reference="Cgu-gH-SeN"/>
-        <segue reference="zlT-xm-ux4"/>
+        <segue reference="1im-HA-DMT"/>
+        <segue reference="ZZo-15-HQy"/>
         <segue reference="iv0-Ki-ZXu"/>
         <segue reference="NUR-Ug-gs7"/>
+        <segue reference="zlT-xm-ux4"/>
         <segue reference="f43-gv-szX"/>
     </inferredMetricsTieBreakers>
 </document>

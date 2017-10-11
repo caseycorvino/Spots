@@ -923,6 +923,27 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         
     }
     
+    func tableCellToClickedUser(sender: UIButton){
+        
+        let clickedId = sender.accessibilityHint
+        
+        let dataStore = backendless?.data.of(BackendlessUser.ofClass())
+        dataStore?.find(byId: clickedId, response: { (user: Any?) in
+            
+            clickedUser = user as! BackendlessUser
+            let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "clickedUserView")
+            self.navigationController?.pushViewController(nextPage!, animated: true)
+            
+        }, error: { (fault: Fault?) in
+            
+            print(fault?.description ?? "Unknown fault")
+            
+        })
+        
+        
+        
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if(tableView == self.tableView){
@@ -937,7 +958,9 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         let etime = formatter.string(from: cell.spot.endTime as Date)
         let subtitle = "\(stime)-\(etime)"
         cell.owner.setTitle( cell.spot.owner, for: .normal)
-            
+        
+        cell.owner.accessibilityHint = cell.spot.ownerId
+        cell.owner.addTarget(self, action: #selector(tableCellToClickedUser(sender:)), for: .touchUpInside)
         cell.spotDateCreated.text = subtitle
         
         return cell;
@@ -947,7 +970,7 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         let cell = self.locationResultsTable.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
             cell.backgroundColor = UIColor.init(white: 0.0, alpha: 0.0)
             cell.textLabel?.text = self.searchSource?[indexPath.row]
-
+            cell.detailTextLabel?.text = self.searchSourceSub?[indexPath.row]
             //cell.title.text = self.searchSource?[indexPath.row]
         //            + " " + searchResult.subtitle
             //cell.subtitle?.text = self.searchSourceSub?[indexPath.row]

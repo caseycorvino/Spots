@@ -190,6 +190,15 @@
 			path = Spots4.9;
 			sourceTree = "<group>";
 		};
+		C955CF471F8D73A3009DC76C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C9E376E41F12FFA000B4DDCF /* MapTableViewCell.swift */,
+				C9C7491D1F0473EA000FEBB1 /* FollowTableViewCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		C95B4B751EF432FD00E7D329 /* button icons */ = {
 			isa = PBXGroup;
 			children = (
@@ -224,6 +233,7 @@
 		C97FB1331EF1C19D0013DFB9 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C955CF471F8D73A3009DC76C /* Cells */,
 				C94929EC1EEF661600A30760 /* OpeningViewController.swift */,
 				C97FB1391EF1E91C0013DFB9 /* beforeViewController.swift */,
 				C97FB1351EF1DB430013DFB9 /* ActiveMapViewController.swift */,
@@ -291,7 +301,6 @@
 		C9C7491F1F0473F7000FEBB1 /* FollowViewControllers-Assets */ = {
 			isa = PBXGroup;
 			children = (
-				C9C7491D1F0473EA000FEBB1 /* FollowTableViewCell.swift */,
 				C9E64E881F034FD900DB17E5 /* FollowingViewController.swift */,
 				C9E64E861F034FCD00DB17E5 /* FollowersViewController.swift */,
 			);
@@ -301,7 +310,6 @@
 		C9D884B81F07814B0026EB20 /* clickedUserViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				C9E376E41F12FFA000B4DDCF /* MapTableViewCell.swift */,
 				C92E177A1F07682D001FA94F /* clickedUserFollowingViewController.swift */,
 				C92E177C1F076839001FA94F /* clickedUserFollowersViewController.swift */,
 				C97476D01F05C83E0066BB92 /* ClickedUserViewController.swift */,
