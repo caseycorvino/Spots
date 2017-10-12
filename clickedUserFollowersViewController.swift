@@ -20,6 +20,7 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        clickedUserFollowers.removeAll()
         followServices.calculateFollowers(offset: offset, userId: clickedUser.objectId as String, followersLabel: clickedUserFollowerCount, view: self, completionHandler: {
         self.offset += 100;
         self.clickedUserFollowerCount.text = "\(clickedFollowerCount ?? 0)"
@@ -161,6 +162,8 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
             let newFollow = Followers()
             newFollow.follower = "\(activeUserId)"
             newFollow.following = "\(cell.cellUser.objectId ?? "")"
+            //Todo
+            newFollow.followingDeviceId = "\(activeUser.getProperty("deviceId") ?? "empty")"
             
             dataStore?.save(newFollow, response: { (new: Any?) in
                 activeUserFollowing.append(cell.cellUser)
@@ -236,6 +239,7 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
     }
     
     //keyboard dismissed on scroll
+    var isSearching = false;
     func  scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.searchBar.endEditing(true)
         let  height = scrollView.frame.size.height
@@ -243,11 +247,15 @@ class clickedUserFollowersViewController: UIViewController, UITableViewDataSourc
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
         if distanceFromBottom < height {
             //calculate more followers
-            if(clickedFollowerCount ?? 0 > offset){
+            //print("no more followers, looking for more")
+            if(clickedFollowerCount ?? 0 > offset && !isSearching){
                 //calcualet more and chnage offset
+                print("calculating more")
+                isSearching = true;
                 followServices.calculateFollowers(offset: offset, userId: clickedUser.objectId as String, followersLabel: clickedUserFollowerCount, view: self, completionHandler: {
-                        //self.offset+=100
-                        //self.followerTable.reloadData()
+                        self.offset+=100
+                        self.followerTable.reloadData()
+                        self.isSearching = false;
                 })
             }
         }

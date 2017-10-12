@@ -75,7 +75,7 @@ class FollowServices {
                                                                             activeUserFollowers = followUsers as! [BackendlessUser];                                                                        completionHandler()
                                                                         }
                                                                         if let _ : clickedUserFollowersViewController = view as? clickedUserFollowersViewController {
-                                                                            clickedUserFollowers.removeAll()//move this to view controller
+                                                                            //clickedUserFollowers.removeAll()//move this to view controller
                                                                             
                                                                             clickedUserFollowers = followUsers as! [BackendlessUser];
                                                                             // append instead of deleting                                                      
@@ -107,7 +107,7 @@ class FollowServices {
     //=======================Calculate Following====================//
     
     
-    func calculateFollowing(userId: String, followingLabel: UILabel, view: UIViewController, completionHandler: @escaping () -> ()) -> Void {
+    func calculateFollowing(offset: Int, userId: String, followingLabel: UILabel, view: UIViewController, completionHandler: @escaping () -> ()) -> Void {
         
         let query = DataQueryBuilder().setWhereClause("follower = '\(userId)'")
         
@@ -277,6 +277,8 @@ class FollowServices {
         let newFollow = Followers()
         newFollow.follower = "\(activeUserId)"
         newFollow.following = "\(user.objectId ?? "")"
+        //Todo
+        //newFollow.followingDeviceId = "\(activeUser.getProperty("deviceId") ?? "empty")
         
         dataStore?.save(newFollow, response: { (new: Any?) in
             //                self.calculateFollowing(completionHandler: {
@@ -379,7 +381,7 @@ class FollowServices {
                                   response: {
                                     (objectCount : NSNumber?) -> () in
                                     
-                                    
+                                    followerCount = Int(objectCount!)
                                     followerButton.setTitle("\(objectCount ?? 0)", for: .normal)
                                     print("Found follower objects: \(objectCount ?? 0)")
                                     completionHandler()
@@ -415,7 +417,7 @@ class FollowServices {
     
     func setFollowingList(followingButton: UIButton, completionHandler: @escaping () -> ()){
         
-        print("okay")
+        //print("okay")
         
         followingList.removeAll()
         

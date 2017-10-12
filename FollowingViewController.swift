@@ -25,7 +25,7 @@ class FollowingViewController: UIViewController, UITableViewDataSource, UITableV
         super.viewDidLoad()
         
         
-        followServices.calculateFollowing(userId: activeUserId, followingLabel: FollowingCount, view: self, completionHandler: {
+        followServices.calculateFollowing(offset: 0, userId: activeUserId, followingLabel: FollowingCount, view: self, completionHandler: {
             self.FollowingCount.text = "\(activeUserFollowing.count)"
            
             self.oldActiveUserFollowing = activeUserFollowing

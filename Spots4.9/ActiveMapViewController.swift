@@ -38,6 +38,8 @@ let spotServices = SpotServices();
 
 var followingCount: Int = 0;
 
+var followerCount: Int = 0;
+
 class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
 
     //IBOutlet Views
@@ -551,6 +553,9 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                         response: {
                             (newSpot) -> () in
                             print("Spot saved and succesfully uploaded to backend")
+                            
+                            spotServices.sendPushNotificationsToFollowers()
+                            
                             self.view.endEditing(true)
                             self.addSpotView.isHidden = true
                             UIApplication.shared.endIgnoringInteractionEvents()
@@ -561,6 +566,8 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                             allSpots.append(newSpot as! Spot)
                             mySpots.append(newSpot as! Spot)
                             //replace with addSpot to activeUserSpots and re annotate map
+                            
+                            
                             
                             self.TypeSegmentedControlClicked(self.TypeSegmentedControl)
                             

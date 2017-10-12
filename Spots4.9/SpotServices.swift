@@ -8,6 +8,8 @@
 
 import Foundation
 
+var followersDeviceIds = [String]()
+
 class SpotServices{
     
     var backendless = Backendless.sharedInstance()
@@ -63,7 +65,104 @@ class SpotServices{
         
         
     }
+    
     //===============^remove spot from backend ================//
+    
+        func setFollowersDeviceIds(completionHandler: @escaping () -> ()){
+            
+            //print("okay")
+            
+            followersDeviceIds.removeAll()
+            
+            
+            let query = DataQueryBuilder().setWhereClause("following = '\(activeUserId)'")
+            
+            _ = query?.setPageSize(100).setOffset(0)
+            
+            let dataStore = self.backendless?.data.of(Followers().ofClass())
+            
+            _ = dataStore?.find(query,
+                                
+                                response: { ( anyObjects: [Any]?) in
+                                    
+                                    //fill followers Array.
+                                    //loop throughUserObjects, get the following user id, use that id to to get backendless user, add the backednless user to activeUserFollowing
+                                    
+                                    
+                                    
+                                    let followerObjects = anyObjects as! [Followers]
+                                    for f in followerObjects{
+                                        if(f.followingDeviceId != "" || f.followingDeviceId != "empty"){
+                                            followersDeviceIds.append(f.followingDeviceId)
+                                        } else {
+                                            followersDeviceIds.append("empty")
+                                        }
+                                    }
+                                    
+                                    
+                                    
+                                    self.retrieveNextFollowersDeviceIdsPage(query: query!, data: dataStore!, completionHandler: {
+                                        completionHandler()
+                                    })
+                                    
+                                    
+            },//if error print error
+                error: { (fault: Fault?) in
+                    print("\(fault?.message ?? "fault"))")
+                    completionHandler()
+                    
+            })
+            
+            
+            
+        }
+        
+        
+        
+        func  retrieveNextFollowersDeviceIdsPage(query: DataQueryBuilder, data:IDataStore,completionHandler: @escaping () -> () ) -> Void {
+            print("\(followersDeviceIds.count) < \(followerCount) ")
+            if(followersDeviceIds.count < followerCount){
+                
+                _ = query.prepareNextPage()
+                
+                data.find(query, response: { (anyObjects: [Any]?) in
+                    let followerObjects = anyObjects as! [Followers]
+                    
+                    for f in followerObjects{
+                        if(f.followingDeviceId != "" || f.followingDeviceId != "empty"){
+                            followersDeviceIds.append(f.followingDeviceId)
+                        } else {
+                            followersDeviceIds.append("empty")
+                        }
+                    }
+
+                    self.retrieveNextFollowersDeviceIdsPage(query: query, data: data, completionHandler: {
+                        completionHandler()
+                    })
+                    
+                }, error: { (fault: Fault?) in
+                    print(fault?.description ?? "fault")
+                    completionHandler()
+                })
+                
+                
+            } else {
+                completionHandler()
+            }
+        }
+        
+        
+    func sendPushNotificationsToFollowers(){
+        setFollowersDeviceIds(completionHandler: {
+            for device in followersDeviceIds{
+                if(device != "empty"){
+                    helper.publishPushNotification(message: "\(activeUser.name) just added a new Spot!", deviceId: device)
+                }
+            }
+        })
+        
+    }
+    
     
     
     

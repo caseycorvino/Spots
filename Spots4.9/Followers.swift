@@ -14,4 +14,5 @@ public class Followers: NSObject {
     var follower = ""
     var following = ""
     //var followingName = ""
+    var followingDeviceId: String = "empty"
 }

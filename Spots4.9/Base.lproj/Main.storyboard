@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G1023" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="avs-mm-xMd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G1031" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="avs-mm-xMd">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -3233,15 +3233,15 @@ Developed in New York</string>
         <image name="upbutton.png" width="750" height="239"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="B1g-xQ-gop"/>
-        <segue reference="Gp6-ez-xjS"/>
-        <segue reference="zZh-hO-mOq"/>
-        <segue reference="Cgu-gH-SeN"/>
-        <segue reference="1im-HA-DMT"/>
-        <segue reference="ZZo-15-HQy"/>
+        <segue reference="zlT-xm-ux4"/>
         <segue reference="iv0-Ki-ZXu"/>
         <segue reference="NUR-Ug-gs7"/>
-        <segue reference="zlT-xm-ux4"/>
         <segue reference="f43-gv-szX"/>
+        <segue reference="Cgu-gH-SeN"/>
+        <segue reference="zZh-hO-mOq"/>
+        <segue reference="sL4-p9-g3v"/>
+        <segue reference="B1g-xQ-gop"/>
+        <segue reference="z5U-Jx-VJT"/>
+        <segue reference="x4e-IA-5h2"/>
     </inferredMetricsTieBreakers>
 </document>

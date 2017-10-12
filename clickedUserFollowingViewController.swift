@@ -19,13 +19,14 @@ class clickedUserFollowingViewController: UIViewController, UITableViewDataSourc
     var backendless = Backendless.sharedInstance()
     
     @IBOutlet var searchBar: UISearchBar!
+    var offset = 0;
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        followServices.calculateFollowing(userId: clickedUser.objectId as String, followingLabel: clickedUserFollowingCount, view: self, completionHandler: {
-            
+        followServices.calculateFollowing(offset: offset, userId: clickedUser.objectId as String, followingLabel: clickedUserFollowingCount, view: self, completionHandler: {
+            self.offset+=100
             self.clickedUserFollowingCount.text = "\(clickedUserFollowing.count)"
             self.oldActiveUserFollowing = clickedUserFollowing
             self.filteredResult = clickedUserFollowing
@@ -157,6 +158,8 @@ class clickedUserFollowingViewController: UIViewController, UITableViewDataSourc
             let newFollow = Followers()
             newFollow.follower = "\(activeUserId)"
             newFollow.following = "\(cell.cellUser.objectId ?? "")"
+            //Todo
+            //newFollow.followingDeviceId = "\(activeUser.getProperty("deviceId") ?? "empty")
             
             dataStore?.save(newFollow, response: { (new: Any?) in
                 
@@ -248,9 +251,29 @@ class clickedUserFollowingViewController: UIViewController, UITableViewDataSourc
         self.searchBar.endEditing(true)
     }
     
+    var isSearching = false
+    
     //keyboard dismissed on scroll
     func  scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.searchBar.endEditing(true)
+        let  height = scrollView.frame.size.height
+        let contentYoffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+        if distanceFromBottom < height {
+            //calculate more followers
+            //print("no more followers, looking for more")
+            if(clickedFollowingCount ?? 0 > offset && !isSearching){
+                //calcualet more and chnage offset
+                print("calculating more")
+                isSearching = true;
+                followServices.calculateFollowing(offset: offset, userId: clickedUser.objectId as String, followingLabel: clickedUserFollowingCount, view: self, completionHandler: {
+                    self.offset+=100
+                    self.followingTable.reloadData()
+                    self.isSearching = false;
+                })
+            }
+        }
+
     }
     
     //keyboard dismissed on search clicked

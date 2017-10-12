@@ -317,6 +317,8 @@ class ClickedUserViewController: UIViewController, MKMapViewDelegate, CLLocation
             let newFollow = Followers()
             newFollow.follower = "\(activeUserId)"
             newFollow.following = "\(clickedUser.objectId ?? "")"
+            //Todo
+            //newFollow.followingDeviceId = "\(activeUser.getProperty("deviceId") ?? "empty")
             
             dataStore?.save(newFollow, response: { (new: Any?) in
                 clickedUserFollowers.append(activeUser)
