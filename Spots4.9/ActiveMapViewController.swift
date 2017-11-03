@@ -374,6 +374,7 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     }
     
     func putSpotsOnMap(completionHandler: @escaping () -> ()) -> Void{
+        
         let allAnnotations = self.map.annotations
         self.map.removeAnnotations(allAnnotations)
         
@@ -384,11 +385,14 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
             let annotation = MKPointAnnotation()
             annotation.coordinate = CLLocationCoordinate2D.init(latitude: spot.Latitude, longitude: spot.Longitude)
             annotation.title = spot.Title
+            annotation.ownerId = spot.ownerId
             
             formatter.dateFormat = "h:mma"
             let stime = formatter.string(from: spot.startTime as Date)
             let etime = formatter.string(from: spot.endTime as Date)
             let subtitle = "\(stime)-\(etime)"
+           annotation.ownerId = spot.ownerId
+           
            
             annotation.subtitle = subtitle
             map.addAnnotation(annotation)
@@ -666,6 +670,51 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         btn.addTarget(self, action: #selector(getDirections), for: .touchUpInside)
         annotationView?.rightCalloutAccessoryView = btn
         
+        
+        //todo
+        let btn2 = UIButton(type: .detailDisclosure)
+        btn2.addTarget(self, action: #selector(profPicClicked), for: .touchUpInside)
+        
+        let str = "https://api.backendless.com/CF852600-0A40-34C2-FFC8-7C9C03250600/771A9B0C-C5D0-14AF-FF1C-DFC4B9406800/files/ProfilePicture/\(annotation.ownerId!).jpeg"
+        let url = URL(string: str)
+        //print(url ?? "")
+        //todo
+        if(url != nil){
+        if let data = try? Data(contentsOf: url!){ //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+            let im = UIImageView(image: UIImage(data: data)?.resizeWith(width: 40))
+            im.isUserInteractionEnabled = true
+            
+            let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profPicClicked))
+            singleTap.numberOfTapsRequired = 1;
+            im.addGestureRecognizer(singleTap)
+            
+            annotationView?.leftCalloutAccessoryView = im
+        
+        } else {
+             let im = UIImage(named: "default-profile.png")
+             btn2.setImage(im, for: .normal)
+            btn2.frame.size.width = 40;
+            btn2.frame.size.height = 40;
+            helper.putBorderOnButton(buttonView: btn2, radius: 20)
+            
+            annotationView?.leftCalloutAccessoryView = btn2
+            }
+        } else {
+            let im = UIImage(named: "default-profile.png")
+            btn2.setImage(im, for: .normal)
+            btn2.frame.size.width = 40;
+            btn2.frame.size.height = 40;
+            helper.putBorderOnButton(buttonView: btn2, radius: 20)
+            
+            annotationView?.leftCalloutAccessoryView = btn2
+        }
+        
+        
+        
+        
+        
+        
+        
         let pinImage = UIImage(named: "crosshair.png")
         let size = CGSize(width: 20, height: 20)
         UIGraphicsBeginImageContext(size)
@@ -683,7 +732,7 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     func calloutClicked(_ sender:UITapGestureRecognizer){
         
-            //todo. callout clicked
+        
         if(clickedSpot.url != "none"){
             let url = URL(string: clickedSpot.url)!
             if #available(iOS 10.0, *) {
@@ -694,6 +743,27 @@ class ActiveMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         } else {
             //handle if no url
         }
+        
+        
+    }
+    
+    func profPicClicked(_ sender:UITapGestureRecognizer){
+        
+        let dataStore = backendless?.data.of(BackendlessUser.ofClass())
+        dataStore?.find(byId: clickedSpot.ownerId, response: { (user: Any?) in
+            
+            clickedUser = user as! BackendlessUser
+            let nextPage = self.storyboard?.instantiateViewController(withIdentifier: "clickedUserView")
+            self.navigationController?.pushViewController(nextPage!, animated: true)
+            
+        }, error: { (fault: Fault?) in
+            
+            print(fault?.description ?? "Unknown fault")
+            
+        })
+
+
+        
         
         
     }

@@ -137,7 +137,7 @@ class ProfilePicServices{
                 DispatchQueue.main.async {
                     imageView.setImage(UIImage(data: data), for: .normal)
                     imageView.imageView?.contentMode = UIViewContentMode.scaleAspectFill;
-                    print("success")
+                    //print("success")
                     completionHandler()
                 }} else {
                 completionHandler()
@@ -151,7 +151,12 @@ class ProfilePicServices{
             imageView.image = UIImage(data: data)
         }
     }
-    
+    func getProfPicSync(userId: String, imageView: UIButton){
+        let url = URL(string: "https://api.backendless.com/CF852600-0A40-34C2-FFC8-7C9C03250600/771A9B0C-C5D0-14AF-FF1C-DFC4B9406800/files/ProfilePicture/\(userId).jpeg")
+        if let data = try? Data(contentsOf: url!){ //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+            imageView.setImage(UIImage(data: data), for: .normal)
+        }
+    }
 }
 
 extension UIImage {
