@@ -22,6 +22,8 @@ App Features:
   - urls to event
   - time of events
   - profile picture
+  - clicked Spot opens up url
+  - clicked Spot's left button opens up maps with the address already entered
 </pre>
 </p>
 <h1 style="font-color: gray;">Photos of the App</h1>
