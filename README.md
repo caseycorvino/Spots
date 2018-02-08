@@ -4,7 +4,7 @@
 <h1 style="font-color: gray;">Spotss</h1>
 <p>Spotss is an iOS application. </br></br>It is a follower based application where users add a spot to a map at their current location or where they will be.
 The spot is then visible to all of their followers. 
-<pre style="font-family: times">
+<pre>
 App Features:
   - sign up
   - login
