@@ -4,6 +4,7 @@
     img{
       width: 108px;
       height: 192px;
+      display: none;
     }
   </style>
   
