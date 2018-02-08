@@ -1,12 +1,13 @@
 <!DOCTYPE HTML>
-<html>
-  <style>
+<style>
     img{
       width: 108px;
       height: 192px;
       display: none;
     }
   </style>
+<html>
+  
   
 <h1 style="font-color: gray;">Spotss</h1>
 <p>Spotss is an iOS application. </br></br>It is a follower based application where users add a spot to a map at their current location or where they will be.
