@@ -1,14 +1,6 @@
 <!DOCTYPE HTML>
-<style>
-    img{
-      width: 108px;
-      height: 192px;
-      display: none;
-    }
-  </style>
-<html>
-  
-  
+
+<html>  
 <h1 style="font-color: gray;">Spotss</h1>
 <p>Spotss is an iOS application. </br></br>It is a follower based application where users add a spot to a map at their current location or where they will be.
 The spot is then visible to all of their followers. 
@@ -33,9 +25,9 @@ App Features:
 </pre>
 </p>
 <h1 style="font-color: gray;">Photos of the App</h1>
-<img src="http://caseycorvino.co/images/spots_pictures/1.png"/>
-<img src="http://caseycorvino.co/images/spots_pictures/2.png"/>
-<img src="http://caseycorvino.co/images/spots_pictures/3.png"/>
-<img src="http://caseycorvino.co/images/spots_pictures/4.png"/>
-<img src="http://caseycorvino.co/images/spots_pictures/5.png"/>
+<img width=108 height=192 src="http://caseycorvino.co/images/spots_pictures/1.png"/>
+<img width=108 height=192 src="http://caseycorvino.co/images/spots_pictures/2.png"/>
+<img width=108 height=192 src="http://caseycorvino.co/images/spots_pictures/3.png"/>
+<img width=108 height=192 src="http://caseycorvino.co/images/spots_pictures/4.png"/>
+<img width=108 height=192 src="http://caseycorvino.co/images/spots_pictures/5.png"/>
 </html>
