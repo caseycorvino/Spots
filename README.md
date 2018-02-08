@@ -2,8 +2,8 @@
 <html>
   <style>
     img{
-      width: 108;
-      height: 192;
+      width: 108px;
+      height: 192px;
     }
   </style>
   
