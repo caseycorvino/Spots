@@ -25,9 +25,9 @@ App Features:
 </pre>
 </p>
 <h1 style="font-color: gray;">Photos of the App</h1>
-<img width=108 height=192 src="http://caseycorvino.co/images/spots_pictures/1.png"/>
-<img width=108 height=192 src="http://caseycorvino.co/images/spots_pictures/2.png"/>
-<img width=108 height=192 src="http://caseycorvino.co/images/spots_pictures/3.png"/>
-<img width=108 height=192 src="http://caseycorvino.co/images/spots_pictures/4.png"/>
-<img width=108 height=192 src="http://caseycorvino.co/images/spots_pictures/5.png"/>
+<img width=324 height=576 src="http://caseycorvino.co/images/spots_pictures/1.png"/>
+<img width=324 height=576 src="http://caseycorvino.co/images/spots_pictures/2.png"/>
+<img width=324 height=576 src="http://caseycorvino.co/images/spots_pictures/3.png"/>
+<img width=324 height=576 src="http://caseycorvino.co/images/spots_pictures/4.png"/>
+<img width=324 height=576 src="http://caseycorvino.co/images/spots_pictures/5.png"/>
 </html>
